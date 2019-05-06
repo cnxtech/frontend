@@ -38,6 +38,10 @@ class ContactSuccess extends Component {
       return
     }
     log(LISTING_DETAIL_VISIT_FORM_SAVE_LISTING_LOGIN_SUCCESS, {listingId: this.props.listing.id})
+    this.saveListing(favoriteListing)
+  }
+
+  saveListing = (favoriteListing) => {
     try {
       favoriteListing({refetchQueries: [{query: GET_USER_LISTINGS_ACTIONS}], variables: {id: this.props.listing.id}})
       log(LISTING_DETAIL_VISIT_FORM_SAVE_LISTING_SUCCESS, {listingId: this.props.listing.id})
@@ -75,11 +79,16 @@ class ContactSuccess extends Component {
                   appSecret={process.env.ACCOUNT_KIT_APP_SECRET}
                   version="v1.0"
                   onSuccess={(userInfo) => {this.onLoginSuccess(userInfo, favoriteListing)}}
-                  phoneNumber={this.props.userInfo.phone}
+                  phoneNumber={this.props.userPhone}
                 >
                   {({signIn}) => <Button onClick={() => {
                     log(LISTING_DETAIL_VISIT_FORM_SAVE_LISTING_BUTTON, {listingId: this.props.listing.id})
-                    signIn()
+                    const user = this.props.currentUser
+                    if (user && user.authenticated) {
+                      this.saveListing(favoriteListing)
+                    } else {
+                      signIn()
+                    }
                   }}>Salvar este imóvel</Button>}
                 </AccountKit>
               }
@@ -101,8 +110,9 @@ class ContactSuccess extends Component {
 
 ContactSuccess.propTypes = {
   onClose: PropTypes.func.isRequired,
-  userInfo: PropTypes.object.isRequired,
-  listing: PropTypes.object.isRequired
+  userPhone: PropTypes.string.isRequired,
+  listing: PropTypes.object.isRequired,
+  currentUser: PropTypes.object
 }
 
 export default ContactSuccess
