@@ -10,7 +10,7 @@ import
     Content,
     Background
 } from './styles'
-import CloseButton from 'components/shared/CloseButton'
+import CloseButton from 'components/shared/Common/Buttons/CloseButton'
 
 class Popup extends Component {
   componentDidMount() {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import enhanceWithClickOutside from 'react-click-outside'
-import CloseButton from 'components/shared/CloseButton'
+import CloseButton from 'components/shared/Common/Buttons/CloseButton'
 import {
   Background,
   Container
