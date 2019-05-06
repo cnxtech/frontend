@@ -229,7 +229,7 @@ export const OpenMatterportButtonWrapper = styled.div`
   left: ${({isFullScreen}) => isFullScreen ? null : '50%'};
   transform: ${({isFullScreen}) => isFullScreen ? null : 'translateX(-50%)'};
 
-  @media screen and (max-width: 812px) and (orientation: landscape) {
+  @media screen and (max-width: 812px) {
     display: ${({isFullScreen}) => isFullScreen ? 'none' : null};
   }
 
