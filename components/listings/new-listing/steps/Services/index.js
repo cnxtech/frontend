@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
-import { Formik } from 'formik'
+import React, {Component} from 'react'
+import {Formik} from 'formik'
 import moment from 'moment'
 import * as Sentry from '@sentry/browser'
-import { INSERT_LISTING, TOUR_SCHEDULE } from 'graphql/listings/mutations'
-import { TOUR_OPTIONS } from 'graphql/listings/queries'
+import {CREATE_LEAD, TOUR_SCHEDULE} from 'graphql/listings/mutations'
+import {TOUR_OPTIONS} from 'graphql/listings/queries'
 import Button from '@emcasa/ui-dom/components/Button'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import Container from 'components/listings/new-listing/shared/Container'
-import { getListingInput } from 'lib/listings/insert'
+import {getSellerLeadInput} from 'lib/listings/insert'
 import {
   SELLER_ONBOARDING_SERVICES_SCHEDULE,
   SELLER_ONBOARDING_SERVICES_SKIP,
@@ -94,10 +94,10 @@ class Services extends Component {
   async createListing() {
     this.setState({loading: true})
 
+    const input = getSellerLeadInput(this.props)
     try {
-      const input = getListingInput(this.props)
       const { data } = await apolloClient.mutate({
-        mutation: INSERT_LISTING,
+        mutation: CREATE_LEAD,
         variables: {
           input
         }
@@ -107,7 +107,7 @@ class Services extends Component {
         log(SELLER_ONBOARDING_LISTING_CREATION_SUCCESS, {listing: input})
         this.setState({
           listingCreated: true,
-          listingId: data.insertListing.id
+          listingId: data.siteSellerLeadCreate.uuid
         })
       }
     } catch (e) {

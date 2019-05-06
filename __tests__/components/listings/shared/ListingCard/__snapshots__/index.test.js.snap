@@ -35,7 +35,7 @@ exports[`<ListingCard/> should render component 1`] = `
 .c5 {
   -webkit-font-smoothing: antialiased;
   font-family: Rubik;
-  color: #f50057;
+  color: #ff2b7f;
   font-size: 14px;
 }
 
@@ -90,8 +90,8 @@ exports[`<ListingCard/> should render component 1`] = `
 }
 
 .c1:hover {
-  border-color: #f50057;
-  box-shadow: 0 0 2px #f50057;
+  border-color: #ff2b7f;
+  box-shadow: 0 0 2px #ff2b7f;
 }
 
 .c1 img {

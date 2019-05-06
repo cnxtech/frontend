@@ -8,12 +8,12 @@ import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import View from '@emcasa/ui-dom/components/View'
 import Button from '@emcasa/ui-dom/components/Button'
-import { INSERT_LISTING, TOUR_SCHEDULE } from 'graphql/listings/mutations'
+import {CREATE_LEAD, TOUR_SCHEDULE} from 'graphql/listings/mutations'
 import CustomTime from './components/CustomTime'
 import TourMonths from './components/TourMonths'
 import TourDays from './components/TourDays'
 import Container from 'components/listings/new-listing/shared/Container'
-import { getListingInput } from 'lib/listings/insert'
+import {getSellerLeadInput} from 'lib/listings/insert'
 import {
   getTourDays,
   getTourMonths,
@@ -44,7 +44,6 @@ class Tour extends Component {
     this.hasCustomTime = this.hasCustomTime.bind(this)
     this.selectCustomTime = this.selectCustomTime.bind(this)
 
-    this.createListing = this.createListing.bind(this)
     this.createTour = this.createTour.bind(this)
     this.save = this.save.bind(this)
   }
@@ -61,7 +60,7 @@ class Tour extends Component {
     listingCreted: false,
     tourCreated: false,
     error: null,
-    listingId: null
+    uuid: null
   }
 
   componentDidMount() {
@@ -96,7 +95,7 @@ class Tour extends Component {
     updateServices({
       tourOptions: services.tourOptions
     })
-    updateListing({id: this.state.listingId})
+    updateListing({id: this.state.uuid})
     navigateTo('success')
   }
 
@@ -104,13 +103,13 @@ class Tour extends Component {
     this.props.navigateTo('services')
   }
 
-  async createListing() {
+  createSellerLead = async () => {
     this.setState({loading: true})
+    const input = getSellerLeadInput(this.props)
 
     try {
-      const input = getListingInput(this.props)
       const { data } = await apolloClient.mutate({
-        mutation: INSERT_LISTING,
+        mutation: CREATE_LEAD,
         variables: {
           input
         }
@@ -120,7 +119,7 @@ class Tour extends Component {
         log(SELLER_ONBOARDING_LISTING_CREATION_SUCCESS, {listing: input})
         this.setState({
           listingCreated: true,
-          listingId: data.insertListing.id
+          uuid: data.siteSellerLeadCreate.uuid
         })
       }
     } catch (e) {
@@ -138,16 +137,15 @@ class Tour extends Component {
 
   async createTour() {
     this.setState({loading: true})
+    const { day, time } = this.state
+    const datetime = moment(day + time, 'YYYY-MM-DD HH').toDate()
 
     try {
-      const { day, time } = this.state
-
-      const datetime = moment(day + time, 'YYYY-MM-DD HH').toDate()
       const { data } = await apolloClient.mutate({
         mutation: TOUR_SCHEDULE,
         variables: {
           input: {
-            listingId: this.state.listingId,
+            siteSellerLeadUuid: this.state.uuid,
             options: {
               datetime
             },
@@ -159,7 +157,7 @@ class Tour extends Component {
 
       if (data) {
         log(SELLER_ONBOARDING_TOUR_CREATION_SUCCESS, {
-          listingId: this.state.listingId,
+          uuid: this.state.uuid,
           options: datetime
         })
         this.setState({tourCreated: true})
@@ -167,7 +165,7 @@ class Tour extends Component {
     } catch (e) {
       Sentry.captureException(e)
       log(SELLER_ONBOARDING_TOUR_CREATION_ERROR, {
-        listingId: this.state.listingId,
+        uuid: this.state.uuid,
         options: datetime,
         error: e && e.message ? e.message : ''
       })
@@ -180,7 +178,7 @@ class Tour extends Component {
 
   async save() {
     if (!this.state.listingCreated) {
-      await this.createListing()
+      await this.createSellerLead()
     }
     if (this.state.listingCreated && !this.state.tourCreated) {
       await this.createTour()

@@ -45,7 +45,7 @@ describe('pricing functions', () => {
       return {
         mutate: () => {
           return {
-            data: {requestPriceSuggestion: {suggestedPrice: 1000000}}
+            data: {requestPriceSuggestion: {id: 123, suggestedPrice: 1000000}}
           }
         }
       }
@@ -53,6 +53,7 @@ describe('pricing functions', () => {
     const apolloClient = new ApolloClient()
     const { result, error } = await estimatePrice(apolloClient, {})
     expect(result.suggestedPrice).toBe(1000000)
+    expect(result.id).toBe(123)
     expect(error).toEqual(null)
   })
 

@@ -13,7 +13,7 @@ import {
   START
 } from './actions'
 
-const initialState = {
+export const initialState = {
   step: 'intro',
   startedAt: null,
   location: {
@@ -44,6 +44,7 @@ const initialState = {
     id: null
   },
   pricing: {
+    priceRequestId: null,
     suggestedPrice: null,
     userPrice: null,
     editingPrice: null

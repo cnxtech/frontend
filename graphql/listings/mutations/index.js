@@ -77,6 +77,7 @@ export const ESTIMATE_PRICE = gql`
       rooms: $rooms
       isCovered: $isCovered
     ) {
+      id
       suggestedPrice
     }
   }

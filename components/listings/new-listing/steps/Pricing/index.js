@@ -96,8 +96,9 @@ class Pricing extends Component {
       this.setState({editingPrice: false})
       return
     }
-    const { navigateTo, updatePricing } = this.props
+    const { navigateTo, updatePricing, pricing } = this.props
     const newPricing = {
+      priceRequestId: pricing.priceRequestId,
       userPrice: intUserPrice,
       suggestedPrice: intSuggestedPrice,
       editingPrice: this.state.editingPrice

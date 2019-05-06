@@ -21,8 +21,8 @@
   "dependencies": {
     "@absinthe/socket-apollo-link": "0.2.1",
     "@babel/runtime": "7.4.3",
-    "@emcasa/ui": "2.0.12",
-    "@emcasa/ui-dom": "2.0.12",
+    "@emcasa/ui": "2.0.13",
+    "@emcasa/ui-dom": "2.0.13",
     "@fortawesome/fontawesome": "1.1.8",
     "@fortawesome/fontawesome-free-brands": "5.0.13",
     "@fortawesome/fontawesome-free-solid": "5.0.13",
