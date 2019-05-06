@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { Formik, Field } from 'formik'
+import React, {Component} from 'react'
+import {Formik, Field} from 'formik'
 import * as Sentry from '@sentry/browser'
-import { get } from 'lodash'
+import {get} from 'lodash'
 import AccountKit from 'components/shared/Auth/AccountKit'
 import Input from '@emcasa/ui-dom/components/Input'
 import Row from '@emcasa/ui-dom/components/Row'
@@ -10,19 +10,16 @@ import Text from '@emcasa/ui-dom/components/Text'
 import {withBreakpoint} from '@emcasa/ui-dom/components/Breakpoint'
 import NavButtons from 'components/listings/new-listing/shared/NavButtons'
 import Container from 'components/listings/new-listing/shared/Container'
-import { getAddressInput } from 'lib/address'
-import { estimatePrice, getPricingInput } from 'lib/listings/pricing'
+import {requestPricing} from 'components/listings/new-listing/lib/pricing'
 import Steps from 'components/listings/new-listing/shared/Steps'
-import { EDIT_PROFILE } from 'graphql/user/mutations'
+import {EDIT_PROFILE} from 'graphql/user/mutations'
 import {
   log,
   getSellerEventPrefix,
   SELLER_ONBOARDING_PHONE_LOGIN_START,
   SELLER_ONBOARDING_PHONE_LOGIN_SUCCESS,
   SELLER_ONBOARDING_PHONE_LOGIN_CANCEL,
-  SELLER_ONBOARDING_PHONE_UPDATE_USER_NAME,
-  SELLER_ONBOARDING_PRICING_SUCCESS,
-  SELLER_ONBOARDING_PRICING_FAILED
+  SELLER_ONBOARDING_PHONE_UPDATE_USER_NAME
 } from 'lib/logging'
 
 class Phone extends Component {
@@ -95,7 +92,6 @@ class Phone extends Component {
           name: name,
           phone: phone
         })
-        this.estimatePrice({name: name})
       }
     } catch (e) {
       Sentry.captureException(e)
@@ -134,53 +130,17 @@ class Phone extends Component {
     this.estimatePrice({name})
   }
 
-  async estimatePrice(userInfo) {
-    // Prepare input
-    const { homeDetails, rooms, location } = this.props
-    const addressInput = getAddressInput(location.addressData)
-    const pricingInput = getPricingInput(addressInput, homeDetails, rooms, userInfo)
-
-    // Run mutation
-    const response = await estimatePrice(apolloClient, pricingInput)
-    if (response.error) {
-      Sentry.captureException(new Error(response.error))
-      this.setState({
-        loading: false,
-        error: response.error
-      })
+  estimatePrice = async (userInfo) => {
+    const result = await requestPricing(apolloClient, userInfo, this.props)
+    const error = result && result.error
+    this.setState({
+      loading: false,
+      error: error ? result.error : null
+    })
+    if (error) {
+      return
     }
-
-    // Handle result
-    if (response.result) {
-      const {id, suggestedPrice, userPrice} = response.result
-      if (suggestedPrice) {
-        log(`${getSellerEventPrefix(this.props.evaluation)}${SELLER_ONBOARDING_PRICING_SUCCESS}`, {
-          name: userInfo.name,
-          phone: userInfo.phone,
-          priceRequestId: id,
-          pricingInput,
-          suggestedPrice: suggestedPrice
-        })
-      } else {
-        log(`${getSellerEventPrefix(this.props.evaluation)}${SELLER_ONBOARDING_PRICING_FAILED}`, {
-          name: userInfo.name,
-          phone: userInfo.phone,
-          pricingInput
-        })
-      }
-      const { navigateTo, updatePricing, pricing } = this.props
-      updatePricing({
-        ...pricing,
-        priceRequestId: id,
-        suggestedPrice,
-        userPrice
-      })
-      this.setState({
-        loading: false,
-        error: null
-      })
-      navigateTo('pricing')
-    }
+    this.props.navigateTo('pricing')
   }
 
   previousStep() {
