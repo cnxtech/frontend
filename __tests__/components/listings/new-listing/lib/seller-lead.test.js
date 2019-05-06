@@ -47,7 +47,7 @@ describe('seller create lead and tour functions', () => {
         suites: 2,
       },
       pricing: {
-        priceRequestId: 123,
+        priceRequestId: 1,
         userPrice: 6000
       },
     }
