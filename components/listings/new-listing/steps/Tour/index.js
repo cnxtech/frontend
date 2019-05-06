@@ -10,7 +10,7 @@ import CustomTime from './components/CustomTime'
 import TourMonths from './components/TourMonths'
 import TourDays from './components/TourDays'
 import Container from 'components/listings/new-listing/shared/Container'
-import {requestCreateTour} from 'components/listings/new-listing/lib/seller-lead'
+import {requestCreateTour, requestCreateSellerLead} from 'components/listings/new-listing/lib/seller-lead'
 import {
   getTourDays,
   getTourMonths,
@@ -46,10 +46,10 @@ class Tour extends Component {
     monthOffset: 0,
     dayOffset: 0,
     loading: false,
-    listingCreted: false,
+    listingCreated: false,
     tourCreated: false,
     error: null,
-    uuid: null
+    siteSellerLeadUuid: null
   }
 
   componentDidMount() {
@@ -84,7 +84,7 @@ class Tour extends Component {
     updateServices({
       tourOptions: services.tourOptions
     })
-    updateListing({id: this.state.uuid})
+    updateListing({id: this.state.siteSellerLeadUuid})
     navigateTo('success')
   }
 
@@ -95,18 +95,18 @@ class Tour extends Component {
   createSellerLead = async () => {
     this.setState({loading: true})
     const response = await requestCreateSellerLead(apolloClient, this.props)
-    this.setState({
+    await this.setState({
       loading: false,
       error: response ? null : 'Ocorreu um erro. Por favor, tente novamente.',
       listingCreated: true,
-      uuid: response.uuid
+      siteSellerLeadUuid: response
     })
   }
 
   createTour = async () => {
     this.setState({loading: true})
     const response = await requestCreateTour(apolloClient, this.state)
-    this.setState({
+    await this.setState({
       loading: false,
       error: response ? null : 'Ocorreu um erro. Por favor, tente novamente.',
       tourCreated: response

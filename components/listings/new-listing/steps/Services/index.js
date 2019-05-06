@@ -1,23 +1,18 @@
 import React, {Component} from 'react'
 import {Formik} from 'formik'
-import moment from 'moment'
 import * as Sentry from '@sentry/browser'
-import {CREATE_LEAD, TOUR_SCHEDULE} from 'graphql/listings/mutations'
 import {TOUR_OPTIONS} from 'graphql/listings/queries'
 import Button from '@emcasa/ui-dom/components/Button'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import Container from 'components/listings/new-listing/shared/Container'
-import {getSellerLeadInput} from 'lib/listings/insert'
+import {requestCreateSellerLead} from 'components/listings/new-listing/lib/seller-lead'
 import {
-  SELLER_ONBOARDING_SERVICES_SCHEDULE,
   SELLER_ONBOARDING_SERVICES_SKIP,
-  SELLER_ONBOARDING_LISTING_CREATION_SUCCESS,
-  SELLER_ONBOARDING_LISTING_CREATION_ERROR,
   log
 } from 'lib/logging'
-import { VideoContainer } from './styles'
+import {VideoContainer} from './styles'
 
 class Services extends Component {
   constructor(props) {
@@ -26,11 +21,6 @@ class Services extends Component {
     this.skipStep = this.skipStep.bind(this)
     this.nextStep = this.nextStep.bind(this)
     this.updateStateFromProps = this.updateStateFromProps.bind(this)
-
-    this.getAvailableTimes = this.getAvailableTimes.bind(this)
-
-    this.createListing = this.createListing.bind(this)
-    this.createTour = this.createTour.bind(this)
     this.save = this.save.bind(this)
   }
 
@@ -40,7 +30,7 @@ class Services extends Component {
     loading: false,
     error: null,
     listingCreated: false,
-    listingId: null,
+    siteSellerLeadUuid: null,
     tourCreated: false
   }
 
@@ -53,7 +43,7 @@ class Services extends Component {
   }
 
   updateStateFromProps(props) {
-    const { services } = props
+    const {services} = props
     if (services) {
       this.setState({
         wantsTour: services.wantsTour
@@ -61,10 +51,10 @@ class Services extends Component {
     }
   }
 
-  async getAvailableTimes() {
+  getAvailableTimes = async () => {
     this.setState({loading: true})
     try {
-      const { data } = await apolloClient.query({
+      const {data} = await apolloClient.query({
         query: TOUR_OPTIONS
       })
       this.setState({
@@ -83,7 +73,7 @@ class Services extends Component {
   }
 
   tourStep(data) {
-    const { navigateTo, updateServices } = this.props
+    const {navigateTo, updateServices} = this.props
     updateServices({
       wantsTour: this.state.wantsTour,
       tourOptions: data
@@ -91,88 +81,29 @@ class Services extends Component {
     navigateTo('tour')
   }
 
-  async createListing() {
+  createSellerLead = async () => {
     this.setState({loading: true})
-
-    const input = getSellerLeadInput(this.props)
-    try {
-      const { data } = await apolloClient.mutate({
-        mutation: CREATE_LEAD,
-        variables: {
-          input
-        }
-      })
-
-      if (data) {
-        log(SELLER_ONBOARDING_LISTING_CREATION_SUCCESS, {listing: input})
-        this.setState({
-          listingCreated: true,
-          listingId: data.siteSellerLeadCreate.uuid
-        })
-      }
-    } catch (e) {
-      Sentry.captureException(e)
-      log(SELLER_ONBOARDING_LISTING_CREATION_ERROR, {
-        listing: input,
-        error: e && e.message ? e.message : ''
-      })
-      this.setState({
-        loading: false,
-        error: 'Ocorreu um erro. Por favor, tente novamente.'
-      })
-    }
-  }
-
-  async createTour() {
-    this.setState({loading: true})
-
-    try {
-      const { tour, services } = this.props
-      const { day, time } = tour
-      const { wantsTour } = services
-
-      const datetime = moment(day + time, 'YYYY-MM-DD HH').toDate()
-      const { data } = await apolloClient.mutate({
-        mutation: TOUR_SCHEDULE,
-        variables: {
-          input: {
-            listingId: this.state.listingId,
-            options: {
-              datetime
-            },
-            wantsTour,
-            wantsPictures: wantsTour
-          }
-        }
-      })
-
-      if (data) {
-        this.setState({tourCreated: true})
-      }
-    } catch (e) {
-      Sentry.captureException(e)
-      this.setState({
-        loading: false,
-        error: 'Ocorreu um erro. Por favor, tente novamente.'
-      })
+    const response = await requestCreateSellerLead(apolloClient, this.props)
+    this.setState({
+      loading: false,
+      error: response ? null : 'Ocorreu um erro. Por favor, tente novamente.',
+      listingCreated: true,
+      siteSellerLeadUuid: response
+    })
+    if (response) {
+      this.nextStep()
     }
   }
 
   async save() {
     if (!this.state.listingCreated) {
-      await this.createListing()
-    }
-    if (this.state.listingCreated && !this.state.tourCreated && this.state.wantsTour) {
-      await this.createTour()
-    }
-    if (this.state.listingCreated && this.state.tourCreated || (this.state.listingCreated && !this.state.wantsTour)) {
-      this.nextStep()
+      await this.createSellerLead()
     }
   }
 
   skipStep() {
     log(SELLER_ONBOARDING_SERVICES_SKIP)
-    const { updateServices } = this.props
+    const {updateServices} = this.props
     updateServices({
       wantsTour: false
     })
@@ -180,11 +111,8 @@ class Services extends Component {
   }
 
   nextStep() {
-    if (this.state.wantsTour) {
-      log(SELLER_ONBOARDING_SERVICES_SCHEDULE)
-    }
-    const { navigateTo, updateListing } = this.props
-    updateListing({id: this.state.listingId})
+    const {navigateTo, updateListing} = this.props
+    updateListing({id: this.state.siteSellerLeadUuid})
     navigateTo('success')
   }
 

@@ -13,14 +13,14 @@ import {
 /**
  * Calls the mutation to create a tour. Returns true if success, false otherwise.
  */
-export const requestCreateTour = async (apolloClient, {day, time, uuid}) => {
+export const requestCreateTour = async (apolloClient, {day, time, siteSellerLeadUuid}) => {
   const datetime = moment(day + time, 'YYYY-MM-DD HH').toDate()
   try {
     const { data } = await apolloClient.mutate({
       mutation: TOUR_SCHEDULE,
       variables: {
         input: {
-          siteSellerLeadUuid: uuid,
+          siteSellerLeadUuid,
           options: {
             datetime
           },
@@ -32,7 +32,7 @@ export const requestCreateTour = async (apolloClient, {day, time, uuid}) => {
 
     if (data) {
       log(SELLER_ONBOARDING_TOUR_CREATION_SUCCESS, {
-        uuid: uuid,
+        uuid: siteSellerLeadUuid,
         options: datetime
       })
       return true
@@ -40,7 +40,7 @@ export const requestCreateTour = async (apolloClient, {day, time, uuid}) => {
   } catch (e) {
     captureException(e)
     log(SELLER_ONBOARDING_TOUR_CREATION_ERROR, {
-      uuid: uuid,
+      uuid: siteSellerLeadUuid,
       options: datetime,
       error: e && e.message ? e.message : ''
     })
@@ -52,7 +52,7 @@ export const requestCreateTour = async (apolloClient, {day, time, uuid}) => {
  * Calls the mutation to create a seller lead. Returns the lead uuid if success,
  * null otherwise.
  */
-export const requestCreateLead = async (apolloClient, listingData) => {
+export const requestCreateSellerLead = async (apolloClient, listingData) => {
   const input = getSellerLeadInput(listingData)
   try {
     const { data } = await apolloClient.mutate({

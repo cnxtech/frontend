@@ -1,7 +1,7 @@
 import ApolloClient from 'apollo-client'
 jest.mock('apollo-client')
 jest.mock('lib/logging')
-import {requestCreateTour, requestCreateLead} from 'components/listings/new-listing/lib/seller-lead'
+import {requestCreateTour, requestCreateSellerLead} from 'components/listings/new-listing/lib/seller-lead'
 
 describe('seller create lead and tour functions', () => {
   it('should call the create tour request function', async () => {
@@ -18,7 +18,7 @@ describe('seller create lead and tour functions', () => {
     const params = {
       day: 10,
       time: 20,
-      uuid: 'abcd-1234'
+      siteSellerLeadUuid: 'abcd-1234'
     }
     const result = await requestCreateTour(apolloClient, params)
     expect(result).toBe(true)
@@ -51,8 +51,7 @@ describe('seller create lead and tour functions', () => {
         userPrice: 6000
       },
     }
-    const result = await requestCreateLead(apolloClient, params)
-    console.log(result)
+    const result = await requestCreateSellerLead(apolloClient, params)
     expect(result).toBe('123')
   })
 })
