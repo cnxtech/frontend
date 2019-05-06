@@ -33,8 +33,6 @@ class Modal extends Component {
         >
           <CloseButton
             onClick={this.props.onClose}
-            buttonStyle={this.props.closeButtonStyle}
-            iconStyle={this.props.closeIconStyle}
             color={this.props.closeIconColor}
           />
             {this.props.children}
@@ -48,8 +46,6 @@ Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   justifyContent: PropTypes.string,
   mobileKeyboard: PropTypes.bool,
-  closeButtonStyle: PropTypes.object,
-  closeIconStyle: PropTypes.object,
   closeIconColor: PropTypes.string
 }
 

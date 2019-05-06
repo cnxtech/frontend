@@ -33,8 +33,9 @@ export default styled(Button)`
   border: ${({noBorder}) => noBorder ? 'none' : null};
 
   svg {
-    color: ${({iconColor}) => iconColor};
-    margin-right: ${theme.space[2]}px;
+    color: ${({iconColor}) => iconColor ? iconColor : null};
+    fill: ${({iconColor}) => iconColor ? iconColor : null};
+    margin-right: ${({iconMarginRight}) => iconMarginRight ? `${theme.space[2]}px` : null};
     display: inline-block;
     width: 1em;
     height: 1em;

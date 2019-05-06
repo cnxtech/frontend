@@ -1,16 +1,15 @@
-import {
-  StyledCloseButton,
-  CloseIcon
- } from './style'
+import Icon from '@emcasa/ui-dom/components/Icon'
+import Container from './style'
 
 const CloseButton = (props) =>
-  <StyledCloseButton justIcon={props.justIcon} inline style={props.buttonStyle} onClick={props.onClick}>
-    <CloseIcon
-      name="times"
-      size={18}
-      style={props.iconStyle}
-      color={props.color}
-    />
-  </StyledCloseButton>
+  <Container
+    {...props}
+    inline
+    noBorder
+    backgroundColor="transparent"
+    iconColor={props.color}
+  >
+    <Icon name="times" />
+  </Container>
 
 export default CloseButton

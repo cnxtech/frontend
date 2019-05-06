@@ -194,7 +194,7 @@ class ListingGallery extends Component {
     return (
       <Container isFullScreen={isFullScreen}>
         {listing.images.length > 0 &&
-          isFullScreen && <CloseButton justIcon onClick={this.exitFullScreen} />}
+          isFullScreen && <CloseButton onClick={this.exitFullScreen} />}
         <Header isFullScreen={isFullScreen}>
           <TitleWrapper isFullScreen={isFullScreen}>
             <Title fontWeight="bold">Fotos</Title>

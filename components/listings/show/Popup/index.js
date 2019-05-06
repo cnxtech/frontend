@@ -44,7 +44,7 @@ class Popup extends Component {
 
     return (
       <Container open={isPopupVisible}>
-        <CloseButton justIcon onClick={closePopup} />
+        <CloseButton onClick={closePopup} />
         <Wrapper
           width="100%"
           height="100%"
