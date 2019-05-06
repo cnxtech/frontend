@@ -1,3 +1,4 @@
+const buildParams = require('../../utils/url-params')
 const express = require('express')
 const _ = require('lodash')
 const router = express.Router()
@@ -20,18 +21,10 @@ router.get(
   }
 )
 
-router.get('/:state/:city/:neighborhood/:extra', (req, res) => {
-  let actualPage
-  const hasId = req.params.extra.match(/id-\d+/)
-
-  if (hasId) {
-    actualPage = '/listings/show'
-    req.params.streetwithId = req.params.extra
-  } else {
-    actualPage = '/listings'
-    req.params.tag = req.params.extra
-  }
-
+router.get('/:state/:city/:rest([0-9a-z-]*)', (req, res) => {
+  const actualPage = '/listings'
+  const params = buildParams(req)
+  req.params = params
   res.locals.app.render(req, res, actualPage, req.query)
 })
 

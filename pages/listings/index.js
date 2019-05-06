@@ -25,7 +25,12 @@ class ListingSearch extends Component {
     this.handleRouteChange = this.handleRouteChange.bind(this)
     const params = props.params ? props.params : {}
     const query = props.query ? props.query : {}
-    const filters = getNewFiltersFromQuery(query, params)
+    console.log(params)
+    const filters = Object.assign(
+      {},
+      getNewFiltersFromQuery(query, params),
+      params.filters
+    )
     this.state = {
       mapOpened: false,
       filters,
@@ -117,7 +122,7 @@ class ListingSearch extends Component {
     if (params && Object.keys(params).length > 0) {
       route = `/${params.state}/${params.city}${
         params.neighborhood ? `/${params.neighborhood}` : ''
-        }`
+      }`
     }
 
     const query = newQuery.length > 0 ? `?${newQuery}` : ''
@@ -125,6 +130,7 @@ class ListingSearch extends Component {
       shallow: true
     })
 
+    console.log(filters)
     this.setState({filters: filters})
     window.scrollTo(0, 0)
   }
@@ -147,10 +153,11 @@ class ListingSearch extends Component {
         filters.neighborhoods = [params.neighborhood]
       }
       if (params.tag) {
-        filters.tagsSlug = [params.tag]
+        filters.tagsSlug = params.tags
       }
     }
 
+    console.log(filters)
     const listingFilters = getListingFiltersFromState(filters)
 
     return (
