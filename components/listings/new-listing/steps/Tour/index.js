@@ -1,19 +1,16 @@
 import React, { Fragment, Component } from 'react'
 import { Formik, Field } from 'formik'
-import * as Sentry from '@sentry/browser'
-import moment from 'moment'
 import RadioButton from '@emcasa/ui-dom/components/RadioButton'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import View from '@emcasa/ui-dom/components/View'
 import Button from '@emcasa/ui-dom/components/Button'
-import {CREATE_LEAD, TOUR_SCHEDULE} from 'graphql/listings/mutations'
 import CustomTime from './components/CustomTime'
 import TourMonths from './components/TourMonths'
 import TourDays from './components/TourDays'
 import Container from 'components/listings/new-listing/shared/Container'
-import {getSellerLeadInput} from 'lib/listings/insert'
+import {requestCreateTour} from 'components/listings/new-listing/lib/seller-lead'
 import {
   getTourDays,
   getTourMonths,
@@ -22,13 +19,6 @@ import {
   EARLY,
   LATE,
 } from 'components/listings/new-listing/lib/times'
-import {
-  log,
-  SELLER_ONBOARDING_LISTING_CREATION_SUCCESS,
-  SELLER_ONBOARDING_LISTING_CREATION_ERROR,
-  SELLER_ONBOARDING_TOUR_CREATION_SUCCESS,
-  SELLER_ONBOARDING_TOUR_CREATION_ERROR
-} from 'lib/logging'
 import { BUTTON_WIDTH } from 'components/listings/new-listing/styles'
 
 class Tour extends Component {
@@ -44,7 +34,6 @@ class Tour extends Component {
     this.hasCustomTime = this.hasCustomTime.bind(this)
     this.selectCustomTime = this.selectCustomTime.bind(this)
 
-    this.createTour = this.createTour.bind(this)
     this.save = this.save.bind(this)
   }
 
@@ -105,75 +94,23 @@ class Tour extends Component {
 
   createSellerLead = async () => {
     this.setState({loading: true})
-    const input = getSellerLeadInput(this.props)
-
-    try {
-      const { data } = await apolloClient.mutate({
-        mutation: CREATE_LEAD,
-        variables: {
-          input
-        }
-      })
-
-      if (data) {
-        log(SELLER_ONBOARDING_LISTING_CREATION_SUCCESS, {listing: input})
-        this.setState({
-          listingCreated: true,
-          uuid: data.siteSellerLeadCreate.uuid
-        })
-      }
-    } catch (e) {
-      Sentry.captureException(e)
-      log(SELLER_ONBOARDING_LISTING_CREATION_ERROR, {
-        listing: input,
-        error: e && e.message ? e.message : ''
-      })
-      this.setState({
-        loading: false,
-        error: 'Ocorreu um erro. Por favor, tente novamente.'
-      })
-    }
+    const response = await requestCreateSellerLead(apolloClient, this.props)
+    this.setState({
+      loading: false,
+      error: response ? null : 'Ocorreu um erro. Por favor, tente novamente.',
+      listingCreated: true,
+      uuid: response.uuid
+    })
   }
 
-  async createTour() {
+  createTour = async () => {
     this.setState({loading: true})
-    const { day, time } = this.state
-    const datetime = moment(day + time, 'YYYY-MM-DD HH').toDate()
-
-    try {
-      const { data } = await apolloClient.mutate({
-        mutation: TOUR_SCHEDULE,
-        variables: {
-          input: {
-            siteSellerLeadUuid: this.state.uuid,
-            options: {
-              datetime
-            },
-            wantsTour: true,
-            wantsPictures: true
-          }
-        }
-      })
-
-      if (data) {
-        log(SELLER_ONBOARDING_TOUR_CREATION_SUCCESS, {
-          uuid: this.state.uuid,
-          options: datetime
-        })
-        this.setState({tourCreated: true})
-      }
-    } catch (e) {
-      Sentry.captureException(e)
-      log(SELLER_ONBOARDING_TOUR_CREATION_ERROR, {
-        uuid: this.state.uuid,
-        options: datetime,
-        error: e && e.message ? e.message : ''
-      })
-      this.setState({
-        loading: false,
-        error: 'Ocorreu um erro. Por favor, tente novamente.'
-      })
-    }
+    const response = await requestCreateTour(apolloClient, this.state)
+    this.setState({
+      loading: false,
+      error: response ? null : 'Ocorreu um erro. Por favor, tente novamente.',
+      tourCreated: response
+    })
   }
 
   async save() {
