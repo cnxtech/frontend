@@ -208,14 +208,14 @@ class Listing extends Component {
     this.setState({isInterestSuccessPopupVisible: false})
   }
 
-  getPopupHeaderButtons = ({likebutton, onClick, icon, label}) => {
+  getPopupHeaderButtons = ({likeButton, onClick, icon, label}) => {
     return (
       <Fragment>
-        {likebutton && <LikeButton
+        {likeButton && <LikeButton
           textButton
-          favorite={likebutton.favorite}
-          listing={likebutton.listing}
-          user={likebutton.user}
+          favorite={likeButton.favorite}
+          listing={likeButton.listing}
+          user={likeButton.user}
         />}
         <ButtonIcon onClick={onClick} icon={icon.fa} iconColor={icon.color}>{label}</ButtonIcon>
       </Fragment>
@@ -406,7 +406,6 @@ class Listing extends Component {
                           closePopup={this.closeMapPopup}
                           title="Mapa"
                           headerContent={this.getPopupHeaderButtons({
-                            likeButton: {favorite, listing, currentUser},
                             onClick: this.openStreetViewAndCloseMapPopup,
                             icon: {
                               color: theme.colors.blue,
@@ -424,7 +423,6 @@ class Listing extends Component {
                           closePopup={this.closeStreetViewPopup}
                           title="Rua"
                           headerContent={this.getPopupHeaderButtons({
-                            likeButton: {favorite, listing, currentUser},
                             onClick: this.openMapAndCloseStreetViewPopup,
                             icon: {
                               color: theme.colors.blue,
