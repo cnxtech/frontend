@@ -136,6 +136,19 @@ export const CarouselItem = styled.div`
       transform: rotate(360deg);
     }
   }
+
+  &::before {
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-left: 1px solid ${theme.colors.white};
+    border-right: 1px solid ${theme.colors.white};
+    content: '';
+    box-sizing: border-box;
+  }
 `
 
 export const Arrow = styled(Button)`
