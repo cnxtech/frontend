@@ -404,10 +404,8 @@ class Listing extends Component {
                         <ContactSuccess
                           onClose={this.closeSuccessPostInterestPopup}
                           listing={listing}
-                          userInfo={{
-                            name: this.state.userName,
-                            phone: this.state.userPhone
-                          }}
+                          userPhone={this.state.userPhone}
+                          currentUser={this.props.currentUser}
                         />
                       )}
                     </Row>
