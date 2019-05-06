@@ -8,16 +8,9 @@ import Col from '@emcasa/ui-dom/components/Col'
 import Container from 'components/listings/new-listing/shared/Container'
 import Text from '@emcasa/ui-dom/components/Text'
 import NavButtons from 'components/listings/new-listing/shared/NavButtons'
-import {getAddressInput} from 'lib/address'
-import {estimatePrice, getPricingInput} from 'lib/listings/pricing'
 import {getUser} from 'components/listings/new-listing/lib/auth'
 import Steps from 'components/listings/new-listing/shared/Steps'
-import {
-  log,
-  getSellerEventPrefix,
-  SELLER_ONBOARDING_PRICING_SUCCESS,
-  SELLER_ONBOARDING_PRICING_FAILED
-} from 'lib/logging'
+import {requestPricing} from 'components/listings/new-listing/lib/pricing'
 
 class Bedrooms extends Component {
   constructor(props) {
@@ -97,57 +90,20 @@ class Bedrooms extends Component {
         return
       }
     }
-
     this.props.navigateTo('phone')
   }
 
-  async estimatePrice(userInfo) {
-    // Prepare input
-    const { homeDetails, rooms, location } = this.props
-    const addressInput = getAddressInput(location.addressData)
-    const pricingInput = getPricingInput(addressInput, homeDetails, rooms, userInfo)
-
-    // Run mutation
-    const response = await estimatePrice(apolloClient, pricingInput)
-    if (response.error) {
-      Sentry.captureException(new Error(response.error))
-      this.setState({
-        loading: false,
-        error: response.error
-      })
+  estimatePrice = async (userInfo) => {
+    const result = await requestPricing(apolloClient, userInfo, this.props)
+    const error = result && result.error
+    this.setState({
+      loading: false,
+      error: error ? result.error : null
+    })
+    if (error) {
+      return
     }
-
-    // Handle result
-    if (response.result) {
-      const {id, suggestedPrice, userPrice} = response.result
-      if (suggestedPrice) {
-        log(`${getSellerEventPrefix(this.props.evaluation)}${SELLER_ONBOARDING_PRICING_SUCCESS}`, {
-          name: userInfo.name,
-          phone: userInfo.phone,
-          priceRequestId: id,
-          pricingInput,
-          suggestedPrice: suggestedPrice
-        })
-      } else {
-        log(`${getSellerEventPrefix(this.props.evaluation)}${SELLER_ONBOARDING_PRICING_FAILED}`, {
-          name: userInfo.name,
-          phone: userInfo.phone,
-          pricingInput
-        })
-      }
-      const { navigateTo, updatePricing, pricing } = this.props
-      updatePricing({
-        ...pricing,
-        priceRequestId: id,
-        suggestedPrice,
-        userPrice
-      })
-      this.setState({
-        loading: false,
-        error: null
-      })
-      navigateTo('pricing')
-    }
+    this.props.navigateTo('pricing')
   }
 
   submit() {
