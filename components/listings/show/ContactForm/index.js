@@ -102,76 +102,76 @@ class ContactForm extends Component {
         onClose={onClose}
         mobileKeyboard={this.state.mobileKeyboard}
         closeButtonStyle={{backgroundColor: 'transparent', border: 0}}
-        closeIconColor={theme.colors.dark}
+        closeIconColor={theme.colors.white}
       >
-        <View style={{margin: 'auto', width: '100%'}}>
-          <Row justifyContent="center">
-            <Text fontSize="large" textAlign="center">Contato</Text>
-          </Row>
-          <Row>
-            <Col width={1} mx={4}>
-              <StyledInput
-                fluid
-                label="Nome"
-                height="medium"
-                placeholder="Maria da Silva"
-                onFocus={() => {this.setState({mobileKeyboard: true})}}
-                onBlur={() => {this.setState({mobileKeyboard: false})}}
-                onChange={(e) => {
-                  this.logInputTouched(e, 'nameTouched', LISTING_DETAIL_VISIT_FORM_NAME_INPUT)
-                  this.validateNameField(e)
-                }}
-                ref={this.nameField}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col width={1} mx={4}>
-              <MaskedInput
-                mask={getPhoneMask(this.phoneField && this.phoneField.value ? this.phoneField.value : null)}
-                placeholderChar=" "
-                render={(ref, props) =>
-                  <StyledInput
-                    {...props}
-                    ref={(input) => {
-                      ref(input)
-                      this.phoneField = input
-                    }}
-                    fluid
-                    label="Celular"
-                    height="medium"
-                    type="tel"
-                    placeholder="(11) 11111-1111"
-                    onFocus={() => {this.setState({mobileKeyboard: true})}}
-                    onBlur={() => {this.setState({mobileKeyboard: false})}}
-                    onChange={(e) => {
-                      this.logInputTouched(e, 'phoneTouched', LISTING_DETAIL_VISIT_FORM_PHONE_INPUT)
-                      this.validatePhoneField(e)
-                    }}
-                    onKeyDown={(e) => {
-                      const value = e.target.value
-                      if (e.keyCode === 8 && value && value.length > 0) {
-                        e.preventDefault()
-                        const cursorPosition = e.target.selectionStart
-                        e.target.value = value.substring(0, cursorPosition - 1)
-                      }
-                    }}
-                  />
-                }
-              />
-            </Col>
-          </Row>
-          <Row alignItems="center" flexDirection="column">
-            <Button
-              active
-              onClick={this.submit}
-              disabled={!(this.state.nameFieldValid && this.state.phoneFieldValid) || this.state.loading}
-            >
-              Enviar
-            </Button>
-            {!this.state.loading && <Text textAlign="center" color={theme.colors.red}>{this.state.error && 'Ocorreu um erro. Por favor, tente novamente.'}</Text>}
-          </Row>
-        </View>
+        <PinkBox>
+          <Logo />
+          <View px={4} pt={4}>
+            <Text textAlign="center" color="white">Olá, você está mais perto de encontrar sua nova casa.</Text>
+          </View>
+        </PinkBox>
+        <InstructionText />
+        <Row justifyContent="space-around">
+          <Col width={1/2} ml={4} mr={2}>
+            <StyledInput
+              fluid
+              label="Nome"
+              height="medium"
+              placeholder="Maria da Silva"
+              onFocus={() => {this.setState({mobileKeyboard: true})}}
+              onBlur={() => {this.setState({mobileKeyboard: false})}}
+              onChange={(e) => {
+                this.logInputTouched(e, 'nameTouched', LISTING_DETAIL_VISIT_FORM_NAME_INPUT)
+                this.validateNameField(e)
+              }}
+              ref={this.nameField}
+            />
+          </Col>
+          <Col width={1/2} ml={2} mr={4}>
+            <MaskedInput
+              mask={getPhoneMask(this.phoneField && this.phoneField.value ? this.phoneField.value : null)}
+              placeholderChar=" "
+              render={(ref, props) =>
+                <StyledInput
+                  {...props}
+                  ref={(input) => {
+                    ref(input)
+                    this.phoneField = input
+                  }}
+                  fluid
+                  label="Celular"
+                  height="medium"
+                  type="tel"
+                  placeholder="(11) 11111-1111"
+                  onFocus={() => {this.setState({mobileKeyboard: true})}}
+                  onBlur={() => {this.setState({mobileKeyboard: false})}}
+                  onChange={(e) => {
+                    this.logInputTouched(e, 'phoneTouched', LISTING_DETAIL_VISIT_FORM_PHONE_INPUT)
+                    this.validatePhoneField(e)
+                  }}
+                  onKeyDown={(e) => {
+                    const value = e.target.value
+                    if (e.keyCode === 8 && value && value.length > 0) {
+                      e.preventDefault()
+                      const cursorPosition = e.target.selectionStart
+                      e.target.value = value.substring(0, cursorPosition - 1)
+                    }
+                  }}
+                />
+              }
+            />
+          </Col>
+        </Row>
+        <Row alignItems="center" flexDirection="column">
+          <Button
+            active
+            onClick={this.submit}
+            disabled={!(this.state.nameFieldValid && this.state.phoneFieldValid) || this.state.loading}
+          >
+            Solicitar atendimento
+          </Button>
+          {!this.state.loading && <Text textAlign="center" color={theme.colors.red}>{this.state.error && 'Ocorreu um erro. Por favor, tente novamente.'}</Text>}
+        </Row>
       </Modal>
     )
   }
