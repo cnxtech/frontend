@@ -56,7 +56,7 @@ export const ButtonsContainer = styled(Row)`
 `
 
 export const OpenMatterportButtonWrapper = styled.div`
-  z-index: 5;
+  z-index: 2;
   position: absolute;
   top: ${theme.space[5]}px;
   left: 50%;
