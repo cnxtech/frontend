@@ -1,11 +1,12 @@
 import {post, get} from 'lib/request'
+import {addInternationalCode, clearPhoneString} from 'utils/text-utils'
 
-const buildPayload = (listingId, data) => {
+const buildPayload = (data) => {
   return {
     interest: {
       name: data.name,
       email: data.email,
-      phone: data.phone,
+      phone: addInternationalCode(clearPhoneString(data.phone)),
       message: data.message,
       interest_type_id: data.interest_type_id
     }
@@ -13,8 +14,7 @@ const buildPayload = (listingId, data) => {
 }
 
 export const createInterest = async (listingId, data) => {
-  const payload = buildPayload(listingId, data)
-
+  const payload = buildPayload(data)
   try {
     return await post(`/listings/${listingId}/interests`, payload)
   } catch (error) {
