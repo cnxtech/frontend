@@ -81,6 +81,19 @@ const clearPhoneString = (phoneString) => {
 }
 
 /**
+ * Adds `+55` to the left side of the phone string. Returns the same string if it already has `+55`.
+ *
+ * @param {string} phone
+ */
+const addInternationalCode = (phone) => {
+  const prefix = `+55`
+  if (phone && !phone.startsWith(prefix)) {
+    return `${prefix}${phone}`
+  }
+  return phone
+}
+
+/**
  * Returns a phone mask to be used in Inputs.
  */
 const getPhoneMask = (value) => {
@@ -104,6 +117,7 @@ module.exports = {
   formatRange,
   getPhoneMask,
   clearPhoneString,
+  addInternationalCode,
   PREFIX,
   THOUSANDS_SEPARATOR_SYMBOL
 }

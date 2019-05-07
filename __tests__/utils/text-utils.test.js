@@ -5,7 +5,8 @@ import {
   getUrlVars,
   arrayToString,
   getPhoneMask,
-  clearPhoneString
+  clearPhoneString,
+  addInternationalCode
 } from 'utils/text-utils'
 
 describe('currency formatting', () => {
@@ -49,6 +50,24 @@ describe('phone mask', () => {
     const formattedPhoneNumber = null
     const phone = clearPhoneString(formattedPhoneNumber)
     expect(phone).toBe(null)
+  })
+
+  it('should add international code to a phone string', () => {
+    const phone = '11222223333'
+    const result = addInternationalCode(phone)
+    expect(result).toBe('+5511222223333')
+  })
+
+  it('should not add international code when the string already has it', () => {
+    const phone = '+5511222223333'
+    const result = addInternationalCode(phone)
+    expect(result).toBe('+5511222223333')
+  })
+
+  it('should return null when null is passed to addInternationalCode', () => {
+    const phone = null
+    const result = addInternationalCode(phone)
+    expect(result).toBe(null)
   })
 })
 
