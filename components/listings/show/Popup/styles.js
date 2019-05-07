@@ -20,7 +20,7 @@ export default styled.div`
 
   > button {
 
-  @media screen and (max-width: 812px) {
+  @media screen and ${breakpoint.down('tablet')} {
       top: ${theme.space[1]}px;
       right: 0;
     }
@@ -31,7 +31,7 @@ export const Wrapper = styled(Row)`
   z-index: 2;
   position: relative;
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     max-width: ${listingDetailsMaxWidth}px;
     max-height: 65vh;
   }
@@ -44,7 +44,7 @@ export const Header = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     width: calc(100% - ${theme.space[4]}px);
     max-width: ${listingDetailsMaxWidth}px;
     margin: 0 auto;
@@ -60,7 +60,7 @@ export const HeaderLeft = styled.div`
 export const HeaderRight = styled.div`
   display: none;
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     display: block;
   }
 
@@ -76,7 +76,7 @@ export const HeaderRight = styled.div`
 export const Title = styled(Text)`
   margin: ${theme.space[2]}px 0 ${theme.space[2]}px ${theme.space[4]}px;
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     position: relative;
     margin: 0;
   }
@@ -86,7 +86,7 @@ export const Content = styled.div`
   flex: 1 1 100%;
   width: 100%;
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     width: calc(100% - ${theme.space[4]}px);
     margin: 0 auto;
     box-sizing: border-box;

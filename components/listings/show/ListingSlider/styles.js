@@ -33,11 +33,11 @@ export default styled.div`
   overflow: hidden;
   box-sizing: border-box;
 
-  @media screen and (max-width: 812px) and (orientation: landscape) {
+  @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
     justify-content: flex-start;
   }
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     height: ${({isFullScreen}) => isFullScreen ? null : '45vh'};
     max-height: ${({isFullScreen}) => isFullScreen ? null : '540px'};
     min-height: ${({isFullScreen}) => isFullScreen ? null : '300px'};
@@ -45,7 +45,7 @@ export default styled.div`
 
   > button {
 
-    @media screen and (max-width: 812px) {
+    @media screen and ${breakpoint.down('tablet')} {
       top: ${theme.space[1]}px;
       right: 0;
     }
@@ -55,7 +55,7 @@ export default styled.div`
     width: 100%;
     margin: 0 auto;
 
-    @media screen and (min-width: 813px) {
+    @media screen and ${breakpoint.up('desktop')} {
       width: ${({isFullScreen}) => isFullScreen ? `calc(100% - ${ARROW_SIZE * 2}px)` : null};
     }
   }
@@ -73,11 +73,11 @@ export default styled.div`
     height: ${({isFullScreen}) => isFullScreen ? null : '100%'};
     background: ${theme.colors.white};
 
-    @media screen and (max-width: 812px) and (orientation: landscape) {
+    @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
       overflow: hidden;
     }
 
-    @media screen and (min-width: 813px) {
+    @media screen and ${breakpoint.up('desktop')} {
       max-width: ${({isFullScreen}) => isFullScreen ? `${listingDetailsMaxWidth}px` : null};
       max-height: ${({isFullScreen}) => isFullScreen ? '65vh' : null};
       box-sizing: ${({isFullScreen}) => isFullScreen ? 'border-box' : null};
@@ -173,7 +173,7 @@ export const Arrow = styled(Button)`
     }
   }
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     color: ${({isFullScreen}) => isFullScreen ? theme.colors.dark : theme.colors.white};
   }
 
@@ -183,7 +183,7 @@ export const Arrow = styled(Button)`
     height: 100%;
     filter: drop-shadow(1px 1px 4px ${theme.colors.dark});
 
-    @media screen and (min-width: 813px) {
+    @media screen and ${breakpoint.up('desktop')} {
       color: ${({isFullScreen}) => isFullScreen ? theme.colors.dark : theme.colors.white};
       filter: ${({isFullScreen}) => isFullScreen ? 'initial' : `drop-shadow(1px 1px 4px ${theme.colors.dark})`};
     }
@@ -198,12 +198,12 @@ export const Header = styled.div`
   width: 100%;
   margin-bottom: ${theme.space[2]}px;
 
-  @media screen and (max-width: 812px) and (orientation: landscape) {
+  @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
     margin-bottom: 0;
     justify-content: flex-start;
   }
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     justify-content: space-between;
     max-width: ${({isFullScreen}) => isFullScreen ? `${listingDetailsMaxWidth - (ARROW_SIZE * 2)}px` : null};
     width: calc(100% - ${ARROW_SIZE * 2}px);
@@ -214,7 +214,7 @@ export const Header = styled.div`
 export const Title = styled(Text)`
   margin: ${theme.space[2]}px 0 ${theme.space[2]}px ${theme.space[4]}px;
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     margin: 0;
   }
 `
@@ -224,11 +224,11 @@ export const TitleWrapper = styled.div`
   top: 0;
   left: 0;
 
-  @media screen and (max-width: 812px) and (orientation: landscape) {
+  @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
     position: ${({isFullScreen}) => isFullScreen ? 'relative' : null};
   }
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     position: initial;
     top: initial;
     left: initial;
@@ -242,11 +242,11 @@ export const OpenMatterportButtonWrapper = styled.div`
   left: ${({isFullScreen}) => isFullScreen ? null : '50%'};
   transform: ${({isFullScreen}) => isFullScreen ? null : 'translateX(-50%)'};
 
-  @media screen and (max-width: 812px) {
+  @media screen and ${breakpoint.down('tablet')} {
     display: ${({isFullScreen}) => isFullScreen ? 'none' : null};
   }
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     position: relative;
     left: initial;
     transform: initial;
@@ -260,11 +260,11 @@ export const PaginationTextWrapper = styled.div`
   position: relative;
   margin-top: ${theme.space[2]}px;
 
-  @media screen and (max-width: 812px) and (orientation: landscape) {
+  @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
     display: ${({isFullScreen}) => isFullScreen ? 'none' : null};
   }
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     position: relative;
     left: initial;
     transform: initial;
@@ -278,7 +278,7 @@ export const PaginationText = styled(Text)`
   color: ${theme.colors.dark};
   margin: 0;
 
-  @media screen and (min-width: 813px) {
+  @media screen and ${breakpoint.up('desktop')} {
     color: ${theme.colors.dark};
     text-shadow: initial;
     text-align: right;
