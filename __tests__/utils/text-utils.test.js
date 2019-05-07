@@ -4,7 +4,8 @@ import {
   roundUpPrice,
   getUrlVars,
   arrayToString,
-  getPhoneMask
+  getPhoneMask,
+  clearPhoneString
 } from 'utils/text-utils'
 
 describe('currency formatting', () => {
@@ -36,6 +37,18 @@ describe('phone mask', () => {
   it('should return a phone mask for a 9 digit number', () => {
     const mask = getPhoneMask('11111111111')
     expect(mask).toEqual(["(", /\d/, /\d/, ")", /\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/])
+  })
+
+  it('should return numbers only from a formatted phone number string', () => {
+    const formattedPhoneNumber = '+55 (11) 22222-3333'
+    const phone = clearPhoneString(formattedPhoneNumber)
+    expect(phone).toBe('+5511222223333')
+  })
+
+  it('should return null when null is passed to the clear phone function', () => {
+    const formattedPhoneNumber = null
+    const phone = clearPhoneString(formattedPhoneNumber)
+    expect(phone).toBe(null)
   })
 })
 

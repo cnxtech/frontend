@@ -68,8 +68,23 @@ const formatRange = (values, formatFn = (x) => x) => {
   else return `${formatFn(min)} - ${formatFn(max)}`
 }
 
+/**
+ * Clears a phone string to match the format `+5511222223333`.
+ *
+ * @param {string} phoneString
+ */
+const clearPhoneString = (phoneString) => {
+  if (!phoneString) {
+    return phoneString
+  }
+  return phoneString.replace('(', '').replace(')', '').replace(/ /g, '').replace('-', '').replace(/_/g, '')
+}
+
+/**
+ * Returns a phone mask to be used in Inputs.
+ */
 const getPhoneMask = (value) => {
-  const cleanValue = value ? value.replace('(', '').replace(')', '').replace(' ', '').replace('-', '').replace(/_/g, '') : ''
+  const cleanValue = value ? clearPhoneString(value) : ''
   if (cleanValue.length <= 10) {
     return ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
   } else {
@@ -88,6 +103,7 @@ module.exports = {
   arrayToString,
   formatRange,
   getPhoneMask,
+  clearPhoneString,
   PREFIX,
   THOUSANDS_SEPARATOR_SYMBOL
 }
