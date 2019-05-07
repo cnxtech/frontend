@@ -75,10 +75,12 @@ export const HeaderRight = styled.div`
 
 export const Title = styled(Text)`
   margin: ${theme.space[2]}px 0 ${theme.space[2]}px ${theme.space[4]}px;
+  padding-right: ${theme.space[6]}px;
 
   @media screen and ${breakpoint.up('desktop')} {
     position: relative;
     margin: 0;
+    padding-right: ${theme.space[4]}px;
   }
 `
 

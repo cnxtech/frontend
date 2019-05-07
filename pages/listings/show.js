@@ -404,7 +404,7 @@ class Listing extends Component {
                         <Popup
                           isPopupVisible={isMapPopupVisible}
                           closePopup={this.closeMapPopup}
-                          title="Mapa"
+                          title={listing.address.street}
                           headerContent={this.getPopupHeaderButtons({
                             onClick: this.openStreetViewAndCloseMapPopup,
                             icon: {
@@ -421,7 +421,7 @@ class Listing extends Component {
                         <Popup
                           isPopupVisible={isStreetViewPopupVisible}
                           closePopup={this.closeStreetViewPopup}
-                          title="Rua"
+                          title={listing.address.street}
                           headerContent={this.getPopupHeaderButtons({
                             onClick: this.openMapAndCloseStreetViewPopup,
                             icon: {
