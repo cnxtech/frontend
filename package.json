@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "node server/server.js -p $PORT",
-    "build": "NODE_ENV=production BUILD=1 next build",
+    "build": "NODE_ENV=production BUILD=1 next build && npm run build-geoip",
     "start": "yarn clear-cache && node server/server.js -p $PORT",
     "clear-cache": "rm -rf node_modules/.cache/babel-loader",
     "test_server": "NODE_ENV=test babel-node __e2e__/server/run.js &",
@@ -16,7 +16,8 @@
     "heroku-postbuild": "npm run build",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "analyze": "ANALYZE=1 next build && cat .next/stats.txt"
+    "analyze": "ANALYZE=1 next build && cat .next/stats.txt",
+    "build-geoip": "cd node_modules/geoip-lite && npm run-script updatedb"
   },
   "dependencies": {
     "@absinthe/socket-apollo-link": "0.2.1",
