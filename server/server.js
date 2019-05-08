@@ -78,9 +78,9 @@ const startServer = () => {
       )
 
       server.get('/location', async (req, res) => {
-        res.status(200).send({
-          remoteAddress: req.connection.remoteAddress
-        })
+        const userIp = req.connection.remoteAddress
+        const location = geoip.lookup(userIp)
+        res.status(200).send({location})
       })
 
       server.get('/maps/autocomplete', async (req, res) => {
