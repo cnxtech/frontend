@@ -192,7 +192,7 @@ describe('Parameters Mapper tests', () => {
     })
   })
   describe('mapParamsToUrl(params, filters)', () => {
-    it('should map state, city, type and ranged price correctly', () => {
+    it('should map filters (state, city, type and ranged price) to path starting with /state/city', () => {
       const params = {
         city: 'city',
         state: 'state'
@@ -207,5 +207,62 @@ describe('Parameters Mapper tests', () => {
         '/state/city/casa/preco-min-100000/preco-max-10000000'
       )
     })
+
+    it('should map filters (type and ranged price) to path starting with /busca', () => {
+      const params = {}
+      const filters = {
+        types: ['Casa'],
+        price: {min: 100000, max: 10000000},
+        area: {min: 200, max: 400}
+      }
+
+      const result = ParamsMapper.mapParamsToUrl(params, filters)
+      expect(result).toEqual(
+        '/busca/casa/preco-min-100000/preco-max-10000000/area-min-200/area-max-400'
+      )
+    })
+
+    it(
+      'should map filters (type and ranged price - max and min ' +
+        'equals) to path starting with /busca and quartos should contains only value and label',
+      () => {
+        const params = {}
+        const filters = {
+          types: ['Casa'],
+          rooms: {min: 3, max: 3}
+        }
+        const result = ParamsMapper.mapParamsToUrl(params, filters)
+        expect(result).toEqual('/busca/casa/3-quartos')
+
+        const params2 = {}
+        const filters2 = {
+          types: ['Casa'],
+          garageSpots: {min: 3, max: 3}
+        }
+        const result2 = ParamsMapper.mapParamsToUrl(params2, filters2)
+        expect(result2).toEqual('/busca/casa/3-vagas')
+      }
+    )
+
+    it(
+      'should map filters (type and neighborhood) to path ' +
+        'starting with /bairros when no city and state is given',
+      () => {
+        const params = {}
+        const filters = {
+          types: ['Casa'],
+          neighborhoods: ['neighborhoods', 'neighborhoods1'],
+          rooms: {min: 3, max: 3}
+        }
+
+        let result = ParamsMapper.mapParamsToUrl(params, filters)
+        expect(result).toEqual(
+          '/bairros/neighborhoods/neighborhoods1/casa/3-quartos'
+        )
+        filters.neighborhoods = ['neighborhoods']
+        result = ParamsMapper.mapParamsToUrl(params, filters)
+        expect(result).toEqual('/bairros/neighborhoods/casa/3-quartos')
+      }
+    )
   })
 })
