@@ -125,15 +125,16 @@ class ListingGallery extends Component {
     }
   }
 
-  exitFullScreen = (index) => {
+  exitFullScreen = () => {
     if (this.state.isFullScreen) {
       const afterChange = this.afterChange
+      const {currentImage} = this.state
       log(LISTING_DETAIL_PHOTOS_FULLSCREEN_CLOSE, {listingId: this.props.listing.id})
       this.setState({isFullScreen: false}, () => {
         setTimeout(() => {
           if (this.slider) {
-            afterChange(index)
-            this.slider.slickGoTo(index)
+            afterChange(currentImage)
+            this.slider.slickGoTo(currentImage)
           }
         }, 100)
       })
@@ -158,7 +159,7 @@ class ListingGallery extends Component {
     const settings = {
       dots: false,
       className: 'images-slider',
-      infinite: false,
+      infinite: true,
       easing: 'ease-out',
       slidesToShow: isFullScreen ? 1 : 3,
       slidesToScroll: isFullScreen ? 1 : 3,
@@ -184,10 +185,8 @@ class ListingGallery extends Component {
         }
       ],
       adaptiveHeight: false,
-      nextArrow: <SliderArrow isFullScreen={isFullScreen} disabled={(currentImage + 1) >= imagesLength} icon={faAngleRight} listingId={listing.id} />,
-      prevArrow: (
-        <SliderArrow isFullScreen={isFullScreen} disabled={currentImage <= 0} icon={faAngleLeft} left={true} listingId={listing.id} />
-      ),
+      nextArrow: <SliderArrow isFullScreen={isFullScreen} icon={faAngleRight} listingId={listing.id} />,
+      prevArrow: <SliderArrow isFullScreen={isFullScreen} icon={faAngleLeft} left={true} listingId={listing.id} />,
       afterChange: afterChange
     }
 
