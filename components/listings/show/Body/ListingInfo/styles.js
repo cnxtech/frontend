@@ -52,61 +52,23 @@ export const ButtonsContainer = styled(Row)`
     &:last-child {
       margin-right: 0;
     }
-
-    svg {
-      margin-right: ${theme.space[2]}px;
-      display: inline-block;
-      width: 1em;
-      height: 1em;
-      overflow: visible;
-      vertical-align: -0.125em;
-      font-size: inherit;
-    }
   }
 `
 
-export const OpenMatterportButton = styled(Button)`
-  z-index: 1;
+export const OpenMatterportButtonWrapper = styled.div`
+  z-index: 2;
   position: absolute;
   top: ${theme.space[5]}px;
   left: 50%;
-  flex: 1;
+  flex: 0;
   transform: translateX(-50%);
-  color: ${theme.colors.white};
-  background-color: ${theme.colors.blue};
-  border: none;
 
   @media screen and ${breakpoint.up('desktop')} {
     position: relative;
     top: 0;
     left: 0;
-    transform: translateX(0);
-  }
-`
-
-export const OpenMatterportGalleryButton = styled(Button)`
-  z-index: 1;
-  position: absolute;
-  top: ${theme.space[5]}px;
-  left: 50%;
-  flex: 1;
-  transform: translateX(-50%);
-  color: ${theme.colors.white};
-  background-color: ${theme.colors.blue};
-  border: none;
-  min-width: 190px;
-  @media screen and ${breakpoint.up('desktop')} {
-    display: flex;
-  }
-
-  svg {
     margin-right: ${theme.space[2]}px;
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    overflow: visible;
-    vertical-align: -0.125em;
-    font-size: inherit;
+    transform: translateX(0);
   }
 `
 

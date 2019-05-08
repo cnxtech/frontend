@@ -43,6 +43,18 @@ export const Container = styled(Row)`
     justify-content: flex-end;
     margin: 0;
   }
+
+  > button {
+    margin-left: ${theme.space[2]}px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    @media screen and ${breakpoint.up('desktop')} {
+      margin-left: ${theme.space[4]}px;
+    }
+  }
 `
 
 export const ContactButton = styled(Button)`
