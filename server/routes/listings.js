@@ -1,4 +1,4 @@
-const buildParams = require('../../utils/url-params')
+const ParamsMapper = require('../../utils/params-mapper')
 const express = require('express')
 const _ = require('lodash')
 const router = express.Router()
@@ -21,9 +21,23 @@ router.get(
   }
 )
 
+router.get('/busca/:rest([0-9a-z-]*)', (req, res) => {
+  const actualPage = '/listings'
+  const params = ParamsMapper.mapUrlToParams(req.params)
+  req.params = params
+  res.locals.app.render(req, res, actualPage, req.query)
+})
+
+router.get('/bairros/:rest([0-9a-z-]*)', (req, res) => {
+  const actualPage = '/listings'
+  const params = ParamsMapper.mapUrlToParams(req.params)
+  req.params = params
+  res.locals.app.render(req, res, actualPage, req.query)
+})
+
 router.get('/:state/:city/:rest([0-9a-z-]*)', (req, res) => {
   const actualPage = '/listings'
-  const params = buildParams(req)
+  const params = ParamsMapper.mapUrlToParams(req.params)
   req.params = params
   res.locals.app.render(req, res, actualPage, req.query)
 })
@@ -47,6 +61,7 @@ router.get('/:id(\\d+)/editar', (req, res) => {
 
 router.get(['/', '/:state', '/:state/:city'], (req, res) => {
   const actualPage = '/listings'
+  req.params = ParamsMapper.mapUrlToParams(req.params)
   res.locals.app.render(req, res, actualPage, req.query)
 })
 

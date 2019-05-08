@@ -9,7 +9,7 @@ import {imageUrl} from 'utils/image_url'
 
 class ListingsHead extends PureComponent {
   static BASE_URL = 'https://www.emcasa.com/imoveis'
-  propTypes = {
+  static propTypes = {
     districts: PropTypes.array.isRequired,
     filters: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,

@@ -42,12 +42,22 @@ const TAGS = [
   'portaria-eletronica'
 ]
 const pathToTypeFilterMap = {
+  'quartos-min': {
+    name: 'rooms',
+    aggregation: 'range',
+    aggregationKeys: ['min']
+  },
+  'quartos-max': {
+    name: 'rooms',
+    aggregation: 'range',
+    aggregationKeys: ['max']
+  },
   quartos: {
     name: 'rooms',
     aggregation: 'range',
     aggregationKeys: ['min', 'max']
   },
-  quartos: {
+  quarto: {
     name: 'rooms',
     aggregation: 'range',
     aggregationKeys: ['min', 'max']
@@ -55,23 +65,49 @@ const pathToTypeFilterMap = {
   casa: {name: 'types', value: 'Casa', aggregation: 'array'},
   apartamento: {name: 'types', value: 'Apartamento', aggregation: 'array'},
   cobertura: {name: 'types', value: 'Cobertura', aggregation: 'array'},
-  'preco-minimo': {
+  'preco-min': {
     name: 'price',
     aggregation: 'range',
     aggregationKeys: ['min']
   },
-  'preco-maximo': {
+  'preco-max': {
     name: 'price',
     aggregation: 'range',
     aggregationKeys: ['max']
+  },
+  'area-min': {
+    name: 'area',
+    aggregation: 'range',
+    aggregationKeys: ['min']
+  },
+  'area-max': {
+    name: 'area',
+    aggregation: 'range',
+    aggregationKeys: ['max']
+  },
+  'vagas-min': {
+    name: 'garageSpots',
+    aggregation: 'range',
+    aggregationKeys: ['min']
+  },
+  'vagas-max': {
+    name: 'garageSpots',
+    aggregation: 'range',
+    aggregationKeys: ['max']
+  },
+  vagas: {
+    name: 'garageSpots',
+    aggregation: 'range',
+    aggregationKeys: ['min', 'max']
+  },
+  vaga: {
+    name: 'garageSpots',
+    aggregation: 'range',
+    aggregationKeys: ['min', 'max']
   }
 }
 const STARTS_WITH_NUMBER = /^([0-9]+)-([a-z-]+)$/
 const ENDS_WITH_NUMBER = /^([a-z-]+)-([0-9]+)$/
-
-function isTag(path = '') {
-  return TAGS.includes(path)
-}
 
 function isFeature(path = '') {
   return Object.keys(pathToTypeFilterMap).reduce(
@@ -105,57 +141,56 @@ function aggregateFilter(filters = {}, path) {
     return filters
   }
   switch (filterDefinition.aggregation) {
-  case 'array': {
-    if (!filters[filterDefinition.name]) {
-      filters[filterDefinition.name] = []
+    case 'array': {
+      if (!filters[filterDefinition.name]) {
+        filters[filterDefinition.name] = []
+      }
+      filters[filterDefinition.name].push(filterDefinition.value)
+      break
     }
-    filters[filterDefinition.name].push(filterDefinition.value)
-    break
-  }
-  case 'range': {
-    if (!filters[filterDefinition.name]) {
-      filters[filterDefinition.name] = {}
-    }
-    filterDefinition.aggregationKeys.forEach(
+    case 'range': {
+      if (!filters[filterDefinition.name]) {
+        filters[filterDefinition.name] = {}
+      }
+      filterDefinition.aggregationKeys.forEach(
         (key) => (filters[filterDefinition.name][key] = aggregator.value)
-    )
-    break
-  }
-  default:
-    return filters
+      )
+      break
+    }
+    default:
+      return filters
   }
   return filters
 }
 
-const getRestParams = (rest = '') => {
-  const splitedPaths = rest.split('/')
-  if (splitedPaths && splitedPaths.length === 0) {
-    return ''
+const getFiltersByPath = (rest = '') => {
+  const paths = rest.split('/')
+  if ((rest && rest.length === 0) || (paths && paths.length === 0)) {
+    return {}
   }
-  const [firstPath, ...paths] = splitedPaths
-  const restParams = {neighborhood: firstPath}
-  restParams.tags = []
-  restParams.filters = {}
-  if (isTag(firstPath)) {
-    delete restParams.neighborhood
-    restParams.tags.push(firstPath)
+  const filters = {}
+  const tags = _.intersection(paths, TAGS)
+  if (tags && tags.length > 0) {
+    filters.tagsSlug = tags
   }
-  if (isFeature(firstPath)) {
-    delete restParams.neighborhood
-    restParams.filters = aggregateFilter({}, firstPath)
+  const features = _.filter(paths, isFeature)
+  if (features && features.length > 0) {
+    features.forEach((feature) => aggregateFilter(filters, feature))
   }
-  if (paths && paths.length === 0) {
-    return restParams
+  const featuresAndTags = [...tags, ...features]
+  const neighborhoods = _.difference(paths, featuresAndTags)
+  if (neighborhoods && neighborhoods.length > 0) {
+    filters.neighborhoods = neighborhoods
   }
-  restParams.tags = restParams.tags.concat(_.intersection(paths, TAGS))
-  const features = _.difference(paths, restParams.tags)
-  features.forEach((feature) => aggregateFilter(restParams.filters, feature))
-  return restParams
+  return filters
 }
-const buildParams = (req) => {
-  const {state, city, rest} = req.params
-  const restParams = getRestParams(rest)
-  return {state, city, ...restParams}
+const mapUrlToParams = (params) => {
+  const {state, city, rest} = params
+  const filters = getFiltersByPath(rest)
+  if (city) {
+    filters.citiesSlug = [city]
+  }
+  return {state, city, filters}
 }
 
-module.exports = buildParams
+module.exports = mapUrlToParams
