@@ -1,10 +1,15 @@
+
 import '@emcasa/ui-dom/components/global-styles'
 import {Component, Fragment} from 'react'
 import {Query} from 'react-apollo'
+import theme from '@emcasa/ui'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
+import faEye from '@fortawesome/fontawesome-free-solid/faEye'
+import faMap from '@fortawesome/fontawesome-free-solid/faMap'
+import faStreetView from '@fortawesome/fontawesome-free-solid/faCube'
 import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
 import {GET_FULL_LISTING, GET_DISTRICTS} from 'graphql/listings/queries'
 import {Mutation} from 'react-apollo'
@@ -19,8 +24,9 @@ import ListingMainContent from 'components/listings/show/Body'
 import Breadcrumb from 'components/listings/show/Breadcrumb'
 import PriceBar from 'components/listings/show/PriceBar'
 import ButtonsBar from 'components/listings/show/ButtonsBar'
-import MatterportPopup from 'components/listings/show/MatterportPopup'
-import MapPopup from 'components/listings/show/MapPopup'
+import Popup from 'components/listings/show/Popup'
+import ListingMap from 'components/listings/show/Map'
+import Matterport from 'components/listings/show/Matterport'
 import ContactForm from 'components/listings/show/ContactForm'
 import ContactSuccess from 'components/listings/show/ContactSuccess'
 import ListingFeed from 'components/shared/Listing/Feed'
@@ -33,6 +39,8 @@ import {getCookie} from 'lib/session'
 import {fetchFlag, DEVICE_ID_COOKIE} from 'components/shared/Flagr'
 import FlagrProvider from 'components/shared/Flagr/Context'
 import {TEST_SAVE_LISTING_TEXT} from 'components/shared/Flagr/tests'
+import ButtonIcon from 'components/shared/Common/Buttons'
+import LikeButton from 'components/shared/Common/Buttons/Like'
 import {
   log,
   getListingInfoForLogs,
@@ -162,6 +170,16 @@ class Listing extends Component {
     this.setState({isStreetViewPopupVisible: false})
   }
 
+  openMapAndCloseStreetViewPopup = () => {
+    this.closeStreetViewPopup()
+    this.openMapPopup()
+  }
+
+  openStreetViewAndCloseMapPopup = () => {
+    this.closeMapPopup()
+    this.openStreetViewPopup()
+  }
+
   openInterestPopup = async (e) => {
     const {currentUser} = this.props
     if (currentUser && currentUser.authenticated) {
@@ -188,6 +206,20 @@ class Listing extends Component {
   closeSuccessPostInterestPopup = () => {
     log(LISTING_DETAIL_CLOSE_VISIT_FORM)
     this.setState({isInterestSuccessPopupVisible: false})
+  }
+
+  getPopupHeaderButtons = ({likeButton, onClick, icon, label}) => {
+    return (
+      <Fragment>
+        {likeButton && <LikeButton
+          textButton
+          favorite={likeButton.favorite}
+          listing={likeButton.listing}
+          user={likeButton.user}
+        />}
+        <ButtonIcon onClick={onClick} icon={icon.fa} iconColor={icon.color}>{label}</ButtonIcon>
+      </Fragment>
+    )
   }
 
   onSubmit = async (e, userInfo, callback) => {
@@ -358,27 +390,55 @@ class Listing extends Component {
                               this.visualizeTour = visualizeTour
                             }
                             return (
-                              <MatterportPopup
-                                listing={listing}
-                                isMatterportPopupVisible={
-                                  isMatterportPopupVisible
-                                }
-                                closeMatterportPopup={this.closeMatterportPopup}
-                              />
+                              <Popup
+                                isPopupVisible={isMatterportPopupVisible}
+                                closePopup={this.closeMatterportPopup}
+                                title="Tour Virtual"
+                              >
+                                {isMatterportPopupVisible && <Matterport matterport_code={listing.matterportCode || ''} />}
+                              </Popup>
                             )
                           }}
                         </Mutation>
-                        <MapPopup
-                          listing={listing}
-                          isMapPopupVisible={isMapPopupVisible}
-                          closeMapPopup={this.closeMapPopup}
-                        />
-                        <MapPopup
-                          streetView
-                          listing={listing}
-                          isMapPopupVisible={isStreetViewPopupVisible}
-                          closeMapPopup={this.closeStreetViewPopup}
-                        />
+
+                        <Popup
+                          isPopupVisible={isMapPopupVisible}
+                          closePopup={this.closeMapPopup}
+                          title={listing.address.street}
+                          headerContent={this.getPopupHeaderButtons({
+                            onClick: this.openStreetViewAndCloseMapPopup,
+                            icon: {
+                              color: theme.colors.blue,
+                              fa: faMap
+                            },
+                            label: 'Rua'
+                          })}
+                        >
+                          {isMapPopupVisible &&
+                            <ListingMap isVisible={isMapPopupVisible} listing={listing} />
+                          }
+                        </Popup>
+                        <Popup
+                          isPopupVisible={isStreetViewPopupVisible}
+                          closePopup={this.closeStreetViewPopup}
+                          title={listing.address.street}
+                          headerContent={this.getPopupHeaderButtons({
+                            onClick: this.openMapAndCloseStreetViewPopup,
+                            icon: {
+                              color: theme.colors.blue,
+                              fa: faStreetView
+                            },
+                            label: 'Mapa'
+                          })}
+                        >
+                          {isStreetViewPopupVisible &&
+                            <ListingMap
+                              streetView
+                              isVisible={isStreetViewPopupVisible}
+                              listing={listing}
+                            />
+                          }
+                        </Popup>
                         <ButtonsBar
                           handleOpenInterestPopup={this.openInterestPopup}
                           favorite={favorite}

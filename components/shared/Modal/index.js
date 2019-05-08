@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import enhanceWithClickOutside from 'react-click-outside'
-import CloseButton from 'components/shared/CloseButton'
+import CloseButton from 'components/shared/Common/Buttons/CloseButton'
 import {
   Background,
   Container
@@ -33,8 +33,6 @@ class Modal extends Component {
         >
           <CloseButton
             onClick={this.props.onClose}
-            buttonStyle={this.props.closeButtonStyle}
-            iconStyle={this.props.closeIconStyle}
             color={this.props.closeIconColor}
           />
             {this.props.children}
@@ -48,8 +46,6 @@ Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   justifyContent: PropTypes.string,
   mobileKeyboard: PropTypes.bool,
-  closeButtonStyle: PropTypes.object,
-  closeIconStyle: PropTypes.object,
   closeIconColor: PropTypes.string
 }
 

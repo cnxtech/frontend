@@ -62,7 +62,7 @@ export const initialState = {
     dayOffset: 0
   },
   listing: {
-    id: null
+    siteSellerLeadUuid: null
   }
 }
 
