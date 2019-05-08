@@ -84,12 +84,9 @@ Slider.Button = ({day, dayOfWeek, onClick, selected}) => {
       onClick={onClick}
       selected={selected}
     >
-    <Row alignItems="center" justifyContent="center">
-    <Col>
-      <Text inline fontSize="large">{day}</Text>
-      {' '}
-      <Text inline>{dayOfWeek}</Text>
-      </Col>
+      <Row flexDirection="column">
+        <Col><Text inline fontSize="large">{day}</Text></Col>
+        <Col><Text inline>{dayOfWeek}</Text></Col>
       </Row>
     </SliderButton>
   )
