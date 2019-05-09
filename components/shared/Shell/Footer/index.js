@@ -58,8 +58,8 @@ const Footer = () => (
             <Link passHref href="/avaliacao-imovel">
               <TextLink as="a" fontSize={[1, null, null, 2]}>Avalie seu imóvel</TextLink>
             </Link>
-            <TextLink as="a" fontSize={[1, null, null, 2]} href="http://blog.emcasa.com" target="_blank">Blog</TextLink>
-            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://jobs.emcasa.com/" target="_blank">Trabalhe Conosco</TextLink>
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://blog.emcasa.com" target="_blank" rel="noopener">Blog</TextLink>
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://jobs.emcasa.com/" target="_blank" rel="noopener">Trabalhe Conosco</TextLink>
             <Link passHref href="/corretor-parceiro-rj">
               <TextLink as="a" fontSize={[1, null, null, 2]}>Seja um corretor parceiro no RJ</TextLink>
             </Link>
@@ -87,19 +87,19 @@ const Footer = () => (
           </Row>
           <Row flexDirection="column">
             <TitleLinks {...titleText}>Redes Sociais</TitleLinks>
-            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://www.facebook.com/EmCasa" target="_blank">
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://www.facebook.com/EmCasa" target="_blank" rel="noopener">
               <FontAwesomeIcon icon={faFacebook} />
               Facebook
             </TextLink>
-            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://www.instagram.com/emcasa" target="_blank">
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://www.instagram.com/emcasa" target="_blank" rel="noopener">
               <FontAwesomeIcon icon={faInstagram} />
               Instagram
             </TextLink>
-            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://www.linkedin.com/company/emcasa" target="_blank">
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://www.linkedin.com/company/emcasa" target="_blank" rel="noopener">
               <FontAwesomeIcon icon={faLinkedin} />
               LinkedIn
             </TextLink>
-            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://twitter.com/EmCasaTech" target="_blank">
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://twitter.com/EmCasaTech" target="_blank" rel="noopener">
               <FontAwesomeIcon icon={faTwitter} />
               Twitter
             </TextLink>
