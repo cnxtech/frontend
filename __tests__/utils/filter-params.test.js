@@ -26,7 +26,16 @@ describe('listing search filter functions', () => {
       neighborhood: 'humaita'
     }
     const filters = getNewFiltersFromQuery(query, params)
-    expect(filters).toEqual({"area": {"max": 300, "min": 35}, "citiesSlug": ["rio-de-janeiro"], "garageSpots": {"max": 2, "min": 2}, "neighborhoods": ['botafogo', 'ipanema'], "neighborhoodsSlugs": ["humaita"], "price": {"max": 1500000, "min": 250000}, "rooms": {"max": 3, "min": 3}, "types": ["Apartamento", "Casa"]})
+    expect(filters).toEqual({
+      area: {max: 300, min: 35},
+      citiesSlug: ['rio-de-janeiro'],
+      garageSpots: {max: 2, min: 2},
+      neighborhoods: ['botafogo', 'ipanema'],
+      neighborhoodsSlugs: ['humaita'],
+      price: {max: 1500000, min: 250000},
+      rooms: {max: 3, min: 3},
+      types: ['Apartamento', 'Casa']
+    })
   })
 
   it('parses query with only one home type to filter state', () => {
@@ -34,7 +43,7 @@ describe('listing search filter functions', () => {
       tipos: 'Apartamento'
     }
     const filters = getNewFiltersFromQuery(query)
-    expect(filters).toEqual({"types": ["Apartamento"]})
+    expect(filters).toEqual({types: ['Apartamento']})
   })
 
   it('parses user selected filters into query string', () => {
@@ -58,7 +67,16 @@ describe('listing search filter functions', () => {
       types: ['Apartamento', 'Cobertura']
     }
     const query = getListingFiltersFromState(filters)
-    expect(query).toEqual({"maxArea": 150, "minGarageSpots": 2, "maxPrice": 2500000, "minRooms": 3, "minArea": 35, "minPrice": 250000, "neighborhoodsSlugs": ["botafogo"], "types": ["Apartamento", "Cobertura"]})
+    expect(query).toEqual({
+      maxArea: 150,
+      minGarageSpots: 2,
+      maxPrice: 2500000,
+      minRooms: 3,
+      minArea: 35,
+      minPrice: 250000,
+      neighborhoodsSlugs: ['botafogo'],
+      types: ['Apartamento', 'Cobertura']
+    })
   })
 
   it('parses user selected garage spots into query string', () => {
@@ -69,19 +87,34 @@ describe('listing search filter functions', () => {
       }
     }
     const query = getListingFiltersFromState(filters)
-    expect(query).toEqual({"minGarageSpots": 0, "maxGarageSpots": 0})
+    expect(query).toEqual({minGarageSpots: 0, maxGarageSpots: 0})
   })
 
   it('parses url with location into a location object', () => {
-    const asPath = '/imoveis/rj/rio-de-janeiro/humaita?tipos=Apartamento'
+    const asPath = '/imoveis/rj/rio-de-janeiro/humaita/apartamento'
     const location = getLocationFromPath(asPath)
-    expect(location).toEqual({city: 'rio-de-janeiro', neighborhood: 'humaita', state: 'rj'})
+    expect(location).toEqual({
+      city: 'rio-de-janeiro',
+      state: 'rj',
+      filters: {
+        citiesSlug: ['rio-de-janeiro'],
+        types: ['Apartamento'],
+        neighborhoods: ['humaita']
+      }
+    })
   })
 
   it('parses url with incomplete location into a location object', () => {
-    const asPath = '/imoveis/rj/rio-de-janeiro?tipos=Apartamento'
+    const asPath = '/imoveis/rj/rio-de-janeiro/apartamento'
     const location = getLocationFromPath(asPath)
-    expect(location).toEqual({city: 'rio-de-janeiro', state: 'rj'})
+    expect(location).toEqual({
+      city: 'rio-de-janeiro',
+      state: 'rj',
+      filters: {
+        citiesSlug: ['rio-de-janeiro'],
+        types: ['Apartamento']
+      }
+    })
   })
 
   it('reads filters from a given object and parses into a query string', () => {
@@ -109,7 +142,9 @@ describe('listing search filter functions', () => {
       types: ['Apartamento', 'Cobertura']
     }
     const queryString = treatParams(filters)
-    expect(queryString).toBe('preco_minimo=250000&preco_maximo=500000&area_minima=50&area_maxima=150&quartos_minimo=2&quartos_maximo=4&vagas_minimo=2&vagas_maximo=4&tipos=Apartamento|Cobertura')
+    expect(queryString).toBe(
+      'preco_minimo=250000&preco_maximo=500000&area_minima=50&area_maxima=150&quartos_minimo=2&quartos_maximo=4&vagas_minimo=2&vagas_maximo=4&tipos=Apartamento|Cobertura'
+    )
   })
 
   it('adds neighborhoods to filters', () => {
@@ -130,7 +165,9 @@ describe('listing search filter functions', () => {
     const filters = {rooms: {min: 2}, types: ['Apartamento', 'Casa']}
     const selectedNeighborhoods = ['ipanema', 'copacabana']
     const query = addNeighborhoodsToQuery(filters, selectedNeighborhoods)
-    expect(query).toBe('?quartos_minimo=2&bairros=ipanema|copacabana&tipos=Apartamento|Casa')
+    expect(query).toBe(
+      '?quartos_minimo=2&bairros=ipanema|copacabana&tipos=Apartamento|Casa'
+    )
   })
 
   it('adds neighborhoods to filters when theres already a neighborhood selected', () => {
@@ -141,9 +178,15 @@ describe('listing search filter functions', () => {
   })
 
   it('adds neighborhoods to filters when theres already a neighborhood selected, among other filters', () => {
-    const filters = {rooms: {min: 2}, types: ['Apartamento', 'Casa'], neighborhoods: ['botafogo', 'leblon']}
+    const filters = {
+      rooms: {min: 2},
+      types: ['Apartamento', 'Casa'],
+      neighborhoods: ['botafogo', 'leblon']
+    }
     const selectedNeighborhoods = ['ipanema', 'copacabana']
     const query = addNeighborhoodsToQuery(filters, selectedNeighborhoods)
-    expect(query).toBe('?quartos_minimo=2&bairros=ipanema|copacabana&tipos=Apartamento|Casa')
+    expect(query).toBe(
+      '?quartos_minimo=2&bairros=ipanema|copacabana&tipos=Apartamento|Casa'
+    )
   })
 })

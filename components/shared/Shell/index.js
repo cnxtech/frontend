@@ -32,7 +32,6 @@ class Layout extends Component {
 
     const FooterComponent = Footer
     const HeaderComponent = Header
-
     return (
       <Fragment>
         <Head />
@@ -42,11 +41,14 @@ class Layout extends Component {
           isAdmin={isAdmin}
           notifications={this.notifications}
           router={router}
+          pageProps={pageProps}
           search={pageProps.headerSearch}
-          hideSeparator={pageProps.hideSeparator}
           transparent={pageProps.transparentHeader}
         />
-        <Container transparentHeader={pageProps.transparentHeader} search={pageProps.headerSearch}>
+        <Container
+          transparentHeader={pageProps.transparentHeader}
+          search={pageProps.headerSearch}
+        >
           <Main>{this.props.children}</Main>
           {renderFooter && <FooterComponent />}
         </Container>

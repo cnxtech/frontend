@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { PoseGroup } from 'react-pose'
+import {PoseGroup} from 'react-pose'
 import Router from 'next/router'
 import enhanceWithClickOutside from 'react-click-outside'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -12,10 +12,10 @@ import FadeInOut from 'components/shared/Animation/FadeInOut'
 import Icon from '@emcasa/ui-dom/components/Icon'
 import Col from '@emcasa/ui-dom/components/Col'
 import CityContainer from './components/CityContainer'
-import { GET_DISTRICTS } from 'graphql/listings/queries'
-import { Query } from 'react-apollo'
-import { cities } from 'constants/cities'
-import { arrayToString } from 'utils/text-utils'
+import {GET_DISTRICTS} from 'graphql/listings/queries'
+import {Query} from 'react-apollo'
+import {cities} from 'constants/cities'
+import {arrayToString} from 'utils/text-utils'
 import {
   log,
   LISTING_SEARCH_NEIGHBORHOOD_OPEN,
@@ -24,10 +24,7 @@ import {
   LISTING_SEARCH_NEIGHBORHOOD_EXPAND,
   LISTING_SEARCH_NEIGHBORHOOD_CHANGE_CITY
 } from 'lib/logging'
-import {
-  addNeighborhoodsToQuery,
-  getDerivedParams
-} from 'utils/filter-params.js'
+import {getDerivedParams} from 'utils/filter-params.js'
 import {
   InputWrapper,
   InputContainer,
@@ -37,6 +34,7 @@ import {
   BackButton,
   ButtonText
 } from './styles'
+import {NEIGHBORHOOD_SELECTION_CHANGE} from './events'
 
 const DEFAULT_BUTTON_TEXT = 'Escolha os bairros'
 
@@ -52,11 +50,9 @@ class NeighborhoodPicker extends Component {
     this.getButtonText = this.getButtonText.bind(this)
     this.showAllCities = this.showAllCities.bind(this)
 
-    const initialNeighborhoodSelection = props.query && props.query.bairros ? getDerivedParams(props.query).neighborhoods : []
     this.containerRef = React.createRef()
-
     this.state = {
-      selectedNeighborhoods: initialNeighborhoodSelection,
+      selectedNeighborhoods: props.neighborhood || [],
       expanded: [],
       showCities: this.props.mobile
     }
@@ -72,7 +68,9 @@ class NeighborhoodPicker extends Component {
   }
 
   showAllCities() {
-    log(LISTING_SEARCH_NEIGHBORHOOD_CHANGE_CITY, {city: this.state.expanded[0].citySlug})
+    log(LISTING_SEARCH_NEIGHBORHOOD_CHANGE_CITY, {
+      city: this.state.expanded[0].citySlug
+    })
     this.setState({expanded: []})
   }
 
@@ -93,17 +91,29 @@ class NeighborhoodPicker extends Component {
       if (this.props.onBackPressed) {
         this.props.onBackPressed()
       }
-      if (this.props.fromHome && this.state.selectedNeighborhoods.length === 0) {
+      if (
+        this.props.fromHome &&
+        this.state.selectedNeighborhoods.length === 0
+      ) {
         return
       }
-      const currentQuery = this.props.query || {}
-      const query = addNeighborhoodsToQuery(getDerivedParams(currentQuery), this.state.selectedNeighborhoods)
-      Router.push(`/listings${query}`, `/imoveis${query}`, {shallow: true})
+
+      if (this.props.fromHome) {
+        const neighborhoodPaths = this.state.selectedNeighborhoods.join('/')
+        Router.push('/listings', `/imoveis/bairros/${neighborhoodPaths}`, {
+          shallow: true
+        })
+      } else {
+        const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
+          detail: {neighborhoods: this.state.selectedNeighborhoods}
+        })
+        window.dispatchEvent(event)
+      }
     })
   }
 
   changeSelection(newSelection, onFinished) {
-    this.setState({ selectedNeighborhoods: newSelection }, onFinished)
+    this.setState({selectedNeighborhoods: newSelection}, onFinished)
   }
 
   handleClickOutside() {
@@ -116,11 +126,17 @@ class NeighborhoodPicker extends Component {
     try {
       if (data && data.districts) {
         let citiesNeighborhoods = cities
-        citiesNeighborhoods.forEach((city) => city.neighborhoods = [])
+        citiesNeighborhoods.forEach((city) => (city.neighborhoods = []))
         data.districts.forEach((item) => {
-          citiesNeighborhoods.find((city) => city.citySlug === item.citySlug).neighborhoods.push(item)
+          citiesNeighborhoods
+            .find((city) => city.citySlug === item.citySlug)
+            .neighborhoods.push(item)
         })
-        citiesNeighborhoods.forEach((city) => city.neighborhoods.sort((n1, n2) => n1.nameSlug.localeCompare(n2.nameSlug)))
+        citiesNeighborhoods.forEach((city) =>
+          city.neighborhoods.sort((n1, n2) =>
+            n1.nameSlug.localeCompare(n2.nameSlug)
+          )
+        )
         return citiesNeighborhoods
       }
     } catch (e) {
@@ -138,7 +154,7 @@ class NeighborhoodPicker extends Component {
 
   getButtonText() {
     if (process.browser) {
-      const selected = getDerivedParams(Router.query).neighborhoods
+      const selected = this.state.selectedNeighborhoods
       if (selected && selected.length > 0) {
         return arrayToString(selected)
       }
@@ -153,44 +169,67 @@ class NeighborhoodPicker extends Component {
           const availableCities = this.getCities(data)
           const buttonText = this.getButtonText()
           return (
-            <SearchContainer ref={this.containerRef} onClick={this.props.onClick} mobile={this.props.mobile}>
+            <SearchContainer
+              ref={this.containerRef}
+              onClick={this.props.onClick}
+              mobile={this.props.mobile}
+            >
               <InputWrapper>
-                <InputContainer onClick={this.toggleCitiesDisplay} selected={this.state.showCities}>
+                <InputContainer
+                  onClick={this.toggleCitiesDisplay}
+                  selected={this.state.showCities}
+                >
                   <SearchTextContainer>
-                    {this.props.onBackPressed ?
+                    {this.props.onBackPressed ? (
                       <BackButton onClick={this.props.onBackPressed}>
                         <BackIcon name="arrow-left" color="dark" />
                       </BackButton>
-                      :
-                      <Icon name="map-marker-alt" px={3} pt={1} size={21} color="dark" />
-                    }
-                    <ButtonText color={buttonText === DEFAULT_BUTTON_TEXT ? 'grey' : 'dark'}>{this.getButtonText()}</ButtonText>
+                    ) : (
+                      <Icon
+                        name="map-marker-alt"
+                        px={3}
+                        pt={1}
+                        size={21}
+                        color="dark"
+                      />
+                    )}
+                    <ButtonText
+                      color={
+                        buttonText === DEFAULT_BUTTON_TEXT ? 'grey' : 'dark'
+                      }
+                    >
+                      {this.getButtonText()}
+                    </ButtonText>
                   </SearchTextContainer>
                   <Col px={3} pt={1}>
-                    <FontAwesomeIcon icon={this.state.showCities ? AngleUp : AngleDown} size="2x" style={{fontSize: 24}} />
+                    <FontAwesomeIcon
+                      icon={this.state.showCities ? AngleUp : AngleDown}
+                      size="2x"
+                      style={{fontSize: 24}}
+                    />
                   </Col>
                 </InputContainer>
               </InputWrapper>
               <PoseGroup>
-              {this.state.showCities &&
-                <FadeInOut key={1}>
-                  <CityContainer
-                    cities={availableCities}
-                    selectedNeighborhoods={this.state.selectedNeighborhoods}
-                    expanded={this.state.expanded}
-                    selectCity={this.selectCity}
-                    isCitySelected={this.isCitySelected}
-                    expand={this.expand}
-                    clear={this.clear}
-                    apply={this.apply}
-                    parentRef={this.containerRef.current}
-                    fromHome={this.props.fromHome}
-                    showAllCities={this.showAllCities}
-                    fullscreen={this.props.fullscreen}
-                  />
-                  <Background />
-                </FadeInOut>
-              }
+                {this.state.showCities && (
+                  <FadeInOut key={1}>
+                    <CityContainer
+                      cities={availableCities}
+                      selectedNeighborhoods={this.state.selectedNeighborhoods}
+                      expanded={this.state.expanded}
+                      selectCity={this.selectCity}
+                      isCitySelected={this.isCitySelected}
+                      expand={this.expand}
+                      clear={this.clear}
+                      apply={this.apply}
+                      parentRef={this.containerRef.current}
+                      fromHome={this.props.fromHome}
+                      showAllCities={this.showAllCities}
+                      fullscreen={this.props.fullscreen}
+                    />
+                    <Background />
+                  </FadeInOut>
+                )}
               </PoseGroup>
             </SearchContainer>
           )
@@ -204,7 +243,7 @@ NeighborhoodPicker.propTypes = {
   onClick: PropTypes.func,
   onBackPressed: PropTypes.func,
   mobile: PropTypes.bool,
-  query: PropTypes.object,
+  neighborhood: PropTypes.array,
   fromHome: PropTypes.bool,
   fullscreen: PropTypes.bool
 }
