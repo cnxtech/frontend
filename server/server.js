@@ -13,6 +13,7 @@ const handle = app.getRequestHandler()
 const MapsService = require('../services/google-maps-api')
 const listingsRouter = require('./routes/listings')
 const timber = require('timber')
+const geoip = require('geoip-lite')
 
 timber.config.append_metadata = true
 
@@ -75,6 +76,12 @@ const startServer = () => {
           res.locals.app.render(req, res, actualPage, queryParams)
         }
       )
+
+      server.get('/location', async (req, res) => {
+        const userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        const location = geoip.lookup(userIp)
+        res.status(200).send({location, userIp})
+      })
 
       server.get('/maps/autocomplete', async (req, res) => {
         const {q} = req.query
