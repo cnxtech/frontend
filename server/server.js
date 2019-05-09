@@ -77,8 +77,11 @@ const startServer = () => {
         }
       )
 
-      server.get('/location', async (req, res) => {
-        const userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+      server.post('/location', async (req, res) => {
+        let userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        if (userIp) {
+          userIp = userIp.split(',')[0]
+        }
         const location = geoip.lookup(userIp)
         res.status(200).send({location, userIp})
       })
