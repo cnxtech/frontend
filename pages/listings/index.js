@@ -25,7 +25,7 @@ class ListingSearch extends Component {
     const params = props.params ? props.params : {}
     this.state = {
       mapOpened: false,
-      filters: clone(params.filters),
+      filters: clone(params.filters || {}),
       neighborhood: null
     }
   }
