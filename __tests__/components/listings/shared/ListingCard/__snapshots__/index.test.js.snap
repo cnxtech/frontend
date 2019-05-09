@@ -208,6 +208,7 @@ exports[`<ListingCard/> should render component 1`] = `
     </div>
   </a>
   <button
+    aria-label="Favoritar imóvel"
     className="c7"
     fontSize="default"
     height="medium"
