@@ -190,6 +190,40 @@ describe('Parameters Mapper tests', () => {
       }
       expect(result).toEqual(expected)
     })
+
+    it('should return only city and state when rest param is null', () => {
+      //simulates => /imoveis/state/city/preco-min-10000
+      const result = ParamsMapper.mapUrlToParams({
+        city: 'city',
+        state: 'state'
+      })
+      const expected = {
+        state: 'state',
+        city: 'city',
+        filters: {
+          citiesSlug: ['city']
+        }
+      }
+      expect(result).toEqual(expected)
+    })
+
+    it('should return only state when rest and city param is null', () => {
+      //simulates => /imoveis/state/city/preco-min-10000
+      const result = ParamsMapper.mapUrlToParams({
+        state: 'state'
+      })
+      const expected = {
+        state: 'state'
+      }
+      expect(result).toEqual(expected)
+    })
+
+    it('should return empty object when empty params is given', () => {
+      //simulates => /imoveis/state/city/preco-min-10000
+      const result = ParamsMapper.mapUrlToParams({})
+      const expected = {}
+      expect(result).toEqual(expected)
+    })
   })
   describe('mapParamsToUrl(params, filters)', () => {
     it('should map filters (state, city, type and ranged price) to path starting with /state/city', () => {

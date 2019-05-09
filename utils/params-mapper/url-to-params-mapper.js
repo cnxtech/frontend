@@ -165,7 +165,7 @@ function aggregateFilter(filters = {}, path) {
 
 const getFiltersByPath = (rest = '') => {
   const paths = rest.split('/')
-  if ((rest && rest.length === 0) || (paths && paths.length === 0)) {
+  if (rest.length === 0 || (!paths || paths.length === 0)) {
     return {}
   }
   const filters = {}
@@ -187,10 +187,20 @@ const getFiltersByPath = (rest = '') => {
 const mapUrlToParams = (params) => {
   const {state, city, rest} = params
   const filters = getFiltersByPath(rest)
+  const newParams = {}
   if (city) {
     filters.citiesSlug = [city]
+    newParams.city = city
   }
-  return {state, city, filters}
+
+  if (state) {
+    newParams.state = state
+  }
+
+  if (Object.keys(filters).length > 0) {
+    newParams.filters = filters
+  }
+  return newParams
 }
 
 module.exports = mapUrlToParams
