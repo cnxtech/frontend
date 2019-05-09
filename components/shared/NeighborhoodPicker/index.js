@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {PoseGroup} from 'react-pose'
 import Router from 'next/router'
 import enhanceWithClickOutside from 'react-click-outside'
+import slugify from 'slug'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import AngleDown from '@fortawesome/fontawesome-pro-light/faAngleDown'
 import AngleUp from '@fortawesome/fontawesome-pro-light/faAngleUp'
@@ -24,7 +25,6 @@ import {
   LISTING_SEARCH_NEIGHBORHOOD_EXPAND,
   LISTING_SEARCH_NEIGHBORHOOD_CHANGE_CITY
 } from 'lib/logging'
-import {getDerivedParams} from 'utils/filter-params.js'
 import {
   InputWrapper,
   InputContainer,
@@ -56,6 +56,17 @@ class NeighborhoodPicker extends Component {
       expanded: [],
       showCities: this.props.mobile
     }
+  }
+
+  componentDidMount() {
+    fetch('/location', {method: 'POST'}).then((response) => response.json()).then((result) => {
+      if (result && result.location && result.location.city) {
+        const {city} = result.location
+        const citySlug = slugify(city.toLowerCase())
+        const isCityAvailable = cities.find((city) => city.citySlug === citySlug)
+        this.expand(isCityAvailable ? {city, citySlug} : cities.find((city) => city.citySlug === 'sao-paulo'))
+      }
+    })
   }
 
   expand(city) {
