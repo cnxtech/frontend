@@ -79,8 +79,9 @@ const startServer = () => {
 
       server.get('/location', async (req, res) => {
         const userIp = req.connection.remoteAddress
+        const forwardedIp = req.headers['x-forwarded-for']
         const location = geoip.lookup(userIp)
-        res.status(200).send({location, userIp})
+        res.status(200).send({location, userIp, forwardedIp})
       })
 
       server.get('/maps/autocomplete', async (req, res) => {
