@@ -80,7 +80,7 @@ const startServer = () => {
       server.get('/location', async (req, res) => {
         const userIp = req.connection.remoteAddress
         const location = geoip.lookup(userIp)
-        res.status(200).send({location})
+        res.status(200).send({location, userIp})
       })
 
       server.get('/maps/autocomplete', async (req, res) => {
