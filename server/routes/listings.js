@@ -14,13 +14,20 @@ router.get('/:id(\\d+)', (req, res) => {
 })
 
 router.get(
-  '/:state/:city/:neighborhood/:street/:listingId(id-\\d+)',
+  '/:state/:city/:neighborhood/:street/:listingId(id-\d+)',
   (req, res) => {
     const actualPage = '/listings/show'
     res.locals.app.render(req, res, actualPage, req.query)
   }
 )
 
+router.get(
+  '/:state/:city/:neighborhood/:streetwithId([a-z\\d\\-]*id-\\d+)',
+  (req, res) => {
+    const actualPage = '/listings/show'
+    res.locals.app.render(req, res, actualPage, req.query)
+  }
+)
 router.get('/busca/:rest([0-9a-z-]*)', (req, res) => {
   const actualPage = '/listings'
   const params = ParamsMapper.mapUrlToParams(req.params)

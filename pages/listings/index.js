@@ -28,7 +28,6 @@ class ListingSearch extends Component {
       filters: clone(params.filters),
       neighborhood: null
     }
-    console.log(params)
   }
 
   static async getInitialProps(context) {
