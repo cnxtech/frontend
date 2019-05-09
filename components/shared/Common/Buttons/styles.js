@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import * as colors from 'constants/colors'
+import theme from '@emcasa/ui'
+import Button from '@emcasa/ui-dom/components/Button'
 
 const LegacyButton = styled.button`
   background-color: ${colors.blue.medium};
@@ -27,28 +29,18 @@ export const BaseButton = styled(LegacyButton)`
   padding: 7px 12px 9px;
 `
 
-export default styled(BaseButton)`
-  background-color: ${({light, secondary}) =>
-    light ? 'white' : secondary ? colors.green.medium : colors.blue.medium};
-  color: ${({light, secondary}) =>
-    !light ? 'white' : secondary ? colors.green.medium : colors.blue.medium};
-  width: ${({full}) => (full ? '100%' : '')};
-
-  border: 1px solid
-    ${({secondary, light}) =>
-      secondary
-        ? colors.green.dark
-        : light ? colors.blue.medium : colors.blue.darker};
-
-  &:hover {
-    background-color: ${({light, secondary}) =>
-      light ? 'white' : secondary ? colors.green.dark : ''};
-  }
+export default styled(Button)`
+  border: ${({noBorder}) => noBorder ? 'none' : null};
 
   svg {
-    width: 15px !important;
-    height: 15px;
+    color: ${({iconColor}) => iconColor ? iconColor : null};
+    fill: ${({iconColor}) => iconColor ? iconColor : null};
+    margin-right: ${({iconMarginRight}) => iconMarginRight ? `${theme.space[2]}px` : null};
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+    font-size: inherit;
   }
-
-  cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
 `

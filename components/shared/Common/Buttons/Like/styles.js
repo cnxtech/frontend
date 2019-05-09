@@ -8,12 +8,6 @@ export const BUTTON_LIKE_CIRCLE_HEIGHT = 40
 export const BUTTON_LIKE_CIRCLE_ICON_HEIGHT = 25
 
 export const TextButton = styled(Button)`
-  margin-right: ${theme.space[2]}px;
-
-  @media screen and ${breakpoint.up('desktop')} {
-    margin-right: ${theme.space[4]}px;
-  }
-
   svg {
     width: 15px;
 

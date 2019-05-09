@@ -17,6 +17,7 @@ import {
   CheckContainer,
   GreenBox
 } from './styles'
+import theme from '@emcasa/ui'
 
 class FavoriteLoginSuccess extends Component {
   render() {
@@ -25,6 +26,7 @@ class FavoriteLoginSuccess extends Component {
         onClose={this.props.onClose}
         onClick={(e) => {e.preventDefault()}}
         justifyContent="start"
+        closeIconColor={theme.colors.white}
       >
         <GreenBox>
           <Row justifyContent="center">
