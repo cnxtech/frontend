@@ -11,8 +11,6 @@ import faFlag from '@fortawesome/fontawesome-pro-solid/faFlag'
 import faUser from '@fortawesome/fontawesome-pro-solid/faUser'
 import faSignInAlt from '@fortawesome/fontawesome-pro-solid/faSignInAlt'
 import NeighborhoodPicker from 'components/shared/NeighborhoodPicker'
-import NeighborhoodAutoComplete from 'components/shared/NeighborhoodAutoComplete'
-import MobileAddressButton from 'components/shared/MobileAddressButton'
 import {MobileTypeaheadContainer} from 'components/shared/NeighborhoodAutoComplete/styles'
 import theme from 'config/theme'
 import {
@@ -75,23 +73,33 @@ class Header extends Component {
   }
 
   renderSearch() {
+    const {isMobile, pageProps} = this.props
+    let neighborhood = []
+    if (pageProps.params && pageProps.params.filters) {
+      neighborhood = pageProps.params.filters.neighborhoods
+    }
     return (
       <NeighborhoodPicker
-        onClick={this.props.isMobile ? this.openMobileSearch : () => {}}
-        query={this.props.router.query}
+        onClick={isMobile ? this.openMobileSearch : () => {}}
+        neighborhood={neighborhood}
       />
     )
   }
 
   renderFullScreenSearch() {
+    const {pageProps} = this.props
+    let neighborhood = []
+    if (pageProps.params && pageProps.params.filters) {
+      neighborhood = pageProps.params.filters.neighborhoods
+    }
     return (
       <MobileTypeaheadContainer justifyContent="center" p={4}>
         <Col width={1}>
           <NeighborhoodPicker
             mobile
             fullscreen
+            neighborhood={neighborhood}
             onBackPressed={this.closeMobileSearch}
-            query={this.props.router.query}
           />
         </Col>
       </MobileTypeaheadContainer>
@@ -99,7 +107,9 @@ class Header extends Component {
   }
 
   render() {
-    const {transparent, authenticated, search, router} = this.props
+    const {authenticated, router, pageProps} = this.props
+    const search = pageProps.headerSearch
+    const transparent = pageProps.transparentHeader
     const {sticky, isMobileNavVisible, showFullScreenSearch} = this.state
     const currentPath = router.asPath
 

@@ -108,6 +108,7 @@ class LikeButton extends Component {
               />
             }
             <ButtonContainer
+              aria-label="Favoritar imóvel"
               top={top}
               onClick={(e) => {
                 e.preventDefault()

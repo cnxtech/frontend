@@ -262,6 +262,7 @@ function SliderArrow({onClick, icon, left, listingId, disabled, isFullScreen}) {
         }
       }}
       left={left}
+      aria-label={left ? 'Voltar fotos' : 'Avançar fotos'}
     >
       <FontAwesomeIcon icon={icon} />
     </Arrow>
