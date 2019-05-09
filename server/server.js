@@ -46,6 +46,9 @@ const startServer = () => {
 
       if (process.env.NODE_ENV === 'production') {
         server.use((req, res, next) => {
+          if (process.env.LOG_REQUESTS === 'true') {
+            console.log(req.hostname, req.subdomains, req.headers)
+          }
           if (
             req.hostname === 'localhost' ||
             req.subdomains.length > 0 ||
