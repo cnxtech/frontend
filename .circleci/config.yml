@@ -19,8 +19,27 @@ aliases:
       container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,image-and-tag=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_RESOURCE_NAME_PREFIX}:${CIRCLE_SHA1}"
 
 workflows:
+  commit:
+    jobs:
+      # deploy any branch to staging manually
+      - deploy:
+          type: approval
+          filters:
+            branches:
+              only: /^(?!.*^master$).*$/
+      - aws-ecr/build_and_push_image:
+          context: frontend-staging
+          <<: *build-and-push-image
+          requires:
+            - deploy
+      - aws-ecs/deploy-service-update:
+          context: frontend-staging
+          <<: *deploy-service-update
+          requires:
+            - aws-ecr/build_and_push_image
   build-and-deploy-staging:
     jobs:
+      # deploy master to staging automatically
       - aws-ecr/build_and_push_image:
           context: frontend-staging
           <<: *build-and-push-image
@@ -34,9 +53,10 @@ workflows:
             - aws-ecr/build_and_push_image
   build-and-deploy-production:
     jobs:
+      # deploy master to production manually
       - deploy:
-         type: approval
-         filters:
+          type: approval
+          filters:
             branches:
               only: master
       - aws-ecr/build_and_push_image:
