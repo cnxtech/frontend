@@ -1,6 +1,7 @@
 import omit from 'lodash/omit'
 import pickBy from 'lodash/pickBy'
 import identity from 'lodash/identity'
+import ParamsMapper from 'utils/params-mapper'
 
 const filterValid = (object) => omit(object, [undefined])
 
@@ -261,13 +262,12 @@ export const getLocationFromPath = (asPath) => {
   const urlParts = locationString.split('/')
   const state = urlParts[2]
   const city = urlParts[3]
-  const neighborhood = urlParts[4]
-  const location = Object.assign({},
-    state && {state},
-    city && {city},
-    neighborhood && {neighborhood}
-  )
-  return location
+  let rest = locationString.split(`${state}/${city}/`)[1]
+  if (state === 'bairros' || state === 'search') {
+    rest = locationString.split(`${state}/`)[1] || ''
+    return ParamsMapper.mapUrlToParams({rest})
+  }
+  return ParamsMapper.mapUrlToParams({state, city, rest})
 }
 
 /**

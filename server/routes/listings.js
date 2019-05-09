@@ -1,25 +1,7 @@
+const ParamsMapper = require('../../utils/params-mapper')
 const express = require('express')
 const _ = require('lodash')
 const router = express.Router()
-
-const adminMessengerId = process.env.ADMIN_MESSENGER_ID
-router.get('/:listingId(\\d+)/mensagens/:userId(\\d+)', (req, res) => {
-  const actualPage = '/listings/messages'
-  const queryParams = {id: req.params.listingId, userId: req.params.userId}
-  res.locals.app.render(req, res, actualPage, queryParams)
-})
-
-router.get('/:listingId(\\d+)/mensagens', (req, res) => {
-  const actualPage = '/listings/messages'
-  const queryParams = {id: req.params.listingId, userId: adminMessengerId}
-  res.locals.app.render(req, res, actualPage, queryParams)
-})
-
-router.get('/:listingId/imagens', (req, res) => {
-  const actualPage = '/listings/images'
-  const queryParams = {listingId: req.params.listingId}
-  res.locals.app.render(req, res, actualPage, queryParams)
-})
 
 router.get('/favoritos', (req, res) => {
   return res.locals.app.render(req, res, '/meu-perfil', req.query)
@@ -32,25 +14,38 @@ router.get('/:id(\\d+)', (req, res) => {
 })
 
 router.get(
-  '/:state/:city/:neighborhood/:street/:listingId(id-\\d+)',
+  '/:state/:city/:neighborhood/:street/:listingId(id-\d+)',
   (req, res) => {
     const actualPage = '/listings/show'
     res.locals.app.render(req, res, actualPage, req.query)
   }
 )
 
-router.get('/:state/:city/:neighborhood/:extra', (req, res) => {
-  let actualPage
-  const hasId = req.params.extra.match(/id-\d+/)
-
-  if (hasId) {
-    actualPage = '/listings/show'
-    req.params.streetwithId = req.params.extra
-  } else {
-    actualPage = '/listings'
-    req.params.tag = req.params.extra
+router.get(
+  '/:state/:city/:neighborhood/:streetwithId([a-z\\d\\-]*id-\\d+)',
+  (req, res) => {
+    const actualPage = '/listings/show'
+    res.locals.app.render(req, res, actualPage, req.query)
   }
+)
+router.get('/busca/:rest([0-9a-z-]*)', (req, res) => {
+  const actualPage = '/listings'
+  const params = ParamsMapper.mapUrlToParams(req.params)
+  req.params = params
+  res.locals.app.render(req, res, actualPage, req.query)
+})
 
+router.get('/bairros/:rest([0-9a-z-]*)', (req, res) => {
+  const actualPage = '/listings'
+  const params = ParamsMapper.mapUrlToParams(req.params)
+  req.params = params
+  res.locals.app.render(req, res, actualPage, req.query)
+})
+
+router.get('/:state/:city/:rest([0-9a-z-]*)', (req, res) => {
+  const actualPage = '/listings'
+  const params = ParamsMapper.mapUrlToParams(req.params)
+  req.params = params
   res.locals.app.render(req, res, actualPage, req.query)
 })
 
@@ -73,6 +68,7 @@ router.get('/:id(\\d+)/editar', (req, res) => {
 
 router.get(['/', '/:state', '/:state/:city'], (req, res) => {
   const actualPage = '/listings'
+  req.params = ParamsMapper.mapUrlToParams(req.params)
   res.locals.app.render(req, res, actualPage, req.query)
 })
 

@@ -275,17 +275,13 @@ class Listing extends Component {
       {name: 'Comprar Imóveis', href: '/listings', as: '/imoveis'},
       {
         name: neighborhood,
-        href: `/listings?bairros=${neighborhoodSlug}`,
-        as: `/imoveis?bairros=${neighborhoodSlug}`
+        href: '/listings',
+        as: `/imoveis/bairros/${neighborhoodSlug}`
       },
       {
         name: listing.type + roomInformationForPath,
-        href: `/listings?bairros=${neighborhoodSlug}&quartos_minimo=${
-          listing.rooms
-        }`,
-        as: `/imoveis?bairros=${neighborhoodSlug}&quartos_minimo=${
-          listing.rooms
-        }&quartos_maximo=${listing.rooms}`
+        href: '/listings',
+        as: `/imoveis/bairros/${neighborhoodSlug}/${listing.rooms}-quartos`
       },
       {name: 'Este imóvel'}
     ]
