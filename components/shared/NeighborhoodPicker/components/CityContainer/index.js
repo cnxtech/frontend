@@ -150,7 +150,7 @@ class CityContainer extends Component {
               </Col>
               <Col>
                 <Row flexWrap="wrap">
-                  {isExpanded ?
+                  {isExpanded &&
                     <>
                       {selectedNeighborhoodList.map((Item) => {
                         buttonsRendered++
@@ -168,15 +168,19 @@ class CityContainer extends Component {
                         }
                         return Item
                       })}
+                    </>}
+                  {(i === 0 && !isExpanded) &&
+                    <>
+                      {cities.map((innerCity) =>
+                        <View mr={2} mb={2}>
+                          <NeighborhoodButton
+                            active={citySelected}
+                            onClick={() => {expand(innerCity)}}>
+                              {innerCity.name}
+                          </NeighborhoodButton>
+                        </View>
+                      )}
                     </>
-                  :
-                    <View mr={2} mb={2}>
-                      <NeighborhoodButton
-                        active={citySelected}
-                        onClick={() => {expand(city)}}>
-                          {city.name}
-                      </NeighborhoodButton>
-                    </View>
                   }
                 </Row>
               </Col>
