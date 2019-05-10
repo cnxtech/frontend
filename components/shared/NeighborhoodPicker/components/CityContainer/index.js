@@ -23,8 +23,6 @@ import {
   Separator
 } from './styles'
 
-const MAX_INITIAL_ITEMS = 3
-
 class CityContainer extends Component {
   static defaultProps = {
     cities: []
@@ -80,8 +78,8 @@ class CityContainer extends Component {
   render() {
     const {
       cities,
-      expand,
-      expanded,
+      selectCity,
+      selectedCity,
       selectedNeighborhoods,
       clear,
       apply,
@@ -96,6 +94,22 @@ class CityContainer extends Component {
       }
     }
     const topOffset = process.browser && window ? window.scrollY : 0
+
+    const selectedNeighborhoodList = []
+    let deselectedNeighborhoodList = []
+    selectedCity && selectedCity.neighborhoods.forEach((neighborhood, j) => {
+      const isSelected = isNeighborhoodSelected(selectedNeighborhoods, neighborhood.nameSlug)
+      const isNewSelection = isNeighborhoodSelected(this.state.currentSelection, neighborhood.nameSlug)
+      if (isSelected) {
+        selectedNeighborhoodList.push(this.getNeighborhoodButton(j, isNewSelection, neighborhood))
+      } else {
+        deselectedNeighborhoodList.push(this.getNeighborhoodButton(j, isNewSelection, neighborhood))
+      }
+    })
+    if (!selectedCity) {
+      deselectedNeighborhoodList = sortByPopularity(deselectedNeighborhoodList)
+    }
+
     return (
       <CitiesWrapper
         p={2}
@@ -105,89 +119,42 @@ class CityContainer extends Component {
         fromHome={this.props.fromHome}
         fullscreen={this.props.fullscreen}
       >
-        {cities.map((city, i) => {
-          // Restrict view to only the currently expanded city
-          const isExpanded = expanded && expanded.length > 0
-          if (isExpanded) {
-            if (city.citySlug !== expanded[0].citySlug) {
-              return
-            }
-          }
-          let showExpandAll = false
-          let isCityExpanded = expanded.includes(city)
-          const citySelected = isCitySelected(cities, this.state.currentSelection, city.citySlug)
-          const showSeparator = i === cities.length - 1
-
-          const selectedNeighborhoodList = []
-          let deselectedNeighborhoodList = []
-          city.neighborhoods.forEach((neighborhood, j) => {
-            const isSelected = isNeighborhoodSelected(selectedNeighborhoods, neighborhood.nameSlug)
-            const isNewSelection = isNeighborhoodSelected(this.state.currentSelection, neighborhood.nameSlug)
-            if (isSelected) {
-              selectedNeighborhoodList.push(this.getNeighborhoodButton(j, isNewSelection, neighborhood))
-            } else {
-              deselectedNeighborhoodList.push(this.getNeighborhoodButton(j, isNewSelection, neighborhood))
-            }
-          })
-          if (!isExpanded) {
-            deselectedNeighborhoodList = sortByPopularity(deselectedNeighborhoodList)
-          }
-
-          let buttonsRendered = 0
-
-          return (
-            <Row key={i} flexDirection="column">
-              <Col>
-                <Row flexDirection="row" alignItems="center">
-                  {(i === 0 && !isExpanded) && <Text>Escolha uma cidade</Text>}
-                  {isExpanded &&
-                    <>
-                      <Text>{city.name}</Text>
-                      <Button link fontSize={theme.fontSizes[1]} onClick={() => {this.resetCurrentSelection(); this.props.showAllCities();}}>Trocar cidade</Button>
-                    </>
-                  }
-                </Row>
-              </Col>
-              <Col>
-                <Row flexWrap="wrap">
-                  {isExpanded &&
-                    <>
-                      {selectedNeighborhoodList.map((Item) => {
-                        buttonsRendered++
-                        showExpandAll = buttonsRendered > MAX_INITIAL_ITEMS
-                        if (!isCityExpanded && showExpandAll) {
-                          return null
-                        }
-                        return Item
-                      })}
-                      {deselectedNeighborhoodList.map((Item) => {
-                        buttonsRendered++
-                        showExpandAll = buttonsRendered > MAX_INITIAL_ITEMS
-                        if (!isCityExpanded && showExpandAll) {
-                          return null
-                        }
-                        return Item
-                      })}
-                    </>}
-                  {(i === 0 && !isExpanded) &&
-                    <>
-                      {cities.map((innerCity) =>
-                        <View mr={2} mb={2}>
-                          <NeighborhoodButton
-                            active={citySelected}
-                            onClick={() => {expand(innerCity)}}>
-                              {innerCity.name}
-                          </NeighborhoodButton>
-                        </View>
-                      )}
-                    </>
-                  }
-                </Row>
-              </Col>
-              {showSeparator && <Col mt={2}><Separator /></Col>}
+        <Row flexDirection="column">
+          <Col>
+            <Row flexDirection="row" alignItems="center">
+              {!selectedCity && <Text>Escolha uma cidade</Text>}
+              {selectedCity &&
+                <>
+                  <Text>{selectedCity.name}</Text>
+                  <Button link fontSize={theme.fontSizes[1]} onClick={() => {this.resetCurrentSelection(); this.props.showAllCities();}}>Trocar cidade</Button>
+                </>
+              }
             </Row>
-          )
-        })}
+          </Col>
+          <Col>
+            <Row flexWrap="wrap">
+              {selectedCity &&
+                <>
+                  {selectedNeighborhoodList.map((Item) => Item)}
+                  {deselectedNeighborhoodList.map((Item) => Item)}
+                </>}
+              {!selectedCity &&
+                <>
+                  {cities.map((city) =>
+                    <View mr={2} mb={2}>
+                      <NeighborhoodButton
+                        active={selectedCity && selectedCity.citySlug === city.citySlug}
+                        onClick={() => {selectCity(city)}}>
+                          {city.name}
+                      </NeighborhoodButton>
+                    </View>
+                  )}
+                </>
+              }
+            </Row>
+          </Col>
+          <Col mt={2}><Separator /></Col>
+        </Row>
         <Row justifyContent="space-between">
           <Button p={0} link color="dark" onClick={clear}>Limpar</Button>
           <Button p={0} link onClick={() => {apply(this.state.currentSelection)}}>{this.props.fromHome ? 'Pesquisar' : 'Aplicar'}</Button>
