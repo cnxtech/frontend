@@ -9,7 +9,7 @@ import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
 import faEye from '@fortawesome/fontawesome-free-solid/faEye'
 import faMap from '@fortawesome/fontawesome-free-solid/faMap'
-import faStreetView from '@fortawesome/fontawesome-free-solid/faCube'
+import faStreetView from '@fortawesome/fontawesome-free-solid/faStreetView'
 import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
 import {GET_FULL_LISTING, GET_DISTRICTS} from 'graphql/listings/queries'
 import {Mutation} from 'react-apollo'
@@ -402,7 +402,7 @@ class Listing extends Component {
                             onClick: this.openStreetViewAndCloseMapPopup,
                             icon: {
                               color: theme.colors.blue,
-                              fa: faMap
+                              fa: faStreetView
                             },
                             label: 'Rua'
                           })}
@@ -419,7 +419,7 @@ class Listing extends Component {
                             onClick: this.openMapAndCloseStreetViewPopup,
                             icon: {
                               color: theme.colors.blue,
-                              fa: faStreetView
+                              fa: faMap
                             },
                             label: 'Mapa'
                           })}
