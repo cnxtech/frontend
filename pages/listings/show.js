@@ -233,6 +233,9 @@ class Listing extends Component {
       phone: userInfo.phone
     })
 
+    let identify = new amplitude.Identify().set('name', userInfo.name).set('phone', userInfo.phone)
+    amplitude.identify(identify)
+
     if (res && res.data && res.data.errors) {
       this.setState({errors: res.data.errors})
       callback(res.data.errors)
