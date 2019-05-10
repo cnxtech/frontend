@@ -141,32 +141,34 @@ class CityContainer extends Component {
               </Col>
               <Col>
                 <Row flexWrap="wrap">
-                  <View mr={2} mb={2}>
-                    <NeighborhoodButton
-                      active={citySelected}
-                      onClick={() => {this.selectCity(cities, city.citySlug)}}>
-                        Todos
+                  {isExpanded ?
+                    <>
+                      {selectedNeighborhoodList.map((Item) => {
+                        buttonsRendered++
+                        showExpandAll = buttonsRendered > MAX_INITIAL_ITEMS
+                        if (!isCityExpanded && showExpandAll) {
+                          return null
+                        }
+                        return Item
+                      })}
+                      {deselectedNeighborhoodList.map((Item) => {
+                        buttonsRendered++
+                        showExpandAll = buttonsRendered > MAX_INITIAL_ITEMS
+                        if (!isCityExpanded && showExpandAll) {
+                          return null
+                        }
+                        return Item
+                      })}
+                    </>
+                  :
+                    <View mr={2} mb={2}>
+                      <NeighborhoodButton
+                        active={citySelected}
+                        onClick={() => {expand(city)}}>
+                          {city.name}
                       </NeighborhoodButton>
-                  </View>
-                  <>
-                    {selectedNeighborhoodList.map((Item) => {
-                      buttonsRendered++
-                      showExpandAll = buttonsRendered > MAX_INITIAL_ITEMS
-                      if (!isCityExpanded && showExpandAll) {
-                        return null
-                      }
-                      return Item
-                    })}
-                    {deselectedNeighborhoodList.map((Item) => {
-                      buttonsRendered++
-                      showExpandAll = buttonsRendered > MAX_INITIAL_ITEMS
-                      if (!isCityExpanded && showExpandAll) {
-                        return null
-                      }
-                      return Item
-                    })}
-                  </>
-                  {(showExpandAll && !isCityExpanded) && <Button p={0} link onClick={() => {expand(city)}}>Ver mais</Button>}
+                    </View>
+                  }
                 </Row>
               </Col>
               {showSeparator && <Col mt={2}><Separator /></Col>}
