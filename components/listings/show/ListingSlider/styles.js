@@ -1,21 +1,21 @@
 import styled from 'styled-components'
 import theme from 'config/theme'
 import {
-  desktopHeaderHeight,
-  listingDetailsBarHeight
+  HEADER_HEIGHT,
+  LISTING_BUTTONSBAR_HEIGHT
 } from 'constants/dimensions'
 import {mobileMedia} from 'constants/media'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import Button from '@emcasa/ui-dom/components/Button'
 import MoonLoader from 'react-spinners/MoonLoader'
 import {Content} from 'components/listings/show/Popup/styles'
-import {listingDetailsMaxWidth} from 'constants/dimensions'
+import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import {zIndexModal} from 'constants/zIndex'
 import Text from '@emcasa/ui-dom/components/Text'
 
 export const SPINNER_SIZE = 40
 export const LISTINGSLIDER_HEIGHT = 454
-export const LISTINGSLIDER_OFFSET = (desktopHeaderHeight + listingDetailsBarHeight)
+export const LISTINGSLIDER_OFFSET = (HEADER_HEIGHT + LISTING_BUTTONSBAR_HEIGHT)
 const ARROW_SIZE = 48
 
 export default styled.div`
@@ -78,7 +78,7 @@ export default styled.div`
     }
 
     @media screen and ${breakpoint.up('desktop')} {
-      max-width: ${({isFullScreen}) => isFullScreen ? `${listingDetailsMaxWidth}px` : null};
+      max-width: ${({isFullScreen}) => isFullScreen ? `${LISTING_MAX_WIDTH}px` : null};
       max-height: ${({isFullScreen}) => isFullScreen ? '65vh' : null};
       box-sizing: ${({isFullScreen}) => isFullScreen ? 'border-box' : null};
     }
@@ -89,8 +89,16 @@ export default styled.div`
     position: relative;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: ${({isFullScreen}) => isFullScreen ? 'contain' : 'cover'};
     box-sizing: border-box;
+
+    @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
+      object-fit: cover;
+    }
+
+    @media screen and ${breakpoint.up('desktop')} {
+      object-fit: cover;
+    }
   }
 
   .slick-dots {
@@ -205,7 +213,7 @@ export const Header = styled.div`
 
   @media screen and ${breakpoint.up('desktop')} {
     justify-content: space-between;
-    max-width: ${({isFullScreen}) => isFullScreen ? `${listingDetailsMaxWidth - (ARROW_SIZE * 2)}px` : null};
+    max-width: ${({isFullScreen}) => isFullScreen ? `${LISTING_MAX_WIDTH - (ARROW_SIZE * 2)}px` : null};
     width: calc(100% - ${ARROW_SIZE * 2}px);
     margin-bottom: ${theme.space[4]}px;
   }
@@ -268,7 +276,7 @@ export const PaginationTextWrapper = styled.div`
     position: relative;
     left: initial;
     transform: initial;
-    max-width: ${({isFullScreen}) => isFullScreen ? `${listingDetailsMaxWidth - (ARROW_SIZE * 2)}px` : null};
+    max-width: ${({isFullScreen}) => isFullScreen ? `${LISTING_MAX_WIDTH - (ARROW_SIZE * 2)}px` : null};
     width: calc(100% - ${ARROW_SIZE * 2}px);
     margin: ${theme.space[4]}px ${ARROW_SIZE + theme.space[1]}px 0;
   }

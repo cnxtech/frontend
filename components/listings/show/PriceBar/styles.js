@@ -4,8 +4,8 @@ import {breakpoint} from '@emcasa/ui/lib/styles'
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 import {
-  desktopHeaderHeight,
-  listingDetailsBarHeight
+  HEADER_HEIGHT,
+  LISTING_BUTTONSBAR_HEIGHT
 } from 'constants/dimensions'
 
 export const Wrapper = styled(Row)`
@@ -20,9 +20,9 @@ export const Wrapper = styled(Row)`
     z-index: 6;
     position: fixed;
     left: 0;
-    top: ${desktopHeaderHeight}px;
+    top: ${HEADER_HEIGHT}px;
     width: 100%;
-    height: ${listingDetailsBarHeight}px;
+    height: ${LISTING_BUTTONSBAR_HEIGHT}px;
     padding: 0 ${theme.space[4]}px;
     background: ${theme.colors.white};
   }

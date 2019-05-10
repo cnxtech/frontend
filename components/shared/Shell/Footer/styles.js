@@ -4,7 +4,7 @@ import Text from '@emcasa/ui-dom/components/Text'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import {breakpoint} from '@emcasa/ui/lib/styles'
-import {listingDetailsMaxWidth, listingDetailsBarHeight} from 'constants/dimensions.js'
+import {LISTING_MAX_WIDTH, LISTING_BUTTONSBAR_HEIGHT} from 'constants/dimensions.js'
 
 const MAX_WIDTH_LOGO = 110
 
@@ -16,8 +16,8 @@ export const Wrapper = styled.address`
 export const Container = styled(Row)`
   flex-direction: column;
   margin: 0 auto;
-  padding: ${theme.space[5]}px ${theme.space[4]}px ${listingDetailsBarHeight + (theme.space[5] * 2)}px;
-  max-width: ${listingDetailsMaxWidth + 420}px;
+  padding: ${theme.space[5]}px ${theme.space[4]}px ${LISTING_BUTTONSBAR_HEIGHT + (theme.space[5] * 2)}px;
+  max-width: ${LISTING_MAX_WIDTH + 420}px;
   box-sizing: border-box;
 
   @media screen and ${breakpoint.up('desktop')} {

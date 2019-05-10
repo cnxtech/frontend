@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import * as colors from 'constants/colors'
-import {desktopHeaderHeight} from 'constants/dimensions'
+import {HEADER_HEIGHT} from 'constants/dimensions'
 import {headerMobileMedia} from 'constants/media'
 
 export default styled.div`
@@ -8,7 +8,7 @@ export default styled.div`
   box-sizing: border-box;
   padding: 28px 40px;
   width: 380px;
-  min-height: calc(100vh - ${desktopHeaderHeight}px);
+  min-height: calc(100vh - ${HEADER_HEIGHT}px);
   background: ${colors.offWhite};
 
   h6 {
