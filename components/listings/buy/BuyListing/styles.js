@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
 import {breakpoint} from '@emcasa/ui/lib/styles'
-import {desktopHeaderHeight} from 'constants/dimensions'
+import {HEADER_HEIGHT} from 'constants/dimensions'
 
 const CLOUDINARY_URL =
   'https://res.cloudinary.com/emcasa/image/upload/f_auto/v1542831121/background'
@@ -52,10 +52,10 @@ const Container = styled(View)`
 
 const Content = styled(View)`
   max-width: 100%;
-  margin-top: ${desktopHeaderHeight * 2}px;
+  margin-top: ${HEADER_HEIGHT * 2}px;
   @media ${breakpoint.up('desktop')} {
     @media (min-aspect-ratio: 2 / 1) {
-      margin-top: ${desktopHeaderHeight}px;
+      margin-top: ${HEADER_HEIGHT}px;
     }
   }
 `

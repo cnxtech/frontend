@@ -6,7 +6,7 @@ import {withBreakpoint} from '@emcasa/ui-dom/components/Breakpoint'
 import BuyListing from 'components/listings/buy/BuyListing'
 import Benefits from 'components/listings/shared/Benefits'
 import Neighborhoods from 'components/listings/buy/Neighborhoods'
-import {desktopHeaderHeight} from 'constants/dimensions'
+import {HEADER_HEIGHT} from 'constants/dimensions'
 import {
   sameAs,
   SchemaWebSite,
@@ -34,7 +34,7 @@ const Block = styled(View)`
   min-height: 60vh;
   max-width: 100vw;
   overflow: hidden;
-  padding-top: ${desktopHeaderHeight}px;
+  padding-top: ${HEADER_HEIGHT}px;
   justify-content: center;
 `
 

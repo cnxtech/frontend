@@ -35,7 +35,7 @@ const Footer = () => (
       <Container>
         <AboutContainer>
           <LogoWrapper>
-            <Logo logoFill="white" textFill="white" />
+            <Logo logoFill={theme.colors.white} textFill={theme.colors.white} />
           </LogoWrapper>
           <AboutText fontSize="small" color="disabled">
             A EmCasa é uma imobiliária digital tem como objetivo transformar a

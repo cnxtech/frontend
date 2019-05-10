@@ -8,6 +8,7 @@ import Col from '@emcasa/ui-dom/components/Col'
 import Button from '@emcasa/ui-dom/components/Button'
 import NextHead from 'components/shared/NextHead'
 import {imageUrl} from 'utils/image_url'
+import {HEADER_HEIGHT} from 'constants/dimensions'
 
 const HTTPMessageSvgWidth = 723
 
@@ -2674,6 +2675,8 @@ export default class HTTPMessage extends Component {
   }
 
   render() {
+    const {statusCode} = this.props
+
     return (
       <>
         <NextHead
@@ -2685,7 +2688,7 @@ export default class HTTPMessage extends Component {
           url={this.url}
           canonical={this.canonical}
         />
-        <Col px={4}>
+        <Col px={4} mt={statusCode === 404 ? null : HEADER_HEIGHT}>
           <Row justifyContent="center">
             <Col width={[1,null,null,HTTPMessageSvgWidth]}>
               <Text

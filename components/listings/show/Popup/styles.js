@@ -5,7 +5,7 @@ import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
 import {zIndexModal} from 'constants/zIndex'
-import {listingDetailsMaxWidth} from 'constants/dimensions'
+import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 
 export default styled.div`
   z-index: ${zIndexModal + 5};
@@ -32,7 +32,7 @@ export const Wrapper = styled(Row)`
   position: relative;
 
   @media screen and ${breakpoint.up('desktop')} {
-    max-width: ${listingDetailsMaxWidth}px;
+    max-width: ${LISTING_MAX_WIDTH}px;
     max-height: 65vh;
   }
 `
@@ -46,7 +46,7 @@ export const Header = styled.div`
 
   @media screen and ${breakpoint.up('desktop')} {
     width: calc(100% - ${theme.space[4]}px);
-    max-width: ${listingDetailsMaxWidth}px;
+    max-width: ${LISTING_MAX_WIDTH}px;
     margin: 0 auto;
     padding-bottom: ${theme.space[2]}px;
     box-sizing: border-box;

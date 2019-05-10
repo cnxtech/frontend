@@ -55,7 +55,7 @@ import {
   LISTING_DETAIL_STREETVIEW_OPEN,
   LISTING_DETAIL_STREETVIEW_CLOSE
 } from 'lib/logging'
-import {listingDetailsBarHeight} from 'constants/dimensions'
+import {ShowContainer} from './styles'
 
 class Listing extends Component {
   favMutated = false
@@ -341,10 +341,7 @@ class Listing extends Component {
                       listing={listing}
                       routerAsPath={router.asPath}
                     />
-                    <Row
-                      flexDirection={'column-reverse'}
-                      mt={[null, null, null, `${listingDetailsBarHeight}px`]}
-                    >
+                    <ShowContainer>
                       <Breadcrumb paths={paths} />
                       <Row flexDirection="column">
                         <ListingSlider
@@ -464,7 +461,7 @@ class Listing extends Component {
                           currentUser={this.props.currentUser}
                         />
                       )}
-                    </Row>
+                    </ShowContainer>
                   </Fragment>
                 )
               }}
