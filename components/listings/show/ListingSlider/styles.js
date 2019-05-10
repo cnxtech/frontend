@@ -89,8 +89,16 @@ export default styled.div`
     position: relative;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: ${({isFullScreen}) => isFullScreen ? 'contain' : 'cover'};
     box-sizing: border-box;
+
+    @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
+      object-fit: cover;
+    }
+
+    @media screen and ${breakpoint.up('desktop')} {
+      object-fit: cover;
+    }
   }
 
   .slick-dots {
