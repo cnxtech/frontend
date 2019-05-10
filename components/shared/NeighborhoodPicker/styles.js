@@ -6,6 +6,7 @@ import Icon from '@emcasa/ui-dom/components/Icon'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
 import {breakpoint} from '@emcasa/ui/lib/styles'
+import {NEIGHBORHOODPICKER_INPUT_HEIGHT} from 'constants/dimensions'
 
 const MARGINS = theme.space[4] * 2
 

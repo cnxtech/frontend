@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {mobileMedia} from 'constants/media'
 import * as colors from 'constants/colors'
-import {SEARCH_HEIGHT} from 'constants/dimensions'
+import {HEADER_SEARCH_HEIGHT} from 'constants/dimensions'
 
 export default styled.div`
   box-sizing: border-box;
@@ -64,7 +64,7 @@ export const Wrapper = styled.div`
   position: relative;
 
   @media ${mobileMedia} {
-    height: calc(100vh - ${SEARCH_HEIGHT}px);
+    height: calc(100vh - ${HEADER_SEARCH_HEIGHT}px);
   }
 
   ${({horizontal}) =>

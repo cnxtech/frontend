@@ -120,11 +120,11 @@ class Header extends Component {
     return (
       <Wrapper>
         <Container transparent={transparent} sticky={sticky && !search} search={search}>
-          <Row alignItems="center" width={[1,null,null,  1/2]} style={!search ? {height: theme.buttonHeight[1]} : null}>
-            <LogoWrapper hideText={true}>
+          <Row alignItems="center" width={[1,null,null,  1/2]}>
+            <LogoWrapper hideText={search}>
               <Link passHref href="/listings/buy" as="/">
                 <a>
-                    <Logo hideText={true} logoFill={theme.colors.pink} textFill={theme.colors.dark} />
+                    <Logo hideText={search} logoFill={theme.colors.pink} textFill={theme.colors.dark} />
                     <LabelLogo>EmCasa Imobiliária no Rio de Janeiro e São Paulo</LabelLogo>
                 </a>
               </Link>

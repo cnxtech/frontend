@@ -5,27 +5,24 @@ import {breakpoint} from '@emcasa/ui/lib/styles'
 import {zIndexHeader} from 'constants/zIndex'
 import {
   HEADER_HEIGHT,
-  SEARCH_HEIGHT,
+  HEADER_SEARCH_HEIGHT,
   HEADER_LOGO_WIDTH,
   HEADER_LOGO_WITH_TEXT_WIDTH
 } from 'constants/dimensions'
-
-export const MAX_HEADER_HEIGHT = 76
 
 export default styled.header`
   z-index: 1;
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: ${props => props.search ? SEARCH_HEIGHT : HEADER_HEIGHT}px;
-  padding: ${theme.space[2]}px ${theme.space[4]}px;
+  height: ${({search}) => search ? HEADER_SEARCH_HEIGHT : HEADER_HEIGHT}px;
+  padding: 0 ${theme.space[4]}px;
   box-sizing: border-box;
   transition: background 0.25s;
   background: ${(props) => (!props.transparent || props.sticky ? 'white' : null)};
 
   @media screen and ${breakpoint.up('desktop')} {
     align-items: center;
-    height: auto;
   }
 `
 
@@ -89,7 +86,7 @@ export const Nav = styled.nav`
   padding-top: ${theme.buttonHeight[1] + (theme.space[2] * 2)}px;
   box-sizing: border-box;
   background: white;
-  transition: transform ${({visible}) => visible ? '.85s' : '.6s'} cubic-bezier(.4, .2, 0, 1) ${({visible}) => visible ? '.1s' : '0s'};
+  transition: transform ${({visible}) => visible ? '.8s' : '.6s'} cubic-bezier(.4, .2, 0, 1) ${({visible}) => visible ? '.1s' : '0s'};
 
   @media screen and ${breakpoint.up('desktop')} {
     position: initial;
@@ -111,6 +108,10 @@ export const Nav = styled.nav`
 
   a {
     text-decoration: none;
+
+    @media screen and ${breakpoint.up('desktop')} {
+      margin-left: ${theme.space[4]}px;
+    }
   }
 `
 
@@ -126,9 +127,21 @@ export const MenuItem = styled.a`
   cursor: pointer;
 
   @media screen and ${breakpoint.up('desktop')} {
-    border-left: none;
+    border: none;
     font-weight: ${theme.fontWeights[0]};
     padding: 0 ${theme.space[4] * 2}px;
+    position: relative;
+
+    &::before {
+      content: '';
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: ${theme.colors.pink};
+    }
   }
 
   &:hover,
@@ -136,8 +149,11 @@ export const MenuItem = styled.a`
     border-left: 7px solid ${theme.colors.pink};
 
     @media screen and ${breakpoint.up('desktop')} {
-      border-left: none;
-      border-bottom: 1px solid ${theme.colors.pink};
+      border: none;
+
+      &::before {
+        display: block;
+      }
     }
   }
 

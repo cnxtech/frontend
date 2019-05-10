@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
+import theme from '@emcasa/ui'
 import Filters from '@emcasa/ui-dom/components/Filters'
 import {
   TypesFilter,
@@ -9,7 +9,7 @@ import {
   GarageSpotsFilter
 } from '@emcasa/ui-dom/components/Filters/ListingFilters'
 import {zIndexFilter} from 'constants/zIndex'
-import {MAX_HEADER_HEIGHT} from 'components/shared/Shell/Header/styles'
+import {HEADER_SEARCH_HEIGHT} from 'constants/dimensions'
 
 const ListingFilter = styled(function ListingFilter(props) {
   return (
@@ -24,8 +24,8 @@ const ListingFilter = styled(function ListingFilter(props) {
 })`
   position: sticky !important;
   width: auto !important;
-  top: ${MAX_HEADER_HEIGHT}px;
-  padding: 0 ${themeGet('space.4')}px;
+  top: ${HEADER_SEARCH_HEIGHT}px;
+  padding: 0 ${theme.space[4]}px;
   background-color: white;
 `
 
