@@ -140,8 +140,8 @@ class CityContainer extends Component {
                 </>}
               {!selectedCity &&
                 <>
-                  {cities.map((city) =>
-                    <View mr={2} mb={2}>
+                  {cities.map((city, i) =>
+                    <View mr={2} mb={2} key={i}>
                       <NeighborhoodButton
                         active={selectedCity && selectedCity.citySlug === city.citySlug}
                         onClick={() => {selectCity(city)}}>
@@ -166,8 +166,8 @@ class CityContainer extends Component {
 
 CityContainer.propTypes = {
   cities: PropTypes.array.isRequired,
-  expand: PropTypes.func.isRequired,
-  expanded: PropTypes.array.isRequired,
+  selectCity: PropTypes.func.isRequired,
+  selectedCity: PropTypes.object,
   selectedNeighborhoods: PropTypes.array.isRequired,
   clear: PropTypes.func.isRequired,
   apply: PropTypes.func.isRequired,
