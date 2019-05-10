@@ -4,9 +4,9 @@ import {breakpoint} from '@emcasa/ui/lib/styles'
 import Row from '@emcasa/ui-dom/components/Row'
 import Button from '@emcasa/ui-dom/components/Button'
 import {
-  desktopHeaderHeight,
-  listingDetailsMaxWidth,
-  listingDetailsBarHeight
+  HEADER_HEIGHT,
+  LISTING_MAX_WIDTH,
+  LISTING_BUTTONSBAR_HEIGHT
 } from 'constants/dimensions'
 import {zIndexModal} from 'constants/zIndex'
 
@@ -25,8 +25,8 @@ export const Wrapper = styled(Row)`
 
   @media screen and ${breakpoint.up('desktop')} {
     bottom: initial;
-    top: ${desktopHeaderHeight}px;
-    height: ${listingDetailsBarHeight}px;
+    top: ${HEADER_HEIGHT}px;
+    height: ${LISTING_BUTTONSBAR_HEIGHT}px;
     padding: 0 ${theme.space[4]}px;
     background: none;
     box-shadow: none;
@@ -37,7 +37,7 @@ export const Container = styled(Row)`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: ${listingDetailsBarHeight}px;
+  height: ${LISTING_BUTTONSBAR_HEIGHT}px;
 
   @media screen and ${breakpoint.up('desktop')} {
     justify-content: flex-end;

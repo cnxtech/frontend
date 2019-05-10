@@ -55,7 +55,7 @@ import {
   LISTING_DETAIL_STREETVIEW_OPEN,
   LISTING_DETAIL_STREETVIEW_CLOSE
 } from 'lib/logging'
-import {listingDetailsBarHeight} from 'constants/dimensions'
+import {LISTING_BUTTONSBAR_HEIGHT} from 'constants/dimensions'
 
 class Listing extends Component {
   favMutated = false
@@ -343,7 +343,7 @@ class Listing extends Component {
                     />
                     <Row
                       flexDirection={'column-reverse'}
-                      mt={[null, null, null, `${listingDetailsBarHeight}px`]}
+                      mt={[null, null, null, `${LISTING_BUTTONSBAR_HEIGHT}px`]}
                     >
                       <Breadcrumb paths={paths} />
                       <Row flexDirection="column">

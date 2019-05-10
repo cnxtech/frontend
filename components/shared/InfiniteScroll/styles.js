@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {mobileMedia} from 'constants/media'
 import * as colors from 'constants/colors'
-import {desktopHeaderAndFilterHeight} from 'constants/dimensions'
+import {SEARCH_HEIGHT} from 'constants/dimensions'
 
 export default styled.div`
   box-sizing: border-box;
@@ -59,11 +59,12 @@ export const Footer = styled.footer`
 `
 
 export const Wrapper = styled.div`
+  opacity: .2;
   box-sizing: border-box;
   position: relative;
 
   @media ${mobileMedia} {
-    height: calc(100vh - ${desktopHeaderAndFilterHeight}px);
+    height: calc(100vh - ${SEARCH_HEIGHT}px);
   }
 
   ${({horizontal}) =>

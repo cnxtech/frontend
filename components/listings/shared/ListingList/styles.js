@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import theme from 'config/theme'
 import {ROW_HEIGHT as FILTER_ROW_HEIGHT} from '@emcasa/ui-dom/components/Filters/constants'
 import {MAX_HEADER_HEIGHT} from 'components/shared/Shell/Header/styles'
-import {desktopFilterHeight} from 'constants/dimensions'
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 

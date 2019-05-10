@@ -1,5 +1,6 @@
-export const desktopHeaderHeight = 60
-export const desktopFilterHeight = 52
-export const desktopHeaderAndFilterHeight = desktopHeaderHeight + desktopFilterHeight
-export const listingDetailsMaxWidth = 1224
-export const listingDetailsBarHeight = 72
+export const SEARCH_HEIGHT = 76
+export const HEADER_HEIGHT = 60
+export const HEADER_LOGO_WIDTH = 30
+export const HEADER_LOGO_WITH_TEXT_WIDTH = 110
+export const LISTING_BUTTONSBAR_HEIGHT = 72
+export const LISTING_MAX_WIDTH = 1224

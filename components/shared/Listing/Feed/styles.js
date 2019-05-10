@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import theme from 'config/theme'
 import {backgroundColor} from 'styled-system'
 import {breakpoint} from '@emcasa/ui/lib/styles'
-import {listingDetailsMaxWidth} from 'constants/dimensions'
+import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import Button from '@emcasa/ui-dom/components/Button'
 
 export const Wrapper = styled.div`
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 export const Container = styled.div`
   position: relative;
   width: 100%;
-  max-width: ${listingDetailsMaxWidth}px;
+  max-width: ${LISTING_MAX_WIDTH}px;
   margin: 0 auto;
   padding: ${theme.space[4]}px;
   box-sizing: border-box;

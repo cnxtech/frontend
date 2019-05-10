@@ -3,7 +3,12 @@ import theme from 'config/theme'
 import Col from '@emcasa/ui-dom/components/Col'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import {zIndexHeader} from 'constants/zIndex'
-import {desktopHeaderHeight} from 'constants/dimensions'
+import {
+  HEADER_HEIGHT,
+  SEARCH_HEIGHT,
+  HEADER_LOGO_WIDTH,
+  HEADER_LOGO_WITH_TEXT_WIDTH
+} from 'constants/dimensions'
 
 export const MAX_HEADER_HEIGHT = 76
 
@@ -12,11 +17,16 @@ export default styled.header`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: ${props => props.search ? MAX_HEADER_HEIGHT : desktopHeaderHeight}px;
-  padding: ${theme.space[2]}px ${theme.space[4]}px 0;
+  height: ${props => props.search ? SEARCH_HEIGHT : HEADER_HEIGHT}px;
+  padding: ${theme.space[2]}px ${theme.space[4]}px;
   box-sizing: border-box;
   transition: background 0.25s;
   background: ${(props) => (!props.transparent || props.sticky ? 'white' : null)};
+
+  @media screen and ${breakpoint.up('desktop')} {
+    align-items: center;
+    height: auto;
+  }
 `
 
 export const Wrapper = styled.div`
@@ -28,7 +38,7 @@ export const Wrapper = styled.div`
 `
 
 export const LogoWrapper = styled.h1`
-  flex: 0 0 ${({hideText}) => hideText ? '38px' : '110px'};
+  flex: 0 0 ${({hideText}) => hideText ? `${HEADER_LOGO_WIDTH}px` : `${HEADER_LOGO_WITH_TEXT_WIDTH}px`};
   margin: 0;
 `
 
