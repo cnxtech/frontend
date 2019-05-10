@@ -68,6 +68,10 @@ class CityContainer extends Component {
     )
   }
 
+  resetCurrentSelection = () => {
+    this.setState({currentSelection: []})
+  }
+
   updateCurrentSelection(neighborhood) {
     const newSelection = updateSelection(this.state.currentSelection, neighborhood)
     this.setState({ currentSelection: newSelection })
@@ -112,7 +116,7 @@ class CityContainer extends Component {
           let showExpandAll = false
           let isCityExpanded = expanded.includes(city)
           const citySelected = isCitySelected(cities, this.state.currentSelection, city.citySlug)
-          const showSeparator = i <= cities.length - 1
+          const showSeparator = i === cities.length - 1
 
           const selectedNeighborhoodList = []
           let deselectedNeighborhoodList = []
@@ -135,8 +139,13 @@ class CityContainer extends Component {
             <Row key={i} flexDirection="column">
               <Col>
                 <Row flexDirection="row" alignItems="center">
-                  <Text fontSize="small">{city.name}</Text>
-                  {isExpanded && <Button link fontSize={theme.fontSizes[1]} onClick={this.props.showAllCities}>Trocar cidade</Button>}
+                  {(i === 0 && !isExpanded) && <Text>Escolha uma cidade</Text>}
+                  {isExpanded &&
+                    <>
+                      <Text>{city.name}</Text>
+                      <Button link fontSize={theme.fontSizes[1]} onClick={() => {this.resetCurrentSelection(); this.props.showAllCities();}}>Trocar cidade</Button>
+                    </>
+                  }
                 </Row>
               </Col>
               <Col>
