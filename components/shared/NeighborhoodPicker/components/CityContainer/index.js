@@ -52,9 +52,8 @@ class CityContainer extends Component {
 
   getNeighborhoodButton(key, isNewSelection, neighborhood) {
     return (
-      <View mr={2} mb={2} neighborhood={neighborhood}>
+      <View mr={2} mb={2} neighborhood={neighborhood} key={key}>
         <NeighborhoodButton
-          key={key}
           active={isNewSelection}
           onClick={() => {
             this.updateCurrentSelection(neighborhood.nameSlug)
