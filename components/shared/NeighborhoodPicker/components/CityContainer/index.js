@@ -134,6 +134,11 @@ class CityContainer extends Component {
             <Row flexWrap="wrap">
               {selectedCity &&
                 <>
+                  <View mr={2} mb={2}>
+                    <NeighborhoodButton onClick={() => {this.selectCity(cities, selectedCity.citySlug)}}>
+                      Todos
+                    </NeighborhoodButton>
+                  </View>
                   {selectedNeighborhoodList.map((Item) => Item)}
                   {deselectedNeighborhoodList.map((Item) => Item)}
                 </>}
