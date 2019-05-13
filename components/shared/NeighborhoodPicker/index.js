@@ -59,6 +59,9 @@ class NeighborhoodPicker extends Component {
   }
 
   componentDidMount() {
+    if (!process.browser) {
+      return
+    }
     fetch('/location', {method: 'POST'}).then((response) => response.json()).then((result) => {
       if (result && result.location && result.location.city) {
         const {city} = result.location
