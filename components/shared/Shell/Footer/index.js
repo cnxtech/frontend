@@ -72,9 +72,13 @@ const Footer = () => (
           </Row>
           <Row flexDirection="column">
             <TitleLinks {...titleText}>Suporte</TitleLinks>
-            <TextLink as="a" fontSize={[1, null, null, 2]} href="tel:+5521994771868">
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="tel:+551140630541">
               <FontAwesomeIcon icon={faPhone} />
-              (21) 99477-1868
+              SP: (11) 4063-0541
+            </TextLink>
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="tel:+552131956541">
+              <FontAwesomeIcon icon={faPhone} />
+              RJ: (21) 3195-6541
             </TextLink>
             <TextLink as="a" fontSize={[1, null, null, 2]} href="https://wa.me/5521994771868">
               <FontAwesomeIcon icon={faWhatsapp} />
