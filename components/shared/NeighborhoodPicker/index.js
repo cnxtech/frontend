@@ -37,6 +37,7 @@ import {
 import {NEIGHBORHOOD_SELECTION_CHANGE} from './events'
 
 const DEFAULT_BUTTON_TEXT = 'Escolha os bairros'
+const DEFAULT_CITY = 'sao-paulo'
 
 class NeighborhoodPicker extends Component {
   constructor(props) {
@@ -63,7 +64,7 @@ class NeighborhoodPicker extends Component {
         const {city} = result.location
         const citySlug = slugify(city.toLowerCase())
         const isCityAvailable = cities.find((city) => city.citySlug === citySlug)
-        this.selectCity(isCityAvailable ? {city, citySlug} : cities.find((city) => city.citySlug === 'sao-paulo'))
+        this.selectCity(cities.find((city) => city.citySlug === (isCityAvailable ? city.citySlug : DEFAULT_CITY)))
       }
     })
   }
