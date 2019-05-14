@@ -3,6 +3,4 @@ const cities = [
   {name: 'Rio de Janeiro', citySlug: 'rio-de-janeiro', stateSlug: 'rj', state: 'RJ', neighborhoods: []}
 ]
 
-export {
-  cities
-}
+module.exports = {cities}

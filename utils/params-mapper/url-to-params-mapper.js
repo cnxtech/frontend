@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {cities} = require('constants/cities')
+const {cities} = require('../../constants/cities')
 
 const TAGS = [
   'academia',
