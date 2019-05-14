@@ -47,7 +47,6 @@ class ListingFeed extends Component {
 }
 
 ListingFeed.propTypes = {
-  currentListing: PropTypes.array,
   currentUser: PropTypes.object,
   variables: PropTypes.object,
   button: PropTypes.object
