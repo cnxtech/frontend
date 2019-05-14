@@ -56,7 +56,7 @@ const Footer = () => (
               <TextLink as="a" fontSize={[1, null, null, 2]}>Avalie seu imóvel</TextLink>
             </Link>
             <TextLink as="a" fontSize={[1, null, null, 2]} href="https://blog.emcasa.com" target="_blank" rel="noopener">Blog</TextLink>
-            <TextLink as="a" fontSize={[1, null, null, 2]} href="http://jobs.emcasa.com" target="_blank" rel="noopener">Trabalhe Conosco</TextLink>
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://www.linkedin.com/company/emcasa/jobs/" target="_blank" rel="noopener">Trabalhe Conosco</TextLink>
             <Link passHref href="/corretor-parceiro-rj">
               <TextLink as="a" fontSize={[1, null, null, 2]}>Seja um corretor parceiro no RJ</TextLink>
             </Link>
