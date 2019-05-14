@@ -34,7 +34,8 @@ class ListingFeedGrid extends Component {
 
 ListingFeedGrid.propTypes = {
   listings: PropTypes.array,
-  currentUser: PropTypes.object
+  currentUser: PropTypes.object,
+  title: PropTypes.string
 }
 
 export default ListingFeedGrid

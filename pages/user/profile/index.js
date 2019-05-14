@@ -82,8 +82,7 @@ class UserProfile extends Component {
     try {
       return {
         initialTab,
-        currentUser,
-        renderFooter: false
+        currentUser
       }
     } catch (e) {
       return {

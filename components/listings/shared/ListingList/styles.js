@@ -22,7 +22,7 @@ const Title = styled(Text)`
 
 const Container = styled(Row)`
   justify-content: space-between;
-  margin-top: ${HEADER_SEARCH_HEIGHT + theme.space[3]}px;
+  margin-top: ${theme.space[3]}px;
 `
 
 const MapContainer = styled.div`

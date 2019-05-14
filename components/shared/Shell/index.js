@@ -45,13 +45,13 @@ class Layout extends Component {
           search={pageProps.headerSearch}
           transparent={pageProps.transparentHeader}
         />
-        <Container
+        <Main
           transparentHeader={pageProps.transparentHeader}
           search={pageProps.headerSearch}
         >
-          <Main>{this.props.children}</Main>
-          {renderFooter && <FooterComponent />}
-        </Container>
+          {this.props.children}
+        </Main>
+        {renderFooter && <FooterComponent />}
       </Fragment>
     )
   }

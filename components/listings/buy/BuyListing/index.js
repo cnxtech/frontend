@@ -4,10 +4,8 @@ import {withBreakpoint} from '@emcasa/ui-dom/components/Breakpoint'
 import Col from '@emcasa/ui-dom/components/Col'
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
-import NeighborhoodAutoComplete from 'components/shared/NeighborhoodAutoComplete'
 import NeighborhoodPicker from 'components/shared/NeighborhoodPicker'
-import MobileAddressButton from 'components/shared/MobileAddressButton'
-import { MobileTypeaheadContainer } from 'components/shared/NeighborhoodAutoComplete/styles'
+import {MobileTypeaheadContainer} from 'components/shared/NeighborhoodAutoComplete/styles'
 import ScrollTracker from 'components/shared/ScrollTracker'
 import {
   showHeader,

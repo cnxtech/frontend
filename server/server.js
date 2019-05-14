@@ -216,6 +216,10 @@ const startServer = () => {
         res.status(200).send(`Ping ${new Date() * 1}`)
       })
 
+      server.get('/new-home', (req, res) => {
+        return app.render(req, res, '/listings/buy/new', req.query)
+      })
+
       server.get('/google1e5ce96173e3bf9d.html', (req, res) => {
         app.serveStatic(
           req,

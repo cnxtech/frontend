@@ -13,19 +13,14 @@ import faUser from '@fortawesome/fontawesome-pro-solid/faUser'
 import faSignInAlt from '@fortawesome/fontawesome-pro-solid/faSignInAlt'
 import NeighborhoodPicker from 'components/shared/NeighborhoodPicker'
 import {MobileTypeaheadContainer} from 'components/shared/NeighborhoodAutoComplete/styles'
-import {
-  log,
-  LANDING_LOGIN
-} from 'lib/logging'
+import {log, LANDING_LOGIN} from 'lib/logging'
 import Container, {
-  Wrapper,
   Nav,
   Overlay,
   NavButton,
   MenuItem,
   LogoWrapper,
   LabelLogo,
-  Search,
   SearchWrapper
 } from './styles'
 import Logo from 'components/shared/Logo'
@@ -114,74 +109,99 @@ class Header extends Component {
     const currentPath = router.asPath
 
     if (showFullScreenSearch) {
-      return (this.renderFullScreenSearch())
+      return this.renderFullScreenSearch()
     }
 
     return (
-      <Wrapper>
-        <Container transparent={transparent} sticky={sticky && !search} search={search}>
-          <Row alignItems="center" width={[1,null,null,  1/2]}>
-            <LogoWrapper hideText={search}>
-              <Link passHref href="/listings/buy" as="/">
-                <a>
-                    <Logo hideText={search} logoFill={theme.colors.pink} textFill={theme.colors.dark} />
-                    <LabelLogo>EmCasa Imobiliária no Rio de Janeiro e São Paulo</LabelLogo>
-                </a>
-              </Link>
-            </LogoWrapper>
-            <SearchWrapper>
-              {search && this.renderSearch()}
-            </SearchWrapper>
-            <Overlay visible={isMobileNavVisible} onClick={this.toggleMobileNavVisibility} />
-            <NavButton
-              visible={!isMobileNavVisible && !search}
-              onClick={this.toggleMobileNavVisibility}
-            >
-              ☰
-            </NavButton>
-          </Row>
-          <Col width={[0,null,null,  1/2]}>
-            <Nav visible={isMobileNavVisible}>
-              <CloseButton onClick={this.toggleMobileNavVisibility} />
-              <Link passHref href="/listings" as="/imoveis">
-                <MenuItem className={router.route === '/listings' ? 'active' :  null} onClick={this.toggleMobileNavVisibility}>
-                  <FontAwesomeIcon icon={faSearch} className="icon" />
-                  Comprar
+      <Container
+        transparent={transparent}
+        sticky={sticky && !search}
+        search={search}
+      >
+        <Row alignItems="center" width={[1, null, null, 1 / 2]}>
+          <LogoWrapper hideText={search}>
+            <Link passHref href="/listings/buy" as="/">
+              <a>
+                <Logo
+                  hideText={search}
+                  logoFill={theme.colors.pink}
+                  textFill={theme.colors.dark}
+                />
+                <LabelLogo>
+                  EmCasa Imobiliária no Rio de Janeiro e São Paulo
+                </LabelLogo>
+              </a>
+            </Link>
+          </LogoWrapper>
+          <SearchWrapper>{search && this.renderSearch()}</SearchWrapper>
+          <Overlay
+            visible={isMobileNavVisible}
+            onClick={this.toggleMobileNavVisibility}
+          />
+          <NavButton
+            visible={!isMobileNavVisible && !search}
+            onClick={this.toggleMobileNavVisibility}
+          >
+            ☰
+          </NavButton>
+        </Row>
+        <Col width={[0, null, null, 1 / 2]}>
+          <Nav visible={isMobileNavVisible}>
+            <CloseButton aria-label="Fechar menu" onClick={this.toggleMobileNavVisibility} />
+            <Link passHref href="/listings" as="/imoveis">
+              <MenuItem
+                className={router.route === '/listings' ? 'active' : null}
+                onClick={this.toggleMobileNavVisibility}
+              >
+                <FontAwesomeIcon icon={faSearch} className="icon" />
+                Comprar
+              </MenuItem>
+            </Link>
+            <Link passHref href="/vender">
+              <MenuItem
+                className={currentPath.startsWith('/vender') ? 'active' : null}
+                onClick={this.toggleMobileNavVisibility}
+              >
+                <FontAwesomeIcon className="icon" icon={faFlag} />
+                Vender
+              </MenuItem>
+            </Link>
+            {authenticated && (
+              <Link passHref href="/meu-perfil">
+                <MenuItem
+                  className={
+                    currentPath.startsWith('/meu-perfil') ? 'active' : null
+                  }
+                  onClick={this.toggleMobileNavVisibility}
+                >
+                  <FontAwesomeIcon className="icon" icon={faUser} />
+                  Meu Perfil
                 </MenuItem>
               </Link>
-              <Link passHref href="/vender">
-                <MenuItem className={currentPath.startsWith('/vender') ? 'active' :  null} onClick={this.toggleMobileNavVisibility}>
-                  <FontAwesomeIcon className="icon" icon={faFlag} />
-                  Vender
-                </MenuItem>
-              </Link>
-              {authenticated && (
-                <Link passHref href="/meu-perfil">
-                  <MenuItem className={currentPath.startsWith('/meu-perfil') ? 'active' :  null} onClick={this.toggleMobileNavVisibility}>
-                    <FontAwesomeIcon className="icon" icon={faUser} />
-                    Meu Perfil
-                  </MenuItem>
-                </Link>
-              )}
-              {!authenticated && (<AccountKit
+            )}
+            {!authenticated && (
+              <AccountKit
                 appId={process.env.FACEBOOK_APP_ID}
                 appSecret={process.env.ACCOUNT_KIT_APP_SECRET}
                 version="v1.0"
               >
                 {({signIn, loading}) => (
-                  <MenuItem aria-label="Fazer login" onClick={() => {
-                    log(LANDING_LOGIN)
-                    signIn()
-                  }}>
+                  <MenuItem
+                    aria-label="Fazer login"
+                    onClick={() => {
+                      log(LANDING_LOGIN)
+                      signIn()
+                    }}
+                  >
                     <FontAwesomeIcon className="icon" icon={faSignInAlt} />
                     Entrar
                   </MenuItem>
                 )}
-              </AccountKit>)}
-            </Nav>
-          </Col>
-        </Container>
-      </Wrapper>
+              </AccountKit>
+            )}
+          </Nav>
+        </Col>
+      </Container>
     )
   }
 }
