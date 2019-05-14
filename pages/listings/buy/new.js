@@ -8,21 +8,6 @@ class Homepage extends Component {
   render() {
     const {client, router, url, user} = this.props
 
-    const feedVariables = {
-      pagination: {
-        pageSize: 4
-      },
-      filters: {
-        neighborhoodsSlugs: ['perdizes']
-      }
-    }
-
-    const feedButton = {
-      href: '/listings',
-      as: '/imoveis',
-      label: 'Em Casa'
-    }
-
     const BASE_TITLE = 'Imóveis, Casas e Apartamentos à Venda'
     const BASE_DESCRIPTION =
       'com o sistema exclusivo de Tour Virtual 3D da Emcasa, a sua startup imobiliária.'
@@ -32,6 +17,39 @@ class Homepage extends Component {
       seoImg: imageUrl('buy'),
       seoTitle: `${BASE_TITLE} no Rio de Janeiro e São Paulo | EmCasa`,
       seoDescription: `Encontre ${BASE_TITLE} no Rio de Janeiro em toda Zona Sul ou em São Paulo ${BASE_DESCRIPTION}`
+    }
+
+    const feedButton = {
+      href: '/listings',
+      as: '/imoveis',
+      label: 'Em Casa'
+    }
+
+    const feedVariablesA = {
+      pagination: {
+        pageSize: 4
+      },
+      filters: {
+        neighborhoodsSlugs: ['perdizes']
+      }
+    }
+
+    const feedVariablesB = {
+      pagination: {
+        pageSize: 4
+      },
+      filters: {
+        neighborhoodsSlugs: ['urca']
+      }
+    }
+
+    const feedVariablesC = {
+      pagination: {
+        pageSize: 4
+      },
+      filters: {
+        neighborhoodsSlugs: ['joa']
+      }
     }
 
     return (
@@ -46,9 +64,22 @@ class Homepage extends Component {
         />
         <ListingBuyHeader />
         <ListingFeed
+          highlight
           currentUser={user}
           button={feedButton}
-          variables={feedVariables}
+          variables={feedVariablesA}
+          title="Outros"
+        />
+        <ListingFeed
+          currentUser={user}
+          button={feedButton}
+          variables={feedVariablesB}
+          title="Outros"
+        />
+        <ListingFeed
+          currentUser={user}
+          button={feedButton}
+          variables={feedVariablesC}
           title="Outros"
         />
       </Fragment>

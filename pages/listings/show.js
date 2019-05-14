@@ -453,6 +453,7 @@ class Listing extends Component {
                         />
                         <Col>
                           <ListingFeed
+                            highlight
                             currentUser={currentUser}
                             button={feedButton}
                             variables={feedVariables}

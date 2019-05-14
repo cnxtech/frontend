@@ -8,7 +8,7 @@ import {Wrapper, MoreButtonWrapper, MoreButton} from './styles'
 
 class ListingFeed extends Component {
   render() {
-    const {currentUser, button, variables, title} = this.props
+    const {currentUser, button, variables, title, highlight} = this.props
     return (
       <Query query={GET_LISTINGS} variables={variables} ssr={true}>
         {({error, data}) => {
@@ -20,7 +20,7 @@ class ListingFeed extends Component {
           }
 
           return (
-            <Wrapper>
+            <Wrapper highlight={highlight}>
               <ListingFeedGrid
                 title={title}
                 listings={data.listings.listings}

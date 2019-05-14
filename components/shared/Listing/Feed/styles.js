@@ -6,7 +6,7 @@ import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import Button from '@emcasa/ui-dom/components/Button'
 
 export const Wrapper = styled.div`
-  background-color: ${theme.colors.smoke};
+  background-color: ${({highlight}) => highlight ? theme.colors.smoke : null};
 `
 
 export const Container = styled.div`
