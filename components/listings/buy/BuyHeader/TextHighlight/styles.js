@@ -4,6 +4,7 @@ import Text from '@emcasa/ui-dom/components/Text'
 export const Container = styled(Text)`
   position: relative;
   white-space: nowrap;
+  font-size: inherit;
 
   svg {
     position: absolute;
