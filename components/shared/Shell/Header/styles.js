@@ -22,7 +22,7 @@ export default styled.header`
   padding: 0 ${theme.space[4]}px;
   box-sizing: border-box;
   transition: background 0.25s;
-  background: ${(props) => (!props.transparent || props.sticky ? 'white' : null)};
+  background: ${(props) => (!props.transparent || props.sticky ? theme.colors.white : 'rgba(255,255,255,0)')};
 
   @media screen and ${breakpoint.up('desktop')} {
     align-items: center;

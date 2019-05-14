@@ -1,5 +1,4 @@
 import {createGlobalStyle} from 'styled-components'
-import {mobileMedia} from 'constants/media'
 import theme from 'config/theme'
 import * as colors from 'constants/colors'
 
@@ -18,13 +17,9 @@ export default createGlobalStyle`
     src: local('Rubik Medium'), local('Rubik-Medium'), url(https://fonts.gstatic.com/s/rubik/v8/iJWHBXyIfDnIV7Eyjmmd8WD07oB-.woff2) format('woff2');
   }
 
-  html, body, #__next {
-    width: 100%;
-    height: 100%;
-  }
-
   html {
     color: ${colors.text};
+    font-family: ${theme.fontFamily};
     font-size: 100%;
     -webkit-font-smoothing: antialiased;
   }
@@ -32,8 +27,7 @@ export default createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-
-    font-family: ${theme.fontFamily};
+    width: 100%;
     font-size: 1rem;
     line-height: 1.5;
   }
@@ -41,6 +35,7 @@ export default createGlobalStyle`
   #__next {
      display: flex;
      flex-direction: column;
+     width: 100%;
    }
 
   a {
