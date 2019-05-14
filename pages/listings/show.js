@@ -87,7 +87,7 @@ class Listing extends Component {
       fetchPolicy: 'network-only',
       errorPolicy: 'all',
       variables: {
-        id
+        id: id
       }
     })
 
