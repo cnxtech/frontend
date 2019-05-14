@@ -62,7 +62,14 @@ class ListingSearch extends Component {
     log(LISTING_SEARCH_OPEN)
     window.onpopstate = (event) => {
       const newFilters = ParamsMapper.getFiltersByPath(event.state.as)
-      this.setState({filters: newFilters})
+      this.setState({filters: newFilters}, () => {
+        if (newFilters.neighborhoods) {
+          const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
+            detail: {neighborhoods: newFilters.neighborhoods}
+          })
+          window.dispatchEvent(event)
+        }
+      })
     }
     window.addEventListener(
       NEIGHBORHOOD_SELECTION_CHANGE,
