@@ -90,6 +90,18 @@ describe('listing search filter functions', () => {
     expect(query).toEqual({minGarageSpots: 0, maxGarageSpots: 0})
   })
 
+  it('returns an empty filter object when no filter state is passed', () => {
+    const filterState = null
+    const filters = getListingFiltersFromState(filterState)
+    expect(filters).toEqual({})
+  })
+
+  it('returns an empty filter object when an empty filter state is passed', () => {
+    const filterState = {}
+    const filters = getListingFiltersFromState(filterState)
+    expect(filters).toEqual({})
+  })
+
   it('parses url with location into a location object', () => {
     const asPath = '/imoveis/rj/rio-de-janeiro/humaita/apartamento'
     const location = getLocationFromPath(asPath)
