@@ -11,11 +11,14 @@ import {
 } from 'constants/dimensions'
 
 export default styled.header`
-  z-index: 1;
+  z-index: ${zIndexHeader};
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: ${({search}) => search ? HEADER_SEARCH_HEIGHT : HEADER_HEIGHT}px;
+  height: ${({search}) => (search ? HEADER_SEARCH_HEIGHT : HEADER_HEIGHT)}px;
   padding: 0 ${theme.space[4]}px;
   box-sizing: border-box;
   transition: background 0.25s;
@@ -24,14 +27,6 @@ export default styled.header`
   @media screen and ${breakpoint.up('desktop')} {
     align-items: center;
   }
-`
-
-export const Wrapper = styled.div`
-  box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  z-index: ${zIndexHeader};
-  width: 100vw;
 `
 
 export const LogoWrapper = styled.h1`
@@ -78,15 +73,15 @@ export const Nav = styled.nav`
   position: absolute;
   top: 0;
   right: 0;
-  transform: translateX(${({visible}) => visible ? '0' : '100vw'});
+  transform: translateX(${({visible}) => (visible ? '0' : '100vw')});
   display: flex;
   flex-direction: column;
-  width: 70vw;
   height: 100vh;
-  padding-top: ${theme.buttonHeight[1] + (theme.space[2] * 2)}px;
+  padding-top: ${theme.buttonHeight[1] + theme.space[5]}px;
   box-sizing: border-box;
   background: white;
-  transition: transform ${({visible}) => visible ? '.8s' : '.6s'} cubic-bezier(.4, .2, 0, 1) ${({visible}) => visible ? '.1s' : '0s'};
+  transition: transform ${({visible}) => (visible ? '.75s' : '.55s')}
+    cubic-bezier(0.4, 0.2, 0, 1) ${({visible}) => (visible ? '.1s' : '0s')};
 
   @media screen and ${breakpoint.up('desktop')} {
     position: initial;
@@ -120,7 +115,7 @@ export const MenuItem = styled.a`
   align-items: center;
   min-height: 48px;
   border-left: 7px solid transparent;
-  padding: 0 0 0 ${theme.space[4]}px;
+  padding: 0 ${theme.buttonHeight[1] * 2}px 0 ${theme.space[4]}px;
   font-size: ${theme.fontSizes[1]}px;
   font-weight: ${theme.fontWeights[2]};
   color: ${theme.colors.dark};
@@ -174,21 +169,13 @@ export const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
   background: black;
-  pointer-events: ${({visible}) => visible ? null : 'none'};
-  opacity: ${({visible}) => visible ? .8 : 0};
-  transition: opacity ${({visible}) => visible ? '.3s' : '.2s'} linear ${({visible}) => visible ? '0s' : '.2s'};
+  pointer-events: ${({visible}) => (visible ? null : 'none')};
+  opacity: ${({visible}) => (visible ? 0.7 : 0)};
+  transition: opacity ${({visible}) => (visible ? '.3s' : '.2s')} linear
+    ${({visible}) => (visible ? '0s' : '.2s')};
   z-index: 1;
 
   @media ${breakpoint.up('desktop')} {
     display: none;
-  }
-`
-
-export const Search = styled.div`
-  margin-left: 20px;
-  width: 100%;
-
-  @media ${breakpoint.down('tablet')} {
-    width: 80%;
   }
 `

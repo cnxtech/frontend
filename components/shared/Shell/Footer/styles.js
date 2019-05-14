@@ -8,8 +8,8 @@ import {LISTING_MAX_WIDTH, LISTING_BUTTONSBAR_HEIGHT} from 'constants/dimensions
 
 const MAX_WIDTH_LOGO = 110
 
-export const Wrapper = styled.address`
-  font-style: normal;
+export const Wrapper = styled.footer`
+  flex: 0;
   background-color: ${theme.colors.dark};
 `
 
@@ -42,7 +42,8 @@ export const AboutText = styled(Text)`
   margin: ${theme.space[4]}px 0 0;
 `
 
-export const LinksContainer = styled(Row)`
+export const LinksContainer = styled.address`
+  font-style: normal;
   flex: 1 1 100%;
   display: grid;
   grid-template-columns: 1fr;
