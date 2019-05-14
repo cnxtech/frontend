@@ -18,6 +18,12 @@ describe('Listing', () => {
     expect(id).toBe('840')
   })
 
+  it('should not raise exception when no id is passed', () => {
+    const url = '/imoveis/bairros/sumare'
+    const id = getListingId(url)
+    expect(id).toBe(null)
+  })
+
   it('should return the correct plural given a number', () => {
     let item = 0
     expect(plural(item)).toBe('s')
