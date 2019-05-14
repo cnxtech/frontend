@@ -3,26 +3,14 @@ import PropTypes from 'prop-types'
 import {Query} from 'react-apollo'
 import {GET_LISTINGS} from 'graphql/listings/queries'
 import Link from 'next/link'
-import {buildNeighborhoodSlug} from 'lib/listings'
-import {log, LISTING_DETAIL_MORE_LISTINGS_BUTTON} from 'lib/logging'
-import Text from '@emcasa/ui-dom/components/Text'
-import ListingCard from 'components/listings/shared/ListingCard'
 import ListingFeedGrid from './Grid'
-import {
-  Wrapper,
-  MoreButtonWrapper,
-  MoreButton
-} from './styles'
+import {Wrapper, MoreButtonWrapper, MoreButton} from './styles'
 
 class ListingFeed extends Component {
   render() {
-    const {currentUser, currentListing, variables} = this.props
+    const {currentUser, button, variables, title} = this.props
     return (
-      <Query
-        query={GET_LISTINGS}
-        variables={variables}
-        ssr={true}
-      >
+      <Query query={GET_LISTINGS} variables={variables} ssr={true}>
         {({error, data}) => {
           if (!data) {
             return null
@@ -34,24 +22,18 @@ class ListingFeed extends Component {
           return (
             <Wrapper>
               <ListingFeedGrid
-                title="Outros imóveis no bairro"
+                title={title}
                 listings={data.listings.listings}
                 currentUser={currentUser}
               >
                 <MoreButtonWrapper>
-                  <Link
-                    href={`/listings`}
-                    as={buildNeighborhoodSlug(currentListing)}
-                    passHref
-                  >
+                  <Link passHref href={button.href} as={button.as} passHref>
                     <MoreButton
                       as="a"
                       height="tall"
-                      onClick={() => {
-                        log(LISTING_DETAIL_MORE_LISTINGS_BUTTON, {listingId: currentListing.id})
-                      }}
+                      onClick={button.click ? button.click : null}
                     >
-                      Ver mais imóveis
+                      {button.label}
                     </MoreButton>
                   </Link>
                 </MoreButtonWrapper>
@@ -65,8 +47,10 @@ class ListingFeed extends Component {
 }
 
 ListingFeed.propTypes = {
-  listings: PropTypes.array,
-  currentUser: PropTypes.object
+  currentListing: PropTypes.array,
+  currentUser: PropTypes.object,
+  variables: PropTypes.object,
+  button: PropTypes.object
 }
 
 export default ListingFeed
