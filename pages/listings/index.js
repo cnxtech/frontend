@@ -61,10 +61,8 @@ class ListingSearch extends Component {
   componentDidMount() {
     log(LISTING_SEARCH_OPEN)
     window.onpopstate = (event) => {
-      const params = getLocationFromPath(event.state.url)
-      this.setState({
-        filters: params.filters
-      })
+      const newFilters = ParamsMapper.getFiltersByPath(event.state.as)
+      this.setState({filters: newFilters})
     }
     window.addEventListener(
       NEIGHBORHOOD_SELECTION_CHANGE,

@@ -184,6 +184,7 @@ const getFiltersByPath = (rest = '') => {
   }
   return filters
 }
+
 const mapUrlToParams = (params) => {
   const {state, city, rest} = params
   const filters = getFiltersByPath(rest)
@@ -203,4 +204,4 @@ const mapUrlToParams = (params) => {
   return newParams
 }
 
-module.exports = mapUrlToParams
+module.exports = {mapUrlToParams, getFiltersByPath}

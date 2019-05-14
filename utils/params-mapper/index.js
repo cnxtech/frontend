@@ -1,4 +1,4 @@
-const mapToParams = require('./url-to-params-mapper')
+const {mapToParams, getFiltersByPath} = require('./url-to-params-mapper')
 const mapToUrl = require('./params-to-url-mapper')
 
 class ParamsMapper {
@@ -7,6 +7,9 @@ class ParamsMapper {
   }
   static mapParamsToUrl(params, filters) {
     return mapToUrl(params, filters)
+  }
+  static getFiltersByPath(rest) {
+    return getFiltersByPath(rest)
   }
 }
 
