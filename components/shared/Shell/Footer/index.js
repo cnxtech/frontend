@@ -46,9 +46,6 @@ const Footer = () => (
         <LinksContainer>
           <Row flexDirection="column">
             <TitleLinks {...titleText}>EmCasa</TitleLinks>
-            <Link passHref href="/sobmedida">
-              <TextLink as="a" fontSize={[1, null, null, 2]}>EmCasa Sob Medida</TextLink>
-            </Link>
             <Link passHref href="/listings" as="/imoveis">
               <TextLink as="a" fontSize={[1, null, null, 2]}>Compre</TextLink>
             </Link>
@@ -59,7 +56,7 @@ const Footer = () => (
               <TextLink as="a" fontSize={[1, null, null, 2]}>Avalie seu imóvel</TextLink>
             </Link>
             <TextLink as="a" fontSize={[1, null, null, 2]} href="https://blog.emcasa.com" target="_blank" rel="noopener">Blog</TextLink>
-            <TextLink as="a" fontSize={[1, null, null, 2]} href="https://jobs.emcasa.com/" target="_blank" rel="noopener">Trabalhe Conosco</TextLink>
+            <TextLink as="a" fontSize={[1, null, null, 2]} href="http://jobs.emcasa.com" target="_blank" rel="noopener">Trabalhe Conosco</TextLink>
             <Link passHref href="/corretor-parceiro-rj">
               <TextLink as="a" fontSize={[1, null, null, 2]}>Seja um corretor parceiro no RJ</TextLink>
             </Link>
