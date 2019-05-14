@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {PoseGroup} from 'react-pose'
 import Router from 'next/router'
 import enhanceWithClickOutside from 'react-click-outside'
+import slugify from 'slug'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import AngleDown from '@fortawesome/fontawesome-pro-light/faAngleDown'
 import AngleUp from '@fortawesome/fontawesome-pro-light/faAngleUp'
@@ -24,7 +25,6 @@ import {
   LISTING_SEARCH_NEIGHBORHOOD_EXPAND,
   LISTING_SEARCH_NEIGHBORHOOD_CHANGE_CITY
 } from 'lib/logging'
-import {getDerivedParams} from 'utils/filter-params.js'
 import {
   InputWrapper,
   InputContainer,
@@ -37,6 +37,7 @@ import {
 import {NEIGHBORHOOD_SELECTION_CHANGE} from './events'
 
 const DEFAULT_BUTTON_TEXT = 'Escolha os bairros'
+const DEFAULT_CITY = 'sao-paulo'
 
 class NeighborhoodPicker extends Component {
   constructor(props) {
@@ -44,7 +45,6 @@ class NeighborhoodPicker extends Component {
     this.getCities = this.getCities.bind(this)
     this.toggleCitiesDisplay = this.toggleCitiesDisplay.bind(this)
     this.changeSelection = this.changeSelection.bind(this)
-    this.expand = this.expand.bind(this)
     this.clear = this.clear.bind(this)
     this.apply = this.apply.bind(this)
     this.getButtonText = this.getButtonText.bind(this)
@@ -53,25 +53,35 @@ class NeighborhoodPicker extends Component {
     this.containerRef = React.createRef()
     this.state = {
       selectedNeighborhoods: props.neighborhood || [],
-      expanded: [],
+      selectedCity: null,
       showCities: this.props.mobile
     }
   }
 
-  expand(city) {
-    log(LISTING_SEARCH_NEIGHBORHOOD_EXPAND, {city: city.citySlug})
-    let newExpanded = this.state.expanded
-    newExpanded.push(city)
-    this.setState({
-      expanded: newExpanded
+  componentDidMount() {
+    if (!process.browser) {
+      return
+    }
+    fetch('/location', {method: 'POST'}).then((response) => response.json()).then((result) => {
+      if (result && result.location && result.location.city) {
+        const {city} = result.location
+        const citySlug = slugify(city.toLowerCase())
+        const isCityAvailable = cities.find((city) => city.citySlug === citySlug)
+        this.selectCity(cities.find((city) => city.citySlug === (isCityAvailable ? city.citySlug : DEFAULT_CITY)))
+      }
     })
+  }
+
+  selectCity = (city) => {
+    log(LISTING_SEARCH_NEIGHBORHOOD_EXPAND, {city: city.citySlug})
+    this.setState({selectedCity: city})
   }
 
   showAllCities() {
     log(LISTING_SEARCH_NEIGHBORHOOD_CHANGE_CITY, {
-      city: this.state.expanded[0].citySlug
+      city: this.state.selectedCity.citySlug
     })
-    this.setState({expanded: []})
+    this.setState({selectedCity: null})
   }
 
   clear() {
@@ -216,10 +226,9 @@ class NeighborhoodPicker extends Component {
                     <CityContainer
                       cities={availableCities}
                       selectedNeighborhoods={this.state.selectedNeighborhoods}
-                      expanded={this.state.expanded}
-                      selectCity={this.selectCity}
+                      selectedCity={this.state.selectedCity}
                       isCitySelected={this.isCitySelected}
-                      expand={this.expand}
+                      selectCity={this.selectCity}
                       clear={this.clear}
                       apply={this.apply}
                       parentRef={this.containerRef.current}
