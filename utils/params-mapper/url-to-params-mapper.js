@@ -1,4 +1,6 @@
 const _ = require('lodash')
+const {cities} = require('constants/cities')
+
 const TAGS = [
   'academia',
   'churrasqueira',
@@ -116,6 +118,25 @@ function isFeature(path = '') {
   )
 }
 
+function filterNeighborhoods(neighborhoods) {
+  const exclusion = ['imoveis', 'bairros', '']
+  return neighborhoods.filter((item) => {
+    let isCityOrState = false
+    cities.forEach((city) => {
+      if (item === city.citySlug || item === city.stateSlug) {
+        isCityOrState = true
+      }
+    })
+    if (isCityOrState) {
+      return false
+    }
+    if (exclusion.includes(item)) {
+      return false
+    }
+    return true
+  })
+}
+
 function getKeyValuePath(path) {
   let match = path.match(STARTS_WITH_NUMBER)
   if (match) {
@@ -178,7 +199,8 @@ const getFiltersByPath = (rest = '') => {
     features.forEach((feature) => aggregateFilter(filters, feature))
   }
   const featuresAndTags = [...tags, ...features]
-  const neighborhoods = _.difference(paths, featuresAndTags)
+  let neighborhoods = _.difference(paths, featuresAndTags)
+  neighborhoods = filterNeighborhoods(neighborhoods)
   if (neighborhoods && neighborhoods.length > 0) {
     filters.neighborhoods = neighborhoods
   }
