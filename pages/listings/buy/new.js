@@ -20,9 +20,6 @@ class Homepage extends Component {
     const feedButton = {
       href: '/listings',
       as: '/imoveis',
-      click: () => {
-        console.log('oh yeah')
-      },
       label: 'Em Casa'
     }
 
