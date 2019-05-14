@@ -83,7 +83,7 @@ const startServer = () => {
           userIp = userIp.split(',')[0]
         }
         const location = geoip.lookup(userIp)
-        res.status(200).send({location, userIp})
+        res.status(200).send({location, userIp: userIp})
       })
 
       server.get('/maps/autocomplete', async (req, res) => {

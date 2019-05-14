@@ -37,7 +37,8 @@ import {
 import {NEIGHBORHOOD_SELECTION_CHANGE} from './events'
 
 const DEFAULT_BUTTON_TEXT = 'Escolha os bairros'
-const DEFAULT_CITY = 'sao-paulo'
+export const DEFAULT_CITY_SLUG = 'sao-paulo'
+export const DEFAULT_CITY = cities.find((city) => city.citySlug === DEFAULT_CITY_SLUG)
 
 class NeighborhoodPicker extends Component {
   constructor(props) {
@@ -63,13 +64,26 @@ class NeighborhoodPicker extends Component {
       return
     }
     fetch('/location', {method: 'POST'}).then((response) => response.json()).then((result) => {
-      if (result && result.location && result.location.city) {
-        const {city} = result.location
-        const citySlug = slugify(city.toLowerCase())
-        const isCityAvailable = cities.find((city) => city.citySlug === citySlug)
-        this.selectCity(cities.find((city) => city.citySlug === (isCityAvailable ? city.citySlug : DEFAULT_CITY)))
+      const userCity = this.getUserCityByGeoIp(result)
+      if (userCity) {
+        let identify = new amplitude.Identify().set('geoIpCity', userCity.name)
+        amplitude.identify(identify)
+        this.selectCity(userCity)
+      } else {
+        this.selectCity(DEFAULT_CITY)
       }
     })
+  }
+
+  getUserCityByGeoIp = (result) => {
+    if (result && result.location && result.location.city) {
+      const {city} = result.location
+      const citySlug = slugify(city.toLowerCase())
+      const cityFound = cities.find((city) => city.citySlug === citySlug)
+      const userCity = cityFound ? cityFound : DEFAULT_CITY
+      return userCity
+    }
+    return null
   }
 
   selectCity = (city) => {
