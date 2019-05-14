@@ -1,4 +1,3 @@
-
 import '@emcasa/ui-dom/components/global-styles'
 import {Component, Fragment} from 'react'
 import {Query} from 'react-apollo'
@@ -7,7 +6,6 @@ import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
-import faEye from '@fortawesome/fontawesome-free-solid/faEye'
 import faMap from '@fortawesome/fontawesome-free-solid/faMap'
 import faStreetView from '@fortawesome/fontawesome-free-solid/faStreetView'
 import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
@@ -53,9 +51,11 @@ import {
   LISTING_DETAIL_MAP_OPEN,
   LISTING_DETAIL_MAP_CLOSE,
   LISTING_DETAIL_STREETVIEW_OPEN,
-  LISTING_DETAIL_STREETVIEW_CLOSE
+  LISTING_DETAIL_STREETVIEW_CLOSE,
+  LISTING_DETAIL_MORE_LISTINGS_BUTTON
 } from 'lib/logging'
 import {ShowContainer} from './styles'
+import {buildNeighborhoodSlug} from 'lib/listings'
 
 class Listing extends Component {
   favMutated = false
@@ -299,6 +299,15 @@ class Listing extends Component {
       }
     }
 
+    const feedButton = {
+      href: `/listings`,
+      as: buildNeighborhoodSlug(listing),
+      click: () => {
+        log(LISTING_DETAIL_MORE_LISTINGS_BUTTON, {listingId: listing.id})
+      },
+      label: 'Ver mais imóveis'
+    }
+
     return (
       <FlagrProvider flagrFlags={this.props.flagrFlags}>
         <Mutation mutation={FAVORITE_LISTING}>
@@ -338,6 +347,7 @@ class Listing extends Component {
                     }
                   })
                 }
+
                 return (
                   <Fragment>
                     <ListingHead
@@ -444,8 +454,9 @@ class Listing extends Component {
                         <Col>
                           <ListingFeed
                             currentUser={currentUser}
-                            currentListing={listing}
+                            button={feedButton}
                             variables={feedVariables}
+                            title="Outros imóveis no bairro"
                           />
                         </Col>
                       </Row>
