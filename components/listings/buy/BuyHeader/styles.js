@@ -4,7 +4,7 @@ import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 
 export const Wrapper = styled.div`
-  background: ${theme.colors.snow};
+  background: ${theme.colors.white};
 `
 
 export const Container = styled(Row)`
