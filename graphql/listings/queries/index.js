@@ -19,16 +19,6 @@ export const GET_LISTINGS = gql`
           uuid
           name
         }
-        units {
-          uuid
-          area
-          floor
-          price
-          rooms
-          suites
-          bathrooms
-          garageSpots
-        }
         images(limit: 5, isActive: true) {
           filename
           position
@@ -63,16 +53,6 @@ export const GET_LISTING = gql`
       development {
         uuid
         name
-      }
-      units {
-        uuid
-        area
-        floor
-        price
-        rooms
-        suites
-        bathrooms
-        garageSpots
       }
       images(limit: 1, isActive: true) {
         filename
@@ -150,31 +130,11 @@ export const GET_FULL_LISTING = gql`
             id
             filename
           }
-          units {
-            uuid
-            area
-            floor
-            price
-            rooms
-            suites
-            bathrooms
-            garageSpots
-          }
         }
         images(isActive: true) {
           filename
           position
         }
-      }
-      units {
-        uuid
-        area
-        floor
-        price
-        rooms
-        suites
-        bathrooms
-        garageSpots
       }
       images(isActive: true) {
         id
