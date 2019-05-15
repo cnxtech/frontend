@@ -74,12 +74,12 @@ class CityLists extends Component {
 
     return (
       <Container>
-        <Title fontSize="large" fontWeight="bold" as="h2">
+        <Title fontSize="large" fontWeight="bold" as="h3">
           Imóveis à venda no Rio de Janeiro e São Paulo
         </Title>
         <Row flexDirection="column">
-          <SubTitle fontWeight="bold" as="h3">
-            Imóveis mais buscados
+          <SubTitle fontWeight="bold" as="h4">
+            Bairros mais buscados
           </SubTitle>
           <HighlightsList>
             {HIGHLIGHTS.map((item, index) => {
@@ -101,7 +101,7 @@ class CityLists extends Component {
           </HighlightsList>
         </Row>
         <Row flexDirection="column" my={[theme.space[5] * 2, null, null, 6]}>
-          <SubTitle fontWeight="bold" as="h3">
+          <SubTitle fontWeight="bold" as="h4">
             Bairros por tipo de imóvel
           </SubTitle>
           <TypesListGrid>
