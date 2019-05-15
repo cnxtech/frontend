@@ -72,6 +72,8 @@ class NeighborhoodPicker extends Component {
       } else {
         this.selectCity(DEFAULT_CITY)
       }
+    }).catch((e) => {
+      Sentry.captureException(e)
     })
   }
 
