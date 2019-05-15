@@ -1,12 +1,11 @@
 import styled from 'styled-components'
-import theme from 'config/theme'
-import {backgroundColor} from 'styled-system'
+import theme from '@emcasa/ui'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import Button from '@emcasa/ui-dom/components/Button'
 
-export const Wrapper = styled.div`
-  background-color: ${theme.colors.smoke};
+export const Wrapper = styled.section`
+  background-color: ${({highlight}) => highlight ? theme.colors.smoke : null};
 `
 
 export const Container = styled.div`
@@ -14,7 +13,7 @@ export const Container = styled.div`
   width: 100%;
   max-width: ${LISTING_MAX_WIDTH}px;
   margin: 0 auto;
-  padding: ${theme.space[4]}px;
+  padding: ${theme.space[4]}px ${theme.space[4]}px ${theme.space[5] * 2}px;
   box-sizing: border-box;
 `
 
@@ -30,7 +29,6 @@ export const MoreButtonWrapper = styled.div`
   @media screen and ${breakpoint.up('desktop')} {
     max-width: 320px;
     margin: ${theme.space[4]}px auto 0;
-    padding: 0 0 ${theme.space[4]}px;
   }
 `
 

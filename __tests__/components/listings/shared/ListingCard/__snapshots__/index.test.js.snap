@@ -24,7 +24,7 @@ exports[`<ListingCard/> should render component 1`] = `
   justify-content: space-between;
 }
 
-.c4 {
+.c5 {
   -webkit-font-smoothing: antialiased;
   font-family: Rubik;
   color: #3c4858;
@@ -32,14 +32,14 @@ exports[`<ListingCard/> should render component 1`] = `
   font-weight: 500;
 }
 
-.c5 {
+.c6 {
   -webkit-font-smoothing: antialiased;
   font-family: Rubik;
   color: #ff2b7f;
   font-size: 14px;
 }
 
-.c6 {
+.c7 {
   -webkit-font-smoothing: antialiased;
   font-family: Rubik;
   color: #3c4858;
@@ -101,7 +101,15 @@ exports[`<ListingCard/> should render component 1`] = `
   height: 140px;
 }
 
-.c7 {
+.c4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  z-index: -1;
+}
+
+.c8 {
   outline: none;
   cursor: pointer;
   padding: 0 20px 0 20px;
@@ -141,13 +149,13 @@ exports[`<ListingCard/> should render component 1`] = `
   box-shadow: 0 6px 16px 0 rgba(38,38,38,0.15);
 }
 
-.c7 svg {
+.c8 svg {
   width: 25px;
   text-shadow: 2px 2px 3px #f00;
   text-shadow: 2px 2px 3px #f00;
 }
 
-.c7 svg path {
+.c8 svg path {
   text-shadow: 2px 2px 3px #f00;
   fill: #ffffff;
   stroke: #3c4858;
@@ -175,8 +183,13 @@ exports[`<ListingCard/> should render component 1`] = `
       <div
         className="c3"
       >
-        <span
+        <h5
           className="c4"
+        >
+          Imóvel na Rua tal, Bairro, Rio de Janeiro - RJ - ID-undefined
+        </h5>
+        <span
+          className="c5"
           color="dark"
           fontSize="small"
           fontWeight="bold"
@@ -184,7 +197,7 @@ exports[`<ListingCard/> should render component 1`] = `
           Bairro
         </span>
         <span
-          className="c5"
+          className="c6"
           color="pink"
           fontSize="small"
         >
@@ -192,14 +205,14 @@ exports[`<ListingCard/> should render component 1`] = `
         </span>
       </div>
       <span
-        className="c6"
+        className="c7"
         color="dark"
         fontSize="small"
       >
         Rua tal
       </span>
       <span
-        className="c6"
+        className="c7"
         color="dark"
         fontSize="small"
       >
@@ -209,7 +222,7 @@ exports[`<ListingCard/> should render component 1`] = `
   </a>
   <button
     aria-label="Favoritar imóvel"
-    className="c7"
+    className="c8"
     fontSize="default"
     height="medium"
     onClick={[Function]}
