@@ -119,7 +119,7 @@ function isFeature(path = '') {
 }
 
 function filterNeighborhoods(neighborhoods) {
-  const exclusion = ['imoveis', 'bairros', '']
+  const exclusion = ['imoveis', 'bairros', '', 'busca']
   return neighborhoods.filter((item) => {
     let isCityOrState = false
     cities.forEach((city) => {

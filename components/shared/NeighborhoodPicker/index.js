@@ -64,14 +64,18 @@ class NeighborhoodPicker extends Component {
       return
     }
     fetch('/location', {method: 'POST'}).then((response) => response.json()).then((result) => {
-      const userCity = this.getUserCityByGeoIp(result)
+      let userCity = this.getUserCityByGeoIp(result)
       if (userCity) {
         let identify = new amplitude.Identify().set('geoIpCity', userCity.name)
         amplitude.identify(identify)
-        this.selectCity(userCity)
       } else {
-        this.selectCity(DEFAULT_CITY)
+        userCity = DEFAULT_CITY
       }
+
+      this.applyUserCityFromGeoIp(userCity)
+    }).catch((e) => {
+      Sentry.captureException(e)
+      this.applyUserCityFromGeoIp(DEFAULT_CITY)
     })
   }
 
@@ -80,10 +84,19 @@ class NeighborhoodPicker extends Component {
       const {city} = result.location
       const citySlug = slugify(city.toLowerCase())
       const cityFound = cities.find((city) => city.citySlug === citySlug)
-      const userCity = cityFound ? cityFound : DEFAULT_CITY
+      const userCity = cityFound ? cityFound : null
       return userCity
     }
     return null
+  }
+
+  applyUserCityFromGeoIp = (userCity) => {
+    this.selectCity(userCity)
+    if (window.location.pathname !== '/imoveis') {
+      return
+    }
+    const filterNeighborhoods = userCity.neighborhoods.map((neighborhood) => neighborhood.nameSlug)
+    this.apply(filterNeighborhoods)
   }
 
   selectCity = (city) => {
@@ -111,7 +124,9 @@ class NeighborhoodPicker extends Component {
         neighborhoods: this.state.selectedNeighborhoods,
         fromHome: this.props.fromHome
       })
-      this.toggleCitiesDisplay()
+      if (this.state.showCities) {
+        this.toggleCitiesDisplay()
+      }
       if (this.props.onBackPressed) {
         this.props.onBackPressed()
       }

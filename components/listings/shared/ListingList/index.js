@@ -1,5 +1,7 @@
 import {Component, Fragment} from 'react'
 import {Query} from 'react-apollo'
+import {FadeLoader} from 'react-spinners'
+import theme from '@emcasa/ui'
 import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
 import {
   GET_LISTINGS,
@@ -13,6 +15,7 @@ import ListingCard from 'components/listings/shared/ListingCard'
 import Map from 'components/listings/shared/Map'
 import ListingsNotFound from 'components/listings/shared/NotFound'
 import Neighborhood from 'components/listings/shared/Neighborhood'
+import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import {getTitleTextByFilters, getTitleTextByParams} from './title'
 import {log, LISTING_SEARCH_MAP_PIN, LISTING_SEARCH_RESULTS} from 'lib/logging'
@@ -38,7 +41,19 @@ class ListingList extends Component {
     }
   }
 
-  getListings = (result, fetchMore) => {
+  getLoading = () => (
+    <Row justifyContent="center" mt="80px">
+      <FadeLoader
+        width={10}
+        height={10}
+        margin="2"
+        radius={8}
+        color={theme.colors.pink}
+      />
+    </Row>
+  )
+
+  getListings = (result, fetchMore, loading) => {
     const {
       user,
       params,
@@ -48,6 +63,10 @@ class ListingList extends Component {
       highlight,
       neighborhoodListener
     } = this.props
+
+    if (loading) {
+      return this.getLoading()
+    }
 
     if (result && result.listings.length > 0) {
       return (
@@ -298,21 +317,31 @@ class ListingList extends Component {
     )
   }
 
+  waitForLocation = () => {
+    const {isRoot, filters} = this.props
+    return isRoot && !filters.neighborhoodSlugs && process.browser && location.pathname.endsWith('/imoveis')
+  }
+
   render() {
-    const {filters, params, districts} = this.props
+    const {isRoot, filters, params, districts} = this.props
     const h1Content =
       filters && filters.neighborhoodsSlugs
         ? getTitleTextByFilters(filters.neighborhoodsSlugs, districts)
         : getTitleTextByParams(params, districts)
+
+    // If user is accessing '/imoveis', wait for location before querying
+    if (this.waitForLocation()) {
+      return this.getLoading()
+    }
 
     return (
       <Query
         query={GET_LISTINGS}
         variables={{pagination: this.pagination, filters}}
         fetchPolicy="cache-and-network"
-        ssr={true}
+        ssr={!isRoot}
       >
-        {({data, fetchMore}) => {
+        {({loading, error, data, fetchMore}) => {
           const listings = data ? data.listings : null
           const hasListings =
             listings && listings.listings && listings.listings.length > 0
@@ -323,7 +352,7 @@ class ListingList extends Component {
                 <Title as="h2" fontWeight="normal">
                   {h1Content}
                 </Title>
-                {this.getListings(listings, fetchMore)}
+                {this.getListings(listings, fetchMore, loading)}
               </Col>
               {hasListings && this.getMap()}
             </Container>
