@@ -91,7 +91,7 @@ class Listing extends Component {
       }
     })
 
-    const listing = serverResponse.data.listing
+    const listing = (serverResponse && serverResponse.data && serverResponse.data.listing) ? serverResponse.data.listing : null
     const errors = serverResponse.errors
 
     // Flagr

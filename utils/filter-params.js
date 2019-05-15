@@ -218,16 +218,20 @@ export const getFiltersFromFilters = ({
  *
  * @param filters Listing Filters selected by the user.
  */
-export const getListingFiltersFromState = ({
-  price,
-  area,
-  garageSpots,
-  rooms,
-  neighborhoods,
-  citiesSlug,
-  tagsSlug,
-  types
-}) => {
+export const getListingFiltersFromState = (filterState) => {
+  if (!filterState || Object.keys(filterState).length === 0) {
+    return {}
+  }
+  const {
+    price,
+    area,
+    garageSpots,
+    rooms,
+    neighborhoods,
+    citiesSlug,
+    tagsSlug,
+    types
+  } = filterState
   const filters = {
     minPrice: price && parseInt(price.min),
     maxPrice: price && parseInt(price.max),
