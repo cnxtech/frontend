@@ -30,7 +30,6 @@ class ListingFeed extends Component {
                   <Link passHref href={button.href} as={button.as} passHref>
                     <MoreButton
                       as="a"
-                      height="tall"
                       onClick={button.click ? button.click : null}
                     >
                       {button.label}
