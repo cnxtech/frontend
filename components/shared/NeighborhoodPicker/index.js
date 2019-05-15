@@ -68,7 +68,22 @@ class NeighborhoodPicker extends Component {
       if (userCity) {
         let identify = new amplitude.Identify().set('geoIpCity', userCity.name)
         amplitude.identify(identify)
+        // Changes the city selected
         this.selectCity(userCity)
+
+        if (window.location.pathname !== '/imoveis') {
+          return
+        }
+
+        // Changes the neighborhoods selected
+        const filterNeighborhoods = userCity.neighborhoods.map((neighborhood) => neighborhood.nameSlug)
+        this.apply(filterNeighborhoods)
+
+        // Reloads the listings with the neighborhoods filter
+        const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
+          detail: {neighborhoods: filterNeighborhoods}
+        })
+        window.dispatchEvent(event)
       } else {
         this.selectCity(DEFAULT_CITY)
       }
@@ -113,7 +128,9 @@ class NeighborhoodPicker extends Component {
         neighborhoods: this.state.selectedNeighborhoods,
         fromHome: this.props.fromHome
       })
-      this.toggleCitiesDisplay()
+      if (this.state.showCities) {
+        this.toggleCitiesDisplay()
+      }
       if (this.props.onBackPressed) {
         this.props.onBackPressed()
       }
