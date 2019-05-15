@@ -41,6 +41,18 @@ class ListingList extends Component {
     }
   }
 
+  getLoading = () => (
+    <Row justifyContent="center" mt="80px">
+      <FadeLoader
+        width={10}
+        height={10}
+        margin="2"
+        radius={8}
+        color={theme.colors.pink}
+      />
+    </Row>
+  )
+
   getListings = (result, fetchMore, loading) => {
     const {
       user,
@@ -53,17 +65,7 @@ class ListingList extends Component {
     } = this.props
 
     if (loading) {
-      return (
-        <Row justifyContent="center" mt="80px">
-          <FadeLoader
-            width={10}
-            height={10}
-            margin="2"
-            radius={8}
-            color={theme.colors.pink}
-          />
-        </Row>
-      )
+      return this.getLoading()
     }
 
     if (result && result.listings.length > 0) {
@@ -315,19 +317,29 @@ class ListingList extends Component {
     )
   }
 
+  waitForLocation = () => {
+    const {isRoot, filters} = this.props
+    return isRoot && !filters.neighborhoodSlugs && process.browser && location.pathname.endsWith('/imoveis')
+  }
+
   render() {
-    const {filters, params, districts} = this.props
+    const {isRoot, filters, params, districts} = this.props
     const h1Content =
       filters && filters.neighborhoodsSlugs
         ? getTitleTextByFilters(filters.neighborhoodsSlugs, districts)
         : getTitleTextByParams(params, districts)
+
+    // If user is accessing '/imoveis', wait for location before querying
+    if (this.waitForLocation()) {
+      return this.getLoading()
+    }
 
     return (
       <Query
         query={GET_LISTINGS}
         variables={{pagination: this.pagination, filters}}
         fetchPolicy="cache-and-network"
-        ssr={false}
+        ssr={!isRoot}
       >
         {({loading, error, data, fetchMore}) => {
           const listings = data ? data.listings : null
