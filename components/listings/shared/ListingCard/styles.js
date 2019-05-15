@@ -1,11 +1,10 @@
 import styled, {createGlobalStyle} from 'styled-components'
 import theme from '@emcasa/ui'
-import View from '@emcasa/ui-dom/components/View'
 
-const MIN_CARD_WIDTH = 280
-const LISTING_CARD_IMAGE_HEIGHT = 140
+export const MIN_CARD_WIDTH = 280
+export const LISTING_CARD_IMAGE_HEIGHT = 140
 
-const Wrapper = styled.article`
+export const Wrapper = styled.article`
   position: relative;
   width: 100%;
 
@@ -24,7 +23,7 @@ const Wrapper = styled.article`
   }
 `
 
-const Container = styled.a`
+export const Container = styled.a`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -51,9 +50,10 @@ const Container = styled.a`
   }
 `
 
-export {
-  Wrapper,
-  Container,
-  MIN_CARD_WIDTH,
-  LISTING_CARD_IMAGE_HEIGHT
-}
+export const Title = styled.h5`
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  z-index: -1;
+`
