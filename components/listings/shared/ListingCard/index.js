@@ -5,7 +5,8 @@ import {withTheme} from 'styled-components'
 import theme from '@emcasa/ui'
 import {
   buildSlug,
-  getListingSummary
+  getListingSummary,
+  getListingPrice
 } from 'lib/listings'
 import {
   log,
