@@ -2,9 +2,10 @@ import {Component, Fragment} from 'react'
 import {imageUrl} from 'utils/image_url'
 import NextHead from 'components/shared/NextHead'
 import ListingBuyHeader from 'components/listings/buy/BuyHeader'
+import CityLists from 'components/listings/buy/CityLists'
 import ListingFeed from 'components/shared/Listing/Feed'
 
-class Homepage extends Component {
+class HomePage extends Component {
   render() {
     const {client, router, url, user} = this.props
 
@@ -43,15 +44,6 @@ class Homepage extends Component {
       }
     }
 
-    const feedVariablesC = {
-      pagination: {
-        pageSize: 4
-      },
-      filters: {
-        neighborhoodsSlugs: ['joa']
-      }
-    }
-
     return (
       <Fragment>
         <NextHead
@@ -68,23 +60,24 @@ class Homepage extends Component {
           currentUser={user}
           button={feedButton}
           variables={feedVariablesA}
-          title="Outros"
+          title="Adicionados recentemente em São Paulo"
         />
         <ListingFeed
           currentUser={user}
           button={feedButton}
           variables={feedVariablesB}
-          title="Outros"
+          title="Imóveis de incorporadoras"
         />
         <ListingFeed
           currentUser={user}
           button={feedButton}
-          variables={feedVariablesC}
-          title="Outros"
+          variables={feedVariablesB}
+          title="Imóveis pra quem gosta de varanda"
         />
+        <CityLists />
       </Fragment>
     )
   }
 }
 
-export default Homepage
+export default HomePage
