@@ -20,7 +20,7 @@ export const Container = styled(Row)`
 `
 
 export const Title = styled(Text)`
-  padding: 0 ${theme.space[4]}px;
+  padding: 0;
   margin: 0 auto ${theme.space[4]}px;
   max-width: ${BUYHEADER_TITLE_MAX_WIDTH}px;
 
