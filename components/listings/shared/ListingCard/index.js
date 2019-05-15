@@ -5,9 +5,7 @@ import {withTheme} from 'styled-components'
 import theme from '@emcasa/ui'
 import {
   buildSlug,
-  getListingSummary,
-  getListingPrice,
-  getListingValueRange
+  getListingSummary
 } from 'lib/listings'
 import {
   log,
@@ -40,8 +38,6 @@ class ListingCard extends Component {
     const thumbFilename = listing.images && listing.images[0] ? listing.images[0].filename : ''
     const thumbUrl = thumbnailUrl(thumbFilename, 600, 600)
     const listingSummary = getListingSummary(listing)
-    const priceRange = getListingValueRange(listing, 'price')
-    const priceRangeDelta = priceRange[1] - priceRange[0]
 
     return (
       <Wrapper>
