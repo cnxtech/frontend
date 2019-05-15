@@ -20,12 +20,6 @@ class HomePage extends Component {
       seoDescription: `Encontre ${BASE_TITLE} no Rio de Janeiro em toda Zona Sul ou em São Paulo ${BASE_DESCRIPTION}`
     }
 
-    const feedButton = {
-      href: '/listings',
-      as: '/imoveis',
-      label: 'Em Casa'
-    }
-
     const feedVariablesA = {
       pagination: {
         pageSize: 4
@@ -40,8 +34,35 @@ class HomePage extends Component {
         pageSize: 4
       },
       filters: {
-        neighborhoodsSlugs: ['urca']
+        neighborhoodsSlugs: ['sumare']
       }
+    }
+
+    const feedVariablesC = {
+      pagination: {
+        pageSize: 4
+      },
+      filters: {
+        neighborhoodsSlugs: ['pinheiros']
+      }
+    }
+
+    const feedButtonA = {
+      href: '/listings',
+      as: '/imoveis',
+      label: 'Ver outros imóveis recentes'
+    }
+
+    const feedButtonB = {
+      href: '/listings',
+      as: '/imoveis',
+      label: 'Ver outros imóveis de incorporadoras'
+    }
+
+    const feedButtonC = {
+      href: '/listings',
+      as: '/imoveis',
+      label: 'Ver outros imóveis com varanda'
     }
 
     return (
@@ -58,20 +79,20 @@ class HomePage extends Component {
         <ListingFeed
           highlight
           currentUser={user}
-          button={feedButton}
+          button={feedButtonA}
           variables={feedVariablesA}
           title="Adicionados recentemente em São Paulo"
         />
         <ListingFeed
           currentUser={user}
-          button={feedButton}
+          button={feedButtonB}
           variables={feedVariablesB}
           title="Imóveis de incorporadoras"
         />
         <ListingFeed
           currentUser={user}
-          button={feedButton}
-          variables={feedVariablesB}
+          button={feedButtonC}
+          variables={feedVariablesC}
           title="Imóveis pra quem gosta de varanda"
         />
         <CityLists />
