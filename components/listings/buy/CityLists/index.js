@@ -84,7 +84,7 @@ class CityLists extends Component {
           <HighlightsList>
             {HIGHLIGHTS.map((item, index) => {
               return (
-                <li>
+                <li key={index}>
                   <HighlightsLink href="/new-home">
                     <HighlightsImage
                       decoding="async"
