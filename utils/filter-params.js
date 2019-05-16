@@ -266,11 +266,14 @@ export const getListingFiltersFromState = (filterState) => {
  */
 export const getLocationFromPath = (asPath) => {
   const locationString = asPath.split('/imoveis/')[1]
-  const urlParts = locationString.split('/')
-  const state = urlParts[0]
-  const city = urlParts[1]
-  let rest = locationString.split(`${state}/${city}/`)[1]
-  return ParamsMapper.mapUrlToParams({stateSlug: state, citySlug: city, rest})
+  if (locationString) {
+    const urlParts = locationString.split('/')
+    const state = urlParts[0]
+    const city = urlParts[1]
+    let rest = locationString.split(`${state}/${city}/`)[1]
+    return ParamsMapper.mapUrlToParams({stateSlug: state, citySlug: city, rest})
+  }
+  return ParamsMapper.mapUrlToParams({rest})
 }
 
 /**

@@ -137,13 +137,19 @@ class NeighborhoodPicker extends Component {
         return
       }
 
-      const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
-        detail: {
-          city: selectedCity,
-          neighborhoods: selectedNeighborhoods
-        }
-      })
-      window.dispatchEvent(event)
+      if (this.props.fromHome) {
+        const {selectedCity} = this.state
+        const neighborhoodsUrl = selectedNeighborhoods.join('/')
+        Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}/${neighborhoodsUrl}`)
+      } else {
+        const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
+          detail: {
+            city: selectedCity,
+            neighborhoods: selectedNeighborhoods
+          }
+        })
+        window.dispatchEvent(event)
+      }
     })
   }
 
