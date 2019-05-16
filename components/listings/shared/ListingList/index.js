@@ -89,8 +89,8 @@ class ListingList extends Component {
                     params.neighborhood && (
                       <Neighborhood
                         neighborhood={params.neighborhood}
-                        state={params.state}
-                        city={params.city}
+                        state={params.stateSlug}
+                        city={params.citySlug}
                         neighborhoodListener={neighborhoodListener}
                       />
                     )

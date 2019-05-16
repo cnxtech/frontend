@@ -137,10 +137,6 @@ class NeighborhoodPicker extends Component {
         return
       }
 
-      const neighborhoodPaths = selectedNeighborhoods.join('/')
-      Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}/${neighborhoodPaths}`, {
-        shallow: true
-      })
       const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
         detail: {
           city: selectedCity,
