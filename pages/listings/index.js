@@ -49,6 +49,7 @@ class ListingSearch extends Component {
     }
 
     return {
+      asPath: context.asPath,
       hideSeparator: true,
       transparentHeader: false,
       params,
@@ -121,9 +122,10 @@ class ListingSearch extends Component {
   }
 
   render() {
-    const {query, params, user, client, url} = this.props
+    const {asPath, query, params, user, client, url} = this.props
     const {filters} = this.state
     const listingFilters = getListingFiltersFromState(filters)
+    const isRoot = asPath === '/'
     return (
       <FlagrProvider flagrFlags={this.props.flagrFlags}>
         <Query query={GET_DISTRICTS}>
@@ -145,6 +147,7 @@ class ListingSearch extends Component {
                   values={filters}
                 />
                 <ListingList
+                  isRoot={isRoot}
                   query={query}
                   params={params}
                   user={user}

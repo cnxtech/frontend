@@ -19,6 +19,7 @@ import LikeButton from 'components/shared/Common/Buttons/Like'
 import {
   Wrapper,
   Container,
+  Title,
   LISTING_CARD_IMAGE_HEIGHT
 } from './styles'
 import {BUTTON_LIKE_CIRCLE_HEIGHT} from 'components/shared/Common/Buttons/Like/styles'
@@ -57,10 +58,21 @@ class ListingCard extends Component {
             <img
               decoding="async"
               src={thumbUrl}
-              alt={`Imagem do imóvel ID-${listing.id} na ${listing.address.street}, ${listing.address.neighborhood}, ${listing.address.city} - ${listing.address.state}`}
+              alt={`Imagem do imóvel ID-${listing.id} na ${
+                listing.address.street
+              }, ${listing.address.neighborhood}, ${listing.address.city} - ${
+                listing.address.state
+              }`}
             />
             <Row flexDirection="column" p={2}>
               <Row justifyContent="space-between" mb={1}>
+                <Title>
+                  {`Imóvel na ${
+                    listing.address.street
+                  }, ${listing.address.neighborhood}, ${listing.address.city} - ${
+                    listing.address.state
+                  } - ID-${listing.id}`}
+                </Title>
                 <Text inline fontSize="small" fontWeight="bold">{listing.address.neighborhood}</Text>
                 <Text inline fontSize="small" color="pink">{getListingPrice(listing)}</Text>
               </Row>

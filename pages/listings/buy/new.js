@@ -2,26 +2,12 @@ import {Component, Fragment} from 'react'
 import {imageUrl} from 'utils/image_url'
 import NextHead from 'components/shared/NextHead'
 import ListingBuyHeader from 'components/listings/buy/BuyHeader'
+import CityLists from 'components/listings/buy/CityLists'
 import ListingFeed from 'components/shared/Listing/Feed'
 
-class Homepage extends Component {
+class HomePage extends Component {
   render() {
     const {client, router, url, user} = this.props
-
-    const feedVariables = {
-      pagination: {
-        pageSize: 4
-      },
-      filters: {
-        neighborhoodsSlugs: ['perdizes']
-      }
-    }
-
-    const feedButton = {
-      href: '/listings',
-      as: '/imoveis',
-      label: 'Em Casa'
-    }
 
     const BASE_TITLE = 'Imóveis, Casas e Apartamentos à Venda'
     const BASE_DESCRIPTION =
@@ -32,6 +18,51 @@ class Homepage extends Component {
       seoImg: imageUrl('buy'),
       seoTitle: `${BASE_TITLE} no Rio de Janeiro e São Paulo | EmCasa`,
       seoDescription: `Encontre ${BASE_TITLE} no Rio de Janeiro em toda Zona Sul ou em São Paulo ${BASE_DESCRIPTION}`
+    }
+
+    const feedVariablesA = {
+      pagination: {
+        pageSize: 4
+      },
+      filters: {
+        neighborhoodsSlugs: ['perdizes']
+      }
+    }
+
+    const feedVariablesB = {
+      pagination: {
+        pageSize: 4
+      },
+      filters: {
+        neighborhoodsSlugs: ['sumare']
+      }
+    }
+
+    const feedVariablesC = {
+      pagination: {
+        pageSize: 4
+      },
+      filters: {
+        neighborhoodsSlugs: ['pinheiros']
+      }
+    }
+
+    const feedButtonA = {
+      href: '/listings',
+      as: '/imoveis',
+      label: 'Ver outros imóveis recentes'
+    }
+
+    const feedButtonB = {
+      href: '/listings',
+      as: '/imoveis',
+      label: 'Ver outros imóveis de incorporadoras'
+    }
+
+    const feedButtonC = {
+      href: '/listings',
+      as: '/imoveis',
+      label: 'Ver outros imóveis com varanda'
     }
 
     return (
@@ -46,14 +77,28 @@ class Homepage extends Component {
         />
         <ListingBuyHeader />
         <ListingFeed
+          highlight
           currentUser={user}
-          button={feedButton}
-          variables={feedVariables}
-          title="Outros"
+          button={feedButtonA}
+          variables={feedVariablesA}
+          title="Adicionados recentemente em São Paulo"
         />
+        <ListingFeed
+          currentUser={user}
+          button={feedButtonB}
+          variables={feedVariablesB}
+          title="Imóveis de incorporadoras"
+        />
+        <ListingFeed
+          currentUser={user}
+          button={feedButtonC}
+          variables={feedVariablesC}
+          title="Imóveis pra quem gosta de varanda"
+        />
+        <CityLists />
       </Fragment>
     )
   }
 }
 
-export default Homepage
+export default HomePage
