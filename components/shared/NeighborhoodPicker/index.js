@@ -91,11 +91,18 @@ class NeighborhoodPicker extends Component {
   }
 
   applyUserCityFromGeoIp = (userCity) => {
+    const {pathname} = location
+    if (pathname !== '/imoveis') {
+      const location = pathname.split('/imoveis/')[1]
+      if (location) {
+        const citySlug = location.split('/')[1]
+        const urlCity = cities.find((city) => city.citySlug === citySlug)
+        this.selectCity(urlCity)
+      }
+      return
+    }
     if (!this.state.selectedCity) {
       this.selectCity(userCity)
-    }
-    if (window.location.pathname !== '/imoveis') {
-      return
     }
     const filterNeighborhoods = userCity.neighborhoods.map((neighborhood) => neighborhood.nameSlug)
     this.apply(filterNeighborhoods)
