@@ -98,18 +98,6 @@ export const getListings = async (jwt, query) => {
   }
 }
 
-export const getDashboardListings = async (jwt) => {
-  const endpoint = '/admin_dashboard'
-
-  try {
-    return await get(endpoint, jwt)
-  } catch (error) {
-    if (error.response && error.response.status === 422)
-      throw new Error('Unknown error. Please try again.', error)
-    else throw error
-  }
-}
-
 export const getListing = async (id, jwt) => {
   try {
     const response = await get('/listings/' + id, jwt)
