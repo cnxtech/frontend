@@ -82,11 +82,9 @@ function mapParamsToUrl(params, filters) {
   }
   paths = paths.concat(filterPaths)
 
-  let startPath = '/busca'
+  let startPath = ''
   if (state && city) {
     startPath = `/${state}/${city}`
-  } else if (neighborhoods && neighborhoods.length > 0) {
-    startPath = '/bairros'
   }
   return `${startPath}${paths.join('')}`
 }

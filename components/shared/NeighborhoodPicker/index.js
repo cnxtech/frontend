@@ -91,7 +91,9 @@ class NeighborhoodPicker extends Component {
   }
 
   applyUserCityFromGeoIp = (userCity) => {
-    this.selectCity(userCity)
+    if (!this.state.selectedCity) {
+      this.selectCity(userCity)
+    }
     if (window.location.pathname !== '/imoveis') {
       return
     }
@@ -120,8 +122,9 @@ class NeighborhoodPicker extends Component {
 
   apply(newSelection) {
     this.changeSelection(newSelection, () => {
+      const {selectedCity, selectedNeighborhoods} = this.state
       log(LISTING_SEARCH_NEIGHBORHOOD_APPLY, {
-        neighborhoods: this.state.selectedNeighborhoods,
+        neighborhoods: selectedNeighborhoods,
         fromHome: this.props.fromHome
       })
       if (this.state.showCities) {
@@ -130,24 +133,21 @@ class NeighborhoodPicker extends Component {
       if (this.props.onBackPressed) {
         this.props.onBackPressed()
       }
-      if (
-        this.props.fromHome &&
-        this.state.selectedNeighborhoods.length === 0
-      ) {
+      if (!selectedCity) {
         return
       }
 
-      if (this.props.fromHome) {
-        const neighborhoodPaths = this.state.selectedNeighborhoods.join('/')
-        Router.push('/listings', `/imoveis/bairros/${neighborhoodPaths}`, {
-          shallow: true
-        })
-      } else {
-        const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
-          detail: {neighborhoods: this.state.selectedNeighborhoods}
-        })
-        window.dispatchEvent(event)
-      }
+      const neighborhoodPaths = selectedNeighborhoods.join('/')
+      Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}/${neighborhoodPaths}`, {
+        shallow: true
+      })
+      const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
+        detail: {
+          city: selectedCity,
+          neighborhoods: selectedNeighborhoods
+        }
+      })
+      window.dispatchEvent(event)
     })
   }
 

@@ -87,17 +87,20 @@ class ListingSearch extends Component {
   }
 
   handleNeighborhoodChange = ({detail}) => {
-    // Take action only when neighborhood changes. We do this here because the component
-    // responsible for controlling neighborhood filters is not in the same context as
+    // Take action when neighborhood or city changes. We do this here because the component
+    // responsible for controlling location filters is not in the same context as
     // this ListingSearch or the ListingFilter.
-    const {neighborhoods} = detail
+    const {city, neighborhoods} = detail
     const newNeighborhoods = neighborhoods ? neighborhoods.toString() : ''
     const currentNeighborhoods = this.state.filters.neighborhoods
       ? this.state.filters.neighborhoods.toString()
       : ''
-    if (newNeighborhoods !== currentNeighborhoods) {
+    const newCity = city ? city.citySlug : ''
+    const currentCity = this.state.citiesSlug && this.state.citiesSlug.length > 0 ? this.state.citiesSlug[0] : ''
+    if (newNeighborhoods !== currentNeighborhoods || newCity !== currentCity) {
       const newFilters = clone(this.state.filters)
       newFilters.neighborhoods = neighborhoods
+      newFilters.citiesSlug = [newCity]
       this.setState(
         {filters: newFilters},
         this.onChangeFilter.bind(this, newFilters)
@@ -106,11 +109,6 @@ class ListingSearch extends Component {
   }
 
   onChangeFilter = (filters) => {
-    const newPath = ParamsMapper.mapParamsToUrl(this.props.params, filters)
-    Router.push('/listings', `/imoveis${newPath}`, {
-      shallow: true
-    })
-
     this.setState({filters: filters})
     window.scrollTo(0, 0)
   }
