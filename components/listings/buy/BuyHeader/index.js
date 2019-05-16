@@ -1,7 +1,5 @@
 import {Component} from 'react'
-import theme from '@emcasa/ui'
 import Text from '@emcasa/ui-dom/components/Text'
-import Row from '@emcasa/ui-dom/components/Row'
 import {Wrapper, Container, Title} from './styles'
 import TextHighlight from './TextHighlight'
 
