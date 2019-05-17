@@ -67,9 +67,8 @@ function mapFiltersToPath(filters = {}) {
   return paths
 }
 
-function mapParamsToUrl(params, filters) {
-  const {state, city} = params
-  const {neighborhoods, tagsSlug, ...filtersRest} = filters
+function mapParamsToUrl(filters) {
+  const {citySlug, stateSlug, neighborhoods, tagsSlug, ...filtersRest} = filters
   const filterPaths = mapFiltersToPath(filtersRest)
   let paths = []
   if (neighborhoods && neighborhoods.length > 0) {
@@ -82,12 +81,7 @@ function mapParamsToUrl(params, filters) {
   }
   paths = paths.concat(filterPaths)
 
-  let startPath = '/busca'
-  if (state && city) {
-    startPath = `/${state}/${city}`
-  } else if (neighborhoods && neighborhoods.length > 0) {
-    startPath = '/bairros'
-  }
+  const startPath = `/${stateSlug}/${citySlug}`
   return `${startPath}${paths.join('')}`
 }
 

@@ -155,6 +155,9 @@ export default class MapContainer extends Component {
   }
 
   fitMap = (markers) => {
+    if (!this.maps) {
+      return
+    }
     const LatLngList = markers.map((m) => new this.maps.LatLng(m.lat, m.lng))
 
     const bounds = new this.maps.LatLngBounds()
@@ -183,6 +186,9 @@ export default class MapContainer extends Component {
   }
 
   frameMarkers(markers) {
+    if (!this.maps) {
+      return
+    }
     log(LISTING_SEARCH_MAP_CLUSTER)
     const LatLngList = markers.map((m) => new this.maps.LatLng(m.lat, m.lng))
 
@@ -194,6 +200,9 @@ export default class MapContainer extends Component {
   }
 
   resetMapView = () => {
+    if (!this.maps) {
+      return
+    }
     const {mapOptions: {center}} = this.state
     this.map.setCenter(new this.maps.LatLng(center.lat, center.lng))
     this.map.setZoom(13)

@@ -162,7 +162,7 @@ export const getNewFiltersFromQuery = ({
   const types = tipos && splitParam(tipos).map((type) => (type.value ? type.value : type))
   const neighborhoods = bairros && splitParam(bairros).map((neighborhood) => neighborhood)
   const neighborhoodsSlugs = params && params.neighborhood ? [params.neighborhood] : null
-  const citiesSlug = params && params.city ? [params.city] : null
+  const citySlug = params && params.city ? params.city : null
   const filters = {
     price,
     area,
@@ -171,7 +171,7 @@ export const getNewFiltersFromQuery = ({
     types,
     neighborhoods,
     neighborhoodsSlugs,
-    citiesSlug
+    citySlug
   }
 
   return pickBy(filters, identity)
@@ -228,7 +228,8 @@ export const getListingFiltersFromState = (filterState) => {
     garageSpots,
     rooms,
     neighborhoods,
-    citiesSlug,
+    stateSlug,
+    citySlug,
     tagsSlug,
     types
   } = filterState
@@ -241,7 +242,9 @@ export const getListingFiltersFromState = (filterState) => {
     maxRooms: rooms && parseInt(rooms.max),
     minGarageSpots: garageSpots && parseInt(garageSpots.min),
     maxGarageSpots: garageSpots && parseInt(garageSpots.max),
-    citiesSlug,
+    citySlug,
+    [citySlug ? 'citiesSlug' : undefined]: citySlug ? [citySlug] : undefined,
+    stateSlug,
     tagsSlug,
     types:
       types &&
@@ -262,16 +265,15 @@ export const getListingFiltersFromState = (filterState) => {
  * @param asPath url
  */
 export const getLocationFromPath = (asPath) => {
-  const locationString = asPath.split('?')[0]
-  const urlParts = locationString.split('/')
-  const state = urlParts[2]
-  const city = urlParts[3]
-  let rest = locationString.split(`${state}/${city}/`)[1]
-  if (state === 'bairros' || state === 'search') {
-    rest = locationString.split(`${state}/`)[1] || ''
-    return ParamsMapper.mapUrlToParams({rest})
+  const locationString = asPath.split('/imoveis/')[1]
+  if (locationString) {
+    const urlParts = locationString.split('/')
+    const state = urlParts[0]
+    const city = urlParts[1]
+    let rest = locationString.split(`${state}/${city}/`)[1]
+    return ParamsMapper.mapUrlToParams({stateSlug: state, citySlug: city, rest})
   }
-  return ParamsMapper.mapUrlToParams({state, city, rest})
+  return null
 }
 
 /**

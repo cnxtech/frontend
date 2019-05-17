@@ -66,7 +66,13 @@ class ListingSearch extends Component {
       this.setState({filters: newFilters}, () => {
         if (newFilters.neighborhoods) {
           const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
-            detail: {neighborhoods: newFilters.neighborhoods}
+            detail: {
+              city: {
+                citySlug: newFilters.citySlug,
+                stateSlug: newFilters.stateSlug
+              },
+              neighborhoods: newFilters.neighborhoods
+            }
           })
           window.dispatchEvent(event)
         }
@@ -87,17 +93,21 @@ class ListingSearch extends Component {
   }
 
   handleNeighborhoodChange = ({detail}) => {
-    // Take action only when neighborhood changes. We do this here because the component
-    // responsible for controlling neighborhood filters is not in the same context as
+    // Take action when neighborhood or city changes. We do this here because the component
+    // responsible for controlling location filters is not in the same context as
     // this ListingSearch or the ListingFilter.
-    const {neighborhoods} = detail
+    const {city, neighborhoods} = detail
     const newNeighborhoods = neighborhoods ? neighborhoods.toString() : ''
     const currentNeighborhoods = this.state.filters.neighborhoods
       ? this.state.filters.neighborhoods.toString()
       : ''
-    if (newNeighborhoods !== currentNeighborhoods) {
-      const newFilters = clone(this.state.filters)
+    const newCitySlug = city ? city.citySlug : ''
+    const currentCitySlug = this.state.citySlug
+    if (newNeighborhoods !== currentNeighborhoods || newCitySlug !== currentCitySlug) {
+      const newFilters = clone(this.state.filters || {})
       newFilters.neighborhoods = neighborhoods
+      newFilters.citySlug = city.citySlug
+      newFilters.stateSlug = city.stateSlug
       this.setState(
         {filters: newFilters},
         this.onChangeFilter.bind(this, newFilters)
@@ -106,11 +116,10 @@ class ListingSearch extends Component {
   }
 
   onChangeFilter = (filters) => {
-    const newPath = ParamsMapper.mapParamsToUrl(this.props.params, filters)
+    const newPath = ParamsMapper.mapParamsToUrl(filters)
     Router.push('/listings', `/imoveis${newPath}`, {
       shallow: true
     })
-
     this.setState({filters: filters})
     window.scrollTo(0, 0)
   }
@@ -138,7 +147,7 @@ class ListingSearch extends Component {
                 <ListingHead
                   districts={districts}
                   filters={filters}
-                  params={params}
+                  params={params || {}}
                   url={url}
                 />
                 <LdJson />
@@ -149,7 +158,7 @@ class ListingSearch extends Component {
                 <ListingList
                   isRoot={isRoot}
                   query={query}
-                  params={params}
+                  params={params || {}}
                   user={user}
                   resetFilters={this.onResetFilter}
                   filters={listingFilters}
