@@ -37,7 +37,7 @@ import {
 } from './styles'
 import {NEIGHBORHOOD_SELECTION_CHANGE} from './events'
 
-const DEFAULT_BUTTON_TEXT = 'Escolha os bairros'
+const DEFAULT_BUTTON_TEXT = 'Escolha uma cidade'
 export const DEFAULT_CITY_SLUG = 'sao-paulo'
 export const DEFAULT_CITY = cities.find((city) => city.citySlug === DEFAULT_CITY_SLUG)
 

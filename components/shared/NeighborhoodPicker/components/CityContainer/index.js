@@ -120,8 +120,7 @@ class CityContainer extends Component {
       >
         <Row flexDirection="column">
           <Col>
-            <Row flexDirection="row" alignItems="center">
-              {!selectedCity && <Text>Escolha uma cidade</Text>}
+            <Row flexDirection="row" alignItems="center" mt={selectedCity ? 0 : 4}>
               {selectedCity &&
                 <>
                   <Text>{selectedCity.name}</Text>
