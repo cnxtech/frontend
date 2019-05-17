@@ -211,9 +211,14 @@ class NeighborhoodPicker extends Component {
 
   getButtonText() {
     if (process.browser) {
-      const selected = this.state.selectedNeighborhoods
-      if (selected && selected.length > 0) {
-        return arrayToString(selected)
+      const {selectedNeighborhoods, selectedCity} = this.state
+      const allNeighborhoodsSelected = selectedCity && isCitySelected(cities, selectedNeighborhoods, selectedCity.citySlug)
+      if (selectedNeighborhoods && selectedNeighborhoods.length > 0 && !allNeighborhoodsSelected) {
+        return arrayToString(selectedNeighborhoods)
+      } else if (!selectedCity) {
+        return DEFAULT_BUTTON_TEXT
+      } else if (selectedCity || allNeighborhoodsSelected) {
+        return selectedCity.name
       }
     }
     return DEFAULT_BUTTON_TEXT
