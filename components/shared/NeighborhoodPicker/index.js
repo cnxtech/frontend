@@ -98,7 +98,9 @@ class NeighborhoodPicker extends Component {
       if (location) {
         const citySlug = location.split('/')[1]
         const urlCity = cities.find((city) => city.citySlug === citySlug)
-        this.selectCity(urlCity)
+        if (urlCity) {
+          this.selectCity(urlCity)
+        }
       }
       if (pathname === '/') {
         const cityAutoSelection = cities.find((city) => city.citySlug === userCity.citySlug)
