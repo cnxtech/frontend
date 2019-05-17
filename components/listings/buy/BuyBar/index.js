@@ -17,11 +17,11 @@ class BuyBar extends Component {
             {user.authenticated && (
               <>
                 <FontAwesomeIcon icon={faHeart} size="1x" />
-                <Text>Favoritos<Text inline color="pink">4</Text></Text>
+                <Text fontSize={1}>Favoritos<Text fontSize={1} inline color="pink">4</Text></Text>
               </>
             )}
           </FavCount>
-          <Button icon={faSearch} noBorder iconColor={theme.colors.pink}>Filtro</Button>
+          <Button fontSize={1} icon={faSearch} noBorder iconColor={theme.colors.pink}>Filtro</Button>
         </Container>
       </Wrapper>
     )
