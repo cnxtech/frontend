@@ -208,10 +208,6 @@ const startServer = () => {
         return app.render(req, res, '/user/profile', req.query)
       })
 
-      server.get('/busca', (req, res) => {
-        return app.render(req, res, '/search', req.query)
-      })
-
       server.get('/ping', (req, res) => {
         res.status(200).send(`Ping ${new Date() * 1}`)
       })

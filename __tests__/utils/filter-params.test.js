@@ -28,7 +28,7 @@ describe('listing search filter functions', () => {
     const filters = getNewFiltersFromQuery(query, params)
     expect(filters).toEqual({
       area: {max: 300, min: 35},
-      citiesSlug: ['rio-de-janeiro'],
+      citySlug: 'rio-de-janeiro',
       garageSpots: {max: 2, min: 2},
       neighborhoods: ['botafogo', 'ipanema'],
       neighborhoodsSlugs: ['humaita'],
@@ -63,7 +63,7 @@ describe('listing search filter functions', () => {
         min: 3
       },
       neighborhoods: ['botafogo'],
-      citiesSlugs: ['rio-de-janeiro'],
+      citySlug: 'rio-de-janeiro',
       types: ['Apartamento', 'Cobertura']
     }
     const query = getListingFiltersFromState(filters)
@@ -75,7 +75,8 @@ describe('listing search filter functions', () => {
       minArea: 35,
       minPrice: 250000,
       neighborhoodsSlugs: ['botafogo'],
-      types: ['Apartamento', 'Cobertura']
+      types: ['Apartamento', 'Cobertura'],
+      citiesSlug: ['rio-de-janeiro']
     })
   })
 
@@ -106,10 +107,11 @@ describe('listing search filter functions', () => {
     const asPath = '/imoveis/rj/rio-de-janeiro/humaita/apartamento'
     const location = getLocationFromPath(asPath)
     expect(location).toEqual({
-      city: 'rio-de-janeiro',
-      state: 'rj',
+      citySlug: 'rio-de-janeiro',
+      stateSlug: 'rj',
       filters: {
-        citiesSlug: ['rio-de-janeiro'],
+        citySlug: 'rio-de-janeiro',
+        stateSlug: 'rj',
         types: ['Apartamento'],
         neighborhoods: ['humaita']
       }
@@ -120,10 +122,11 @@ describe('listing search filter functions', () => {
     const asPath = '/imoveis/rj/rio-de-janeiro/apartamento'
     const location = getLocationFromPath(asPath)
     expect(location).toEqual({
-      city: 'rio-de-janeiro',
-      state: 'rj',
+      citySlug: 'rio-de-janeiro',
+      stateSlug: 'rj',
       filters: {
-        citiesSlug: ['rio-de-janeiro'],
+        citySlug: 'rio-de-janeiro',
+        stateSlug: 'rj',
         types: ['Apartamento']
       }
     })

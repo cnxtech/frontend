@@ -17,6 +17,7 @@ import {GET_DISTRICTS} from 'graphql/listings/queries'
 import {Query} from 'react-apollo'
 import {cities} from 'constants/cities'
 import {arrayToString} from 'utils/text-utils'
+import {isCitySelected} from 'components/shared/NeighborhoodPicker/components/CityContainer/selection'
 import {
   log,
   LISTING_SEARCH_NEIGHBORHOOD_OPEN,
@@ -91,9 +92,18 @@ class NeighborhoodPicker extends Component {
   }
 
   applyUserCityFromGeoIp = (userCity) => {
-    this.selectCity(userCity)
-    if (window.location.pathname !== '/imoveis') {
+    const {pathname} = location
+    if (pathname !== '/imoveis') {
+      const location = pathname.split('/imoveis/')[1]
+      if (location) {
+        const citySlug = location.split('/')[1]
+        const urlCity = cities.find((city) => city.citySlug === citySlug)
+        this.selectCity(urlCity)
+      }
       return
+    }
+    if (!this.state.selectedCity) {
+      this.selectCity(userCity)
     }
     const filterNeighborhoods = userCity.neighborhoods.map((neighborhood) => neighborhood.nameSlug)
     this.apply(filterNeighborhoods)
@@ -120,8 +130,9 @@ class NeighborhoodPicker extends Component {
 
   apply(newSelection) {
     this.changeSelection(newSelection, () => {
+      const {selectedCity, selectedNeighborhoods} = this.state
       log(LISTING_SEARCH_NEIGHBORHOOD_APPLY, {
-        neighborhoods: this.state.selectedNeighborhoods,
+        neighborhoods: selectedNeighborhoods,
         fromHome: this.props.fromHome
       })
       if (this.state.showCities) {
@@ -130,21 +141,26 @@ class NeighborhoodPicker extends Component {
       if (this.props.onBackPressed) {
         this.props.onBackPressed()
       }
-      if (
-        this.props.fromHome &&
-        this.state.selectedNeighborhoods.length === 0
-      ) {
+      if (!selectedCity) {
         return
       }
 
+      const allNeighborhoodsSelected = isCitySelected(cities, selectedNeighborhoods, selectedCity.citySlug)
+
       if (this.props.fromHome) {
-        const neighborhoodPaths = this.state.selectedNeighborhoods.join('/')
-        Router.push('/listings', `/imoveis/bairros/${neighborhoodPaths}`, {
-          shallow: true
-        })
+        const {selectedCity} = this.state
+        const neighborhoodsUrl = selectedNeighborhoods.join('/')
+        if (allNeighborhoodsSelected) {
+          Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}`)
+        } else {
+          Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}/${neighborhoodsUrl}`)
+        }
       } else {
         const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
-          detail: {neighborhoods: this.state.selectedNeighborhoods}
+          detail: {
+            city: selectedCity,
+            neighborhoods: allNeighborhoodsSelected ? [] : selectedNeighborhoods
+          }
         })
         window.dispatchEvent(event)
       }
