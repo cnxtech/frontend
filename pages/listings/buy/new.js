@@ -39,11 +39,11 @@ class HomePage extends Component {
             title: 'Apartamentos em São Paulo e no Rio de Janeiro',
             filters: {
               types: ['Apartamentos'],
-              citiesSlug: [city]
+              citiesSlug: ['sao-paulo', 'rio-de-janeiro']
             },
             button: {
               href: '/listings',
-              as: '/imoveis',
+              as: '/imoveis/apartamento',
               label: 'Ver outros apartamentos'
             }
           }
@@ -64,7 +64,7 @@ class HomePage extends Component {
             },
             button: {
               href: '/listings',
-              as: '/imoveis',
+              as: '/imoveis/sp/sao-paulo',
               label: 'Ver outros imóveis recentes'
             }
           },
@@ -76,7 +76,7 @@ class HomePage extends Component {
             },
             button: {
               href: '/listings',
-              as: '/imoveis',
+              as: '/imoveis/sp/sao-paulo/apartamento',
               label: 'Ver outros apartamentos'
             }
           }
@@ -98,7 +98,7 @@ class HomePage extends Component {
             },
             button: {
               href: '/listings',
-              as: '/imoveis',
+              as: '/imoveis/rj/rio-de-janeiro',
               label: 'Ver outros imóveis recentes'
             }
           },
@@ -110,7 +110,7 @@ class HomePage extends Component {
             },
             button: {
               href: '/listings',
-              as: '/imoveis',
+              as: '/imoveis/rj/rio-de-janeiro/apartamento',
               label: 'Ver outros apartamentos'
             }
           }
