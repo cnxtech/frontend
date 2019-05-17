@@ -100,6 +100,12 @@ class NeighborhoodPicker extends Component {
         const urlCity = cities.find((city) => city.citySlug === citySlug)
         this.selectCity(urlCity)
       }
+      if (pathname === '/') {
+        const cityAutoSelection = cities.find((city) => city.citySlug === userCity.citySlug)
+        if (cityAutoSelection) {
+          this.selectCity(cityAutoSelection)
+        }
+      }
       return
     }
     if (!this.state.selectedCity) {
@@ -150,11 +156,7 @@ class NeighborhoodPicker extends Component {
       if (this.props.fromHome) {
         const {selectedCity} = this.state
         const neighborhoodsUrl = selectedNeighborhoods.join('/')
-        if (allNeighborhoodsSelected) {
-          Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}`)
-        } else {
-          Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}/${neighborhoodsUrl}`)
-        }
+        Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}${!allNeighborhoodsSelected ? `/${neighborhoodsUrl}` : ``}`)
       } else {
         const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
           detail: {
