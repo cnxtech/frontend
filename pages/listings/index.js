@@ -147,7 +147,7 @@ class ListingSearch extends Component {
                 <ListingHead
                   districts={districts}
                   filters={filters}
-                  params={params}
+                  params={params || {}}
                   url={url}
                 />
                 <LdJson />
@@ -158,7 +158,7 @@ class ListingSearch extends Component {
                 <ListingList
                   isRoot={isRoot}
                   query={query}
-                  params={params}
+                  params={params || {}}
                   user={user}
                   resetFilters={this.onResetFilter}
                   filters={listingFilters}
