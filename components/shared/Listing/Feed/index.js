@@ -27,10 +27,10 @@ class ListingFeed extends Component {
                 listings={data.listings.listings}
                 currentUser={currentUser}
               >
-                <Row mt={4}>
+                <Row mt={5}>
                   <Link passHref href={button.href} as={button.as} passHref>
                     <MoreButton
-                      inline
+                      fontSize={1}
                       as="a"
                       onClick={button.click ? button.click : null}
                     >

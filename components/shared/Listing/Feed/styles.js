@@ -21,5 +21,10 @@ export const MoreButton = styled(Button)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   margin: 0 auto;
+
+  @media screen and ${breakpoint.up('desktop')} {
+    width: initial;
+  }
 `

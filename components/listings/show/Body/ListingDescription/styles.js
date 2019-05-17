@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import theme from 'config/theme'
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
-import Button from '@emcasa/ui-dom/components/Button'
 import breakpoint from '@emcasa/ui/lib/styles/breakpoint';
 
 export default styled(Row)`

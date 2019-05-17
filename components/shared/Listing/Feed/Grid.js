@@ -14,17 +14,15 @@ class ListingFeedGrid extends Component {
           {title}
         </Text>
         <ListingsGrid>
-          {listings.map((listing) => {
-            return (
-              <ListingCard
-                key={listing.id}
-                listing={listing}
-                currentUser={currentUser}
-                favorited={[]}
-                related
-              />
-            )
-          })}
+          {listings.map(listing => (
+            <ListingCard
+              key={listing.id}
+              listing={listing}
+              currentUser={currentUser}
+              favorited={[]}
+              related
+            />
+          ))}
         </ListingsGrid>
         {children}
       </Container>

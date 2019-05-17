@@ -16,7 +16,6 @@ export const Container = styled(Row)`
   justifycontent: center;
   text-align: center;
   padding: ${theme.space[5]}px ${theme.space[4]}px ${theme.space[5] * 2}px;
-
 `
 
 export const Title = styled(Text)`

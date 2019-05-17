@@ -9,9 +9,7 @@ class BuyHeader extends Component {
       <Wrapper>
         <Container>
           <Title as="h2" fontWeight="bold" fontSize={[2, null, null, 4]}>
-            Busque seu imóvel <TextHighlight>sem sair de casa</TextHighlight> e{' '}
-            <TextHighlight>sem corretores</TextHighlight>{' '}
-            <TextHighlight strokeWidth="3">empurrando imóveis</TextHighlight>.
+            Busque seu imóvel <TextHighlight>sem sair de casa.</TextHighlight><br /> Sem corretores <TextHighlight strokeWidth="3.8">empurrando imóveis</TextHighlight>
           </Title>
           <Text fontSize={[1, null, null, 2]}>
             Visite imóveis através do <strong>Tour Virtual</strong> e fale com
