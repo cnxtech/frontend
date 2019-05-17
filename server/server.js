@@ -220,6 +220,14 @@ const startServer = () => {
         return app.render(req, res, '/listings/buy/new', req.query)
       })
 
+      server.get('/new-home/rj', (req, res) => {
+        return app.render(req, res, '/listings/buy/new', {city: 'rio-de-janeiro'})
+      })
+
+      server.get('/new-home/sp', (req, res) => {
+        return app.render(req, res, '/listings/buy/new', {city: 'sao-paulo'})
+      })
+
       server.get('/google1e5ce96173e3bf9d.html', (req, res) => {
         app.serveStatic(
           req,
