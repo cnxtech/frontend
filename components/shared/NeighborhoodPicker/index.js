@@ -37,7 +37,7 @@ import {
 } from './styles'
 import {NEIGHBORHOOD_SELECTION_CHANGE} from './events'
 
-const DEFAULT_BUTTON_TEXT = 'Escolha os bairros'
+const DEFAULT_BUTTON_TEXT = 'Escolha uma cidade'
 export const DEFAULT_CITY_SLUG = 'sao-paulo'
 export const DEFAULT_CITY = cities.find((city) => city.citySlug === DEFAULT_CITY_SLUG)
 
@@ -98,7 +98,15 @@ class NeighborhoodPicker extends Component {
       if (location) {
         const citySlug = location.split('/')[1]
         const urlCity = cities.find((city) => city.citySlug === citySlug)
-        this.selectCity(urlCity)
+        if (urlCity) {
+          this.selectCity(urlCity)
+        }
+      }
+      if (pathname === '/') {
+        const cityAutoSelection = cities.find((city) => city.citySlug === userCity.citySlug)
+        if (cityAutoSelection) {
+          this.selectCity(cityAutoSelection)
+        }
       }
       return
     }
@@ -150,11 +158,7 @@ class NeighborhoodPicker extends Component {
       if (this.props.fromHome) {
         const {selectedCity} = this.state
         const neighborhoodsUrl = selectedNeighborhoods.join('/')
-        if (allNeighborhoodsSelected) {
-          Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}`)
-        } else {
-          Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}/${neighborhoodsUrl}`)
-        }
+        Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}${!allNeighborhoodsSelected ? `/${neighborhoodsUrl}` : ``}`)
       } else {
         const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
           detail: {
@@ -209,9 +213,14 @@ class NeighborhoodPicker extends Component {
 
   getButtonText() {
     if (process.browser) {
-      const selected = this.state.selectedNeighborhoods
-      if (selected && selected.length > 0) {
-        return arrayToString(selected)
+      const {selectedNeighborhoods, selectedCity} = this.state
+      const allNeighborhoodsSelected = selectedCity && isCitySelected(cities, selectedNeighborhoods, selectedCity.citySlug)
+      if (selectedNeighborhoods && selectedNeighborhoods.length > 0 && !allNeighborhoodsSelected) {
+        return arrayToString(selectedNeighborhoods)
+      } else if (!selectedCity) {
+        return DEFAULT_BUTTON_TEXT
+      } else if (selectedCity || allNeighborhoodsSelected) {
+        return selectedCity.name
       }
     }
     return DEFAULT_BUTTON_TEXT
