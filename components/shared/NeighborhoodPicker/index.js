@@ -17,6 +17,7 @@ import {GET_DISTRICTS} from 'graphql/listings/queries'
 import {Query} from 'react-apollo'
 import {cities} from 'constants/cities'
 import {arrayToString} from 'utils/text-utils'
+import {isCitySelected} from 'components/shared/NeighborhoodPicker/components/CityContainer/selection'
 import {
   log,
   LISTING_SEARCH_NEIGHBORHOOD_OPEN,
@@ -144,15 +145,21 @@ class NeighborhoodPicker extends Component {
         return
       }
 
+      const allNeighborhoodsSelected = isCitySelected(cities, selectedNeighborhoods, selectedCity.citySlug)
+
       if (this.props.fromHome) {
         const {selectedCity} = this.state
         const neighborhoodsUrl = selectedNeighborhoods.join('/')
-        Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}/${neighborhoodsUrl}`)
+        if (allNeighborhoodsSelected) {
+          Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}`)
+        } else {
+          Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}/${neighborhoodsUrl}`)
+        }
       } else {
         const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
           detail: {
             city: selectedCity,
-            neighborhoods: selectedNeighborhoods
+            neighborhoods: allNeighborhoodsSelected ? [] : selectedNeighborhoods
           }
         })
         window.dispatchEvent(event)
