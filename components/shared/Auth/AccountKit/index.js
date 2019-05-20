@@ -38,6 +38,10 @@ class AccountKit extends Component {
 
   onLoad = () => {
     const {appId, csrf, version, autoLogin} = this.props
+    if (!appId) {
+      console.warn('[AccountKit] App Id not found')
+      return;
+    }
     const accountKitProps = {
       appId,
       state: csrf,

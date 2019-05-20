@@ -18,83 +18,184 @@ import Row from '@emcasa/ui-dom/components/Row'
 
 class CityLists extends Component {
   render() {
-    const HIGHLIGHTS = [
-      {
-        nameSlug: 'perdizes',
-        name: 'Perdizes'
+    const {city} = this.props
+
+    const CONTENT = {
+      all: {
+        title: 'Imóveis à venda no Rio de Janeiro e São Paulo',
+        highlights: [
+          {
+            stateSlug: 'sp',
+            citySlug: 'sao-paulo',
+            nameSlug: 'perdizes',
+            name: 'Perdizes',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'rj',
+            citySlug: 'rio-de-janeiro',
+            nameSlug: 'botafogo',
+            name: 'Botafogo',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'sp',
+            citySlug: 'sao-paulo',
+            nameSlug: 'pinheiros',
+            name: 'Pinheiros',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'rj',
+            citySlug: 'rio-de-janeiro',
+            nameSlug: 'copacabana',
+            name: 'Copacabana',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'sp',
+            citySlug: 'sao-paulo',
+            nameSlug: 'sumare',
+            name: 'Sumaré',
+            preposition: 'no'
+          },
+          {
+            stateSlug: 'rj',
+            citySlug: 'rio-de-janeiro',
+            nameSlug: 'flamengo',
+            name: 'Flamengo',
+            preposition: 'no'
+          }
+        ]
       },
-      {
-        nameSlug: 'pinheiros',
-        name: 'Pinheiros'
+      saopaulo: {
+        title: 'Imóveis à venda em São Paulo',
+        highlights: [
+          {
+            stateSlug: 'sp',
+            citySlug: 'sao-paulo',
+            nameSlug: 'perdizes',
+            name: 'Perdizes',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'sp',
+            citySlug: 'sao-paulo',
+            nameSlug: 'pinheiros',
+            name: 'Pinheiros',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'sp',
+            citySlug: 'sao-paulo',
+            nameSlug: 'sumare',
+            name: 'Sumaré',
+            preposition: 'no'
+          },
+          {
+            stateSlug: 'sp',
+            citySlug: 'sao-paulo',
+            nameSlug: 'sumarezinho',
+            name: 'Sumarezinho',
+            preposition: 'no'
+          },
+          {
+            stateSlug: 'sp',
+            citySlug: 'sao-paulo',
+            nameSlug: 'vila-anglo-brasileira',
+            name: 'Vila Anglo Brasileira',
+            preposition: 'na'
+          },
+          {
+            stateSlug: 'sp',
+            citySlug: 'sao-paulo',
+            nameSlug: 'vila-pompeia',
+            name: 'Vila Pompéia',
+            preposition: 'na'
+          }
+        ]
       },
-      {
-        nameSlug: 'sumare',
-        name: 'Sumaré'
-      },
-      {
-        nameSlug: 'sumarezinho',
-        name: 'Sumarezinho'
-      },
-      {
-        nameSlug: 'vila-anglo-brasileira',
-        name: 'Vila Anglo Brasileira'
-      },
-      {
-        nameSlug: 'pompeia',
-        name: 'Vila Pompéia'
+      riodejaneiro: {
+        title: 'Imóveis à venda no Rio de Janeiro',
+        highlights: [
+          {
+            stateSlug: 'rj',
+            citySlug: 'rio-de-janeiro',
+            nameSlug: 'botafogo',
+            name: 'Botafogo',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'rj',
+            citySlug: 'rio-de-janeiro',
+            nameSlug: 'copacabana',
+            name: 'Copacabana',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'rj',
+            citySlug: 'rio-de-janeiro',
+            nameSlug: 'flamengo',
+            name: 'Flamengo',
+            preposition: 'no'
+          },
+          {
+            stateSlug: 'rj',
+            citySlug: 'rio-de-janeiro',
+            nameSlug: 'ipanema',
+            name: 'Ipanema',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'rj',
+            citySlug: 'rio-de-janeiro',
+            nameSlug: 'laranjeiras',
+            name: 'Laranjeiras',
+            preposition: 'em'
+          },
+          {
+            stateSlug: 'rj',
+            citySlug: 'rio-de-janeiro',
+            nameSlug: 'leblon',
+            name: 'Leblon',
+            preposition: 'no'
+          }
+        ]
       }
-    ]
+    }
 
-    const APARTAMENTOS = [
-      'Apartamentos em Perdizes',
-      'Apartamentos em Pinheiros',
-      'Apartamentos no Sumaré ',
-      'Apartamentos no Sumarezinho',
-      'Apartamentos na Vila Anglo Brasileira',
-      'Apartamentos na Vila Pompéia'
-    ]
-
-    const CASAS = [
-      'Casas em Perdizes',
-      'Casas em Pinheiros',
-      'Casas no Sumaré ',
-      'Casas no Sumarezinho',
-      'Casas na Vila Anglo Brasileira',
-      'Casas na Vila Pompéia'
-    ]
-
-    const COBERTURAS = [
-      'Coberturas em Perdizes',
-      'Coberturas em Pinheiros',
-      'Coberturas no Sumaré ',
-      'Coberturas no Sumarezinho',
-      'Coberturas na Vila Anglo Brasileira',
-      'Coberturas na Vila Pompéia'
-    ]
+    const CITY_CONTENT = CONTENT[city.replace(/[^a-z]/g, '')]
 
     return (
       <Container>
         <Title fontSize="large" fontWeight="bold" as="h3">
-          Imóveis à venda no Rio de Janeiro e São Paulo
+          {CITY_CONTENT.title}
         </Title>
         <Row flexDirection="column">
           <SubTitle fontWeight="bold" as="h4">
             Bairros mais buscados
           </SubTitle>
           <HighlightsList>
-            {HIGHLIGHTS.map((item, index) => {
+            {CITY_CONTENT.highlights.map((item, index) => {
               return (
-                <li>
-                  <HighlightsLink href="/new-home">
-                    <HighlightsImage
-                      decoding="async"
-                      src={`https://res.cloudinary.com/emcasa/image/upload/v1543531007/bairros/${
-                        item.nameSlug
-                      }`}
-                      alt={`Imagem do bairro ${item.name}`}
-                    />
-                    <HighlightsLabel>{item.name}</HighlightsLabel>
-                  </HighlightsLink>
+                <li key={index}>
+                  <Link
+                    passHref
+                    href={`/imoveis/${item.stateSlug}/${item.citySlug}/${
+                      item.nameSlug
+                    }`}
+                  >
+                    <HighlightsLink>
+                      <HighlightsImage
+                        decoding="async"
+                        src={`https://res.cloudinary.com/emcasa/image/upload/v1543531007/homepage/neighborhoods/${
+                          item.citySlug
+                        }/${item.nameSlug}`}
+                        alt={`Imagem do bairro ${item.name}`}
+                      />
+                      <HighlightsLabel>{item.name}</HighlightsLabel>
+                    </HighlightsLink>
+                  </Link>
                 </li>
               )
             })}
@@ -106,33 +207,54 @@ class CityLists extends Component {
           </SubTitle>
           <TypesListGrid>
             <TypesList>
-              {APARTAMENTOS.map((item, index) => {
+              {CITY_CONTENT.highlights.map((item, index) => {
                 return (
                   <TypesListItem key={index}>
-                    <Link passHref href="/imoveis">
-                      <TypesListLink href="/">{item}</TypesListLink>
+                    <Link
+                      passHref
+                      href={`/imoveis/${item.stateSlug}/${item.citySlug}/${
+                        item.nameSlug
+                      }/apartamento`}
+                    >
+                      <TypesListLink>{`Apartamentos ${item.preposition} ${
+                        item.name
+                      }`}</TypesListLink>
                     </Link>
                   </TypesListItem>
                 )
               })}
             </TypesList>
             <TypesList>
-              {CASAS.map((item, index) => {
+              {CITY_CONTENT.highlights.map((item, index) => {
                 return (
                   <TypesListItem key={index}>
-                    <Link passHref href="/imoveis">
-                      <TypesListLink href="/">{item}</TypesListLink>
+                    <Link
+                      passHref
+                      href={`/imoveis/${item.stateSlug}/${item.citySlug}/${
+                        item.nameSlug
+                      }/casa`}
+                    >
+                      <TypesListLink>{`Casas ${item.preposition} ${
+                        item.name
+                      }`}</TypesListLink>
                     </Link>
                   </TypesListItem>
                 )
               })}
             </TypesList>
             <TypesList>
-              {COBERTURAS.map((item, index) => {
+              {CITY_CONTENT.highlights.map((item, index) => {
                 return (
                   <TypesListItem key={index}>
-                    <Link passHref href="/imoveis">
-                      <TypesListLink href="/">{item}</TypesListLink>
+                    <Link
+                      passHref
+                      href={`/imoveis/${item.stateSlug}/${item.citySlug}/${
+                        item.nameSlug
+                      }/cobertura`}
+                    >
+                      <TypesListLink>{`Coberturas ${item.preposition} ${
+                        item.name
+                      }`}</TypesListLink>
                     </Link>
                   </TypesListItem>
                 )

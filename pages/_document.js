@@ -3,29 +3,43 @@ import Document, {Main, NextScript} from 'next/document'
 import {ServerStyleSheet} from 'styled-components'
 import Head from './_head';
 
-const RD_STATION_SCRIPT =
-  'https://d335luupugsy2.cloudfront.net/js/loader-scripts/10ac8a83-57de-4007-b3e7-532ac8ee60ac-loader.js'
-
 const CRAWLERS_USER_AGENT = [
   'facebookexternalhit',
   'WhatsApp'
 ]
 
 export default class AppDocument extends Document {
-  static getInitialProps({req, renderPage}) {
+  static async getInitialProps (ctx) {
     const sheet = new ServerStyleSheet()
-    const page = renderPage((App) => (props) =>
-      sheet.collectStyles(<App {...props} />)
-    )
-    const styleTags = [sheet.getStyleElement()]
-    const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
-    return {...page, styleTags, userAgent, prod: process.env.NODE_ENV === 'production'}
+    const originalRenderPage = ctx.renderPage
+    const userAgent = ctx.req ? ctx.req.headers['user-agent'] : navigator.userAgent
+    const includeStyles = !CRAWLERS_USER_AGENT.some(ua => userAgent.startsWith(ua))
+
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
+        })
+
+      const initialProps = await Document.getInitialProps(ctx)
+      return {
+        ...initialProps,
+        prod: process.env.NODE_ENV === 'production',
+        styles: !includeStyles ? null : (
+          <>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        )
+      }
+    } finally {
+      sheet.seal()
+    }
   }
 
   render() {
-    const {styleTags, userAgent, prod} = this.props
+    const {prod} = this.props
     const currentUser = get(this, 'props.__NEXT_DATA__.props.initialProps.currentUser')
-    const includeStyles = !CRAWLERS_USER_AGENT.some(ua => userAgent.startsWith(ua))
     let isAdmin = currentUser && currentUser.isAdmin
 
     return (
@@ -102,7 +116,6 @@ export default class AppDocument extends Document {
                 forceHttps: true
               });`}}
           />
-          {includeStyles ? styleTags : null}
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"

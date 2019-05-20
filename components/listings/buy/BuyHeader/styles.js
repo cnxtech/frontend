@@ -15,13 +15,12 @@ export const Container = styled(Row)`
   align-items: center;
   justifycontent: center;
   text-align: center;
-  padding: ${theme.space[5]}px ${theme.space[4]}px ${theme.space[5] * 2}px;
-
+  padding: ${theme.space[5] * 2}px ${theme.space[4]}px;
 `
 
 export const Title = styled(Text)`
   padding: 0;
-  margin: 0 auto ${theme.space[4]}px;
+  margin: 0 auto;
   max-width: ${BUYHEADER_TITLE_MAX_WIDTH}px;
 
   @media screen and ${breakpoint.up('desktop')} {

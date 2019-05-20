@@ -32,7 +32,9 @@ const startServer = () => {
     .then(() => {
       const server = express()
       server.use(compression())
-      server.use(timber.middlewares.express())
+      if (process.env.NODE_ENV === 'production') {
+        server.use(timber.middlewares.express())
+      }
       server.use(function(req, res, next) {
         if (process.env.NODE_ENV === 'production') {
           if (req.headers['x-forwarded-proto'] !== 'https' && !isELBHealthCheck(req)) {
@@ -210,6 +212,14 @@ const startServer = () => {
 
       server.get('/new-home', (req, res) => {
         return app.render(req, res, '/listings/buy/new', req.query)
+      })
+
+      server.get('/new-home/rj', (req, res) => {
+        return app.render(req, res, '/listings/buy/new', {city: 'rio-de-janeiro'})
+      })
+
+      server.get('/new-home/sp', (req, res) => {
+        return app.render(req, res, '/listings/buy/new', {city: 'sao-paulo'})
       })
 
       server.get('/google1e5ce96173e3bf9d.html', (req, res) => {
