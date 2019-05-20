@@ -38,6 +38,7 @@ import {
 import {NEIGHBORHOOD_SELECTION_CHANGE} from './events'
 
 const DEFAULT_BUTTON_TEXT = 'Escolha uma cidade'
+const CHOOSE_NEIGHBORHOOD_BUTTON_TEXT = 'Escolha os bairros'
 export const DEFAULT_CITY_SLUG = 'sao-paulo'
 export const DEFAULT_CITY = cities.find((city) => city.citySlug === DEFAULT_CITY_SLUG)
 
@@ -220,7 +221,11 @@ class NeighborhoodPicker extends Component {
       } else if (!selectedCity) {
         return DEFAULT_BUTTON_TEXT
       } else if (selectedCity || allNeighborhoodsSelected) {
-        return selectedCity.name
+        if (this.props.fromHome) {
+          return CHOOSE_NEIGHBORHOOD_BUTTON_TEXT
+        } else {
+          return selectedCity.name
+        }
       }
     }
     return DEFAULT_BUTTON_TEXT
