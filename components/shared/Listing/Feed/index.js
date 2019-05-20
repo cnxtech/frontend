@@ -4,7 +4,8 @@ import {Query} from 'react-apollo'
 import {GET_LISTINGS} from 'graphql/listings/queries'
 import Link from 'next/link'
 import ListingFeedGrid from './Grid'
-import {Wrapper, MoreButtonWrapper, MoreButton} from './styles'
+import {Wrapper, MoreButton} from './styles'
+import Row from '@emcasa/ui-dom/components/Row'
 
 class ListingFeed extends Component {
   render() {
@@ -26,16 +27,17 @@ class ListingFeed extends Component {
                 listings={data.listings.listings}
                 currentUser={currentUser}
               >
-                <MoreButtonWrapper>
+                <Row mt={5}>
                   <Link passHref href={button.href} as={button.as} passHref>
                     <MoreButton
+                      fontSize={1}
                       as="a"
                       onClick={button.click ? button.click : null}
                     >
                       {button.label}
                     </MoreButton>
                   </Link>
-                </MoreButtonWrapper>
+                </Row>
               </ListingFeedGrid>
             </Wrapper>
           )
