@@ -38,6 +38,7 @@ import {
 import {NEIGHBORHOOD_SELECTION_CHANGE} from './events'
 
 const DEFAULT_BUTTON_TEXT = 'Escolha uma cidade'
+const CHOOSE_NEIGHBORHOOD_BUTTON_TEXT = 'Escolha os bairros'
 export const DEFAULT_CITY_SLUG = 'sao-paulo'
 export const DEFAULT_CITY = cities.find((city) => city.citySlug === DEFAULT_CITY_SLUG)
 
@@ -82,9 +83,9 @@ class NeighborhoodPicker extends Component {
 
   getUserCityByGeoIp = (result) => {
     if (result && result.location && result.location.city) {
-      const {city} = result.location
+      const {city, region} = result.location
       const citySlug = slugify(city.toLowerCase())
-      const cityFound = cities.find((city) => city.citySlug === citySlug)
+      const cityFound = cities.find((city) => city.citySlug === citySlug || city.state === region)
       const userCity = cityFound ? cityFound : null
       return userCity
     }
@@ -220,7 +221,11 @@ class NeighborhoodPicker extends Component {
       } else if (!selectedCity) {
         return DEFAULT_BUTTON_TEXT
       } else if (selectedCity || allNeighborhoodsSelected) {
-        return selectedCity.name
+        if (this.props.fromHome) {
+          return CHOOSE_NEIGHBORHOOD_BUTTON_TEXT
+        } else {
+          return selectedCity.name
+        }
       }
     }
     return DEFAULT_BUTTON_TEXT
