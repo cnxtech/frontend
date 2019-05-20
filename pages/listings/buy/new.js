@@ -136,16 +136,16 @@ class HomePage extends Component {
           return (
             <ListingFeed
               key={index}
-              highlight={index === 0}
-              currentUser={user}
+              highlight={item.highlight}
+              title={item.title}
               button={item.button}
+              currentUser={user}
               variables={{
                 ...item.variables,
                 pagination: {
                   pageSize: 4
                 }
               }}
-              title={item.title}
             />
           )
         })}

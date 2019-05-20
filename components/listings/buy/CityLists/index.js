@@ -193,7 +193,13 @@ class CityLists extends Component {
                         }/${item.nameSlug}`}
                         alt={`Imagem do bairro ${item.name}`}
                       />
-                      <HighlightsLabel>{item.name}</HighlightsLabel>
+                      <HighlightsLabel
+                        color="white"
+                        fontSize={1}
+                        fontWeight="bold"
+                      >
+                        {item.name}
+                      </HighlightsLabel>
                     </HighlightsLink>
                   </Link>
                 </li>
