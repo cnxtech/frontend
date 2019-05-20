@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {getParagraphs} from 'utils/text-utils'
 import {canEdit} from 'permissions/listings-permissions'
@@ -10,6 +10,11 @@ import {
 } from 'lib/logging'
 import View from '@emcasa/ui-dom/components/View'
 import Col from '@emcasa/ui-dom/components/Col'
+import Row from '@emcasa/ui-dom/components/Row'
+import Button from '@emcasa/ui-dom/components/Button'
+import Text from '@emcasa/ui-dom/components/Text'
+import Icon from '@emcasa/ui-dom/components/Icon'
+import Breakpoint from '@emcasa/ui-dom/components/Breakpoint'
 import ListingInfo from './ListingInfo'
 import ListingDescription from './ListingDescription'
 import DevelopmentPhase from './DevelopmentPhase'
@@ -20,6 +25,8 @@ class ListingMainContent extends Component {
   componentDidMount() {
     log(LISTING_DETAIL_OPEN, getListingInfoForLogs(this.props.listing))
   }
+
+  onClickDevelopmentListings = () => {}
 
   onExpandDescription = () => {
     log(
@@ -43,6 +50,9 @@ class ListingMainContent extends Component {
           listing.complement ? `- ${listing.complement}` : ''
         }`
       : `${street}`
+    const description = getParagraphs(listing.description)
+    if (listing.development)
+      description.push(...getParagraphs(listing.development.description))
     return (
       <Col alignItems="center" width="100%" mt={5}>
         <Container>
@@ -57,19 +67,35 @@ class ListingMainContent extends Component {
           />
           <View flex="1 1 100%" pb={5}>
             {Boolean(listing.development) && (
-              <DevelopmentPhase phase={listing.development.phase} />
+              <>
+                <DevelopmentPhase phase={listing.development.phase} />
+                <Breakpoint down="tablet">
+                  <a href="#unidades">
+                    <Button mb={4}>
+                      <Row alignItems="center">
+                        <Icon name="arrow-down" size={16} mr={2} />
+                        <Text inline fontSize="small">
+                          Ver unidades disponíveis
+                        </Text>
+                      </Row>
+                    </Button>
+                  </a>
+                </Breakpoint>
+              </>
             )}
             <ListingDescription
-              title="Sobre o imóvel"
+              title={`Sobre o ${
+                listing.development ? 'empreendimento' : 'imóvel'
+              }`}
               address={listing.address}
               tags={listing.tags}
-              paragraphs={getParagraphs(listing.description)}
+              paragraphs={description}
               onExpand={this.onExpandDescription}
             />
           </View>
         </Container>
         {Boolean(listing.development) && (
-          <View>
+          <View id="unidades">
             <DevelopmentListings uuid={listing.development.uuid} />
           </View>
         )}
