@@ -28,19 +28,6 @@ router.get(
     res.locals.app.render(req, res, actualPage, req.query)
   }
 )
-router.get('/busca/:rest([0-9a-z-]*)', (req, res) => {
-  const actualPage = '/listings'
-  const params = ParamsMapper.mapUrlToParams(req.params)
-  req.params = params
-  res.locals.app.render(req, res, actualPage, req.query)
-})
-
-router.get('/bairros/:rest([0-9a-z-]*)', (req, res) => {
-  const actualPage = '/listings'
-  const params = ParamsMapper.mapUrlToParams(req.params)
-  req.params = params
-  res.locals.app.render(req, res, actualPage, req.query)
-})
 
 router.get('/:state/:city/:rest([0-9a-z-]*)', (req, res) => {
   const actualPage = '/listings'

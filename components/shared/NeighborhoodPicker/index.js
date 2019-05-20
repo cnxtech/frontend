@@ -17,6 +17,7 @@ import {GET_DISTRICTS} from 'graphql/listings/queries'
 import {Query} from 'react-apollo'
 import {cities} from 'constants/cities'
 import {arrayToString} from 'utils/text-utils'
+import {isCitySelected} from 'components/shared/NeighborhoodPicker/components/CityContainer/selection'
 import {
   log,
   LISTING_SEARCH_NEIGHBORHOOD_OPEN,
@@ -36,7 +37,7 @@ import {
 } from './styles'
 import {NEIGHBORHOOD_SELECTION_CHANGE} from './events'
 
-const DEFAULT_BUTTON_TEXT = 'Escolha os bairros'
+const DEFAULT_BUTTON_TEXT = 'Escolha uma cidade'
 export const DEFAULT_CITY_SLUG = 'sao-paulo'
 export const DEFAULT_CITY = cities.find((city) => city.citySlug === DEFAULT_CITY_SLUG)
 
@@ -91,9 +92,26 @@ class NeighborhoodPicker extends Component {
   }
 
   applyUserCityFromGeoIp = (userCity) => {
-    this.selectCity(userCity)
-    if (window.location.pathname !== '/imoveis') {
+    const {pathname} = location
+    if (pathname !== '/imoveis') {
+      const location = pathname.split('/imoveis/')[1]
+      if (location) {
+        const citySlug = location.split('/')[1]
+        const urlCity = cities.find((city) => city.citySlug === citySlug)
+        if (urlCity) {
+          this.selectCity(urlCity)
+        }
+      }
+      if (pathname === '/') {
+        const cityAutoSelection = cities.find((city) => city.citySlug === userCity.citySlug)
+        if (cityAutoSelection) {
+          this.selectCity(cityAutoSelection)
+        }
+      }
       return
+    }
+    if (!this.state.selectedCity) {
+      this.selectCity(userCity)
     }
     const filterNeighborhoods = userCity.neighborhoods.map((neighborhood) => neighborhood.nameSlug)
     this.apply(filterNeighborhoods)
@@ -120,8 +138,9 @@ class NeighborhoodPicker extends Component {
 
   apply(newSelection) {
     this.changeSelection(newSelection, () => {
+      const {selectedCity, selectedNeighborhoods} = this.state
       log(LISTING_SEARCH_NEIGHBORHOOD_APPLY, {
-        neighborhoods: this.state.selectedNeighborhoods,
+        neighborhoods: selectedNeighborhoods,
         fromHome: this.props.fromHome
       })
       if (this.state.showCities) {
@@ -130,21 +149,22 @@ class NeighborhoodPicker extends Component {
       if (this.props.onBackPressed) {
         this.props.onBackPressed()
       }
-      if (
-        this.props.fromHome &&
-        this.state.selectedNeighborhoods.length === 0
-      ) {
+      if (!selectedCity) {
         return
       }
 
+      const allNeighborhoodsSelected = isCitySelected(cities, selectedNeighborhoods, selectedCity.citySlug)
+
       if (this.props.fromHome) {
-        const neighborhoodPaths = this.state.selectedNeighborhoods.join('/')
-        Router.push('/listings', `/imoveis/bairros/${neighborhoodPaths}`, {
-          shallow: true
-        })
+        const {selectedCity} = this.state
+        const neighborhoodsUrl = selectedNeighborhoods.join('/')
+        Router.push('/listings', `/imoveis/${selectedCity.stateSlug}/${selectedCity.citySlug}${!allNeighborhoodsSelected ? `/${neighborhoodsUrl}` : ``}`)
       } else {
         const event = new CustomEvent(NEIGHBORHOOD_SELECTION_CHANGE, {
-          detail: {neighborhoods: this.state.selectedNeighborhoods}
+          detail: {
+            city: selectedCity,
+            neighborhoods: allNeighborhoodsSelected ? [] : selectedNeighborhoods
+          }
         })
         window.dispatchEvent(event)
       }
@@ -193,9 +213,14 @@ class NeighborhoodPicker extends Component {
 
   getButtonText() {
     if (process.browser) {
-      const selected = this.state.selectedNeighborhoods
-      if (selected && selected.length > 0) {
-        return arrayToString(selected)
+      const {selectedNeighborhoods, selectedCity} = this.state
+      const allNeighborhoodsSelected = selectedCity && isCitySelected(cities, selectedNeighborhoods, selectedCity.citySlug)
+      if (selectedNeighborhoods && selectedNeighborhoods.length > 0 && !allNeighborhoodsSelected) {
+        return arrayToString(selectedNeighborhoods)
+      } else if (!selectedCity) {
+        return DEFAULT_BUTTON_TEXT
+      } else if (selectedCity || allNeighborhoodsSelected) {
+        return selectedCity.name
       }
     }
     return DEFAULT_BUTTON_TEXT

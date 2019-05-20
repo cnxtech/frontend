@@ -8,16 +8,17 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/neighborhood
         const result = ParamsMapper.mapUrlToParams({
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           rest: 'neighborhood'
         })
         const expected = {
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           filters: {
-            citiesSlug: ['city'],
-            neighborhoods: ['neighborhood']
+            citySlug: 'city',
+            neighborhoods: ['neighborhood'],
+            stateSlug: 'state'
           }
         }
         expect(result).toEqual(expected)
@@ -30,15 +31,16 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/piscina
         const result = ParamsMapper.mapUrlToParams({
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           rest: 'piscina'
         })
         const expected = {
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           filters: {
-            citiesSlug: ['city'],
+            citySlug: 'city',
+            stateSlug: 'state',
             tagsSlug: ['piscina']
           }
         }
@@ -52,15 +54,16 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/casa
         const result = ParamsMapper.mapUrlToParams({
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           rest: 'casa'
         })
         const expected = {
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           filters: {
-            citiesSlug: ['city'],
+            citySlug: 'city',
+            stateSlug: 'state',
             types: ['Casa']
           }
         }
@@ -74,16 +77,17 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/neighborhood/piscina
         const result = ParamsMapper.mapUrlToParams({
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           rest: 'neighborhood/piscina'
         })
         const expected = {
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           filters: {
-            citiesSlug: ['city'],
+            citySlug: 'city',
             neighborhoods: ['neighborhood'],
+            stateSlug: 'state',
             tagsSlug: ['piscina']
           }
         }
@@ -96,16 +100,17 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/neighborhood/casa
         const result = ParamsMapper.mapUrlToParams({
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           rest: 'neighborhood/casa'
         })
         const expected = {
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           filters: {
             types: ['Casa'],
-            citiesSlug: ['city'],
+            citySlug: 'city',
+            stateSlug: 'state',
             neighborhoods: ['neighborhood']
           }
         }
@@ -119,16 +124,17 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/casa/piscina
         const result = ParamsMapper.mapUrlToParams({
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           rest: 'casa/piscina'
         })
         const expected = {
-          state: 'state',
-          city: 'city',
+          stateSlug: 'state',
+          citySlug: 'city',
           filters: {
             types: ['Casa'],
-            citiesSlug: ['city'],
+            citySlug: 'city',
+            stateSlug: 'state',
             tagsSlug: ['piscina']
           }
         }
@@ -139,16 +145,17 @@ describe('Parameters Mapper tests', () => {
     it('should identify "preco minimo" as a filter', () => {
       //simulates => /imoveis/state/city/preco-min-10000
       const result = ParamsMapper.mapUrlToParams({
-        state: 'state',
-        city: 'city',
+        stateSlug: 'state',
+        citySlug: 'city',
         rest: 'preco-min-10000'
       })
       const expected = {
-        state: 'state',
-        city: 'city',
+        stateSlug: 'state',
+        citySlug: 'city',
         filters: {
           price: {min: 10000},
-          citiesSlug: ['city']
+          citySlug: 'city',
+          stateSlug: 'state'
         }
       }
       expect(result).toEqual(expected)
@@ -157,16 +164,17 @@ describe('Parameters Mapper tests', () => {
     it('should identify "preco minimo" and "preco-maximo" as a filter', () => {
       //simulates => /imoveis/state/city/preco-min-10000
       const result = ParamsMapper.mapUrlToParams({
-        state: 'state',
-        city: 'city',
+        stateSlug: 'state',
+        citySlug: 'city',
         rest: 'preco-min-10000/preco-max-1000000000'
       })
       const expected = {
-        state: 'state',
-        city: 'city',
+        stateSlug: 'state',
+        citySlug: 'city',
         filters: {
           price: {min: 10000, max: 1000000000},
-          citiesSlug: ['city']
+          citySlug: 'city',
+          stateSlug: 'state'
         }
       }
       expect(result).toEqual(expected)
@@ -175,17 +183,18 @@ describe('Parameters Mapper tests', () => {
     it('should identify "quartos" and "preco minimo" and "preco-maximo" as a filter', () => {
       //simulates => /imoveis/state/city/preco-min-10000
       const result = ParamsMapper.mapUrlToParams({
-        state: 'state',
-        city: 'city',
+        stateSlug: 'state',
+        citySlug: 'city',
         rest: '3-quartos/preco-min-10000/preco-max-1000000000'
       })
       const expected = {
-        state: 'state',
-        city: 'city',
+        stateSlug: 'state',
+        citySlug: 'city',
         filters: {
           price: {min: 10000, max: 1000000000},
           rooms: {min: 3, max: 3},
-          citiesSlug: ['city']
+          citySlug: 'city',
+          stateSlug: 'state'
         }
       }
       expect(result).toEqual(expected)
@@ -194,26 +203,16 @@ describe('Parameters Mapper tests', () => {
     it('should return only city and state when rest param is null', () => {
       //simulates => /imoveis/state/city/preco-min-10000
       const result = ParamsMapper.mapUrlToParams({
-        city: 'city',
-        state: 'state'
+        citySlug: 'city',
+        stateSlug: 'state'
       })
       const expected = {
-        state: 'state',
-        city: 'city',
+        stateSlug: 'state',
+        citySlug: 'city',
         filters: {
-          citiesSlug: ['city']
+          citySlug: 'city',
+          stateSlug: 'state'
         }
-      }
-      expect(result).toEqual(expected)
-    })
-
-    it('should return only state when rest and city param is null', () => {
-      //simulates => /imoveis/state/city/preco-min-10000
-      const result = ParamsMapper.mapUrlToParams({
-        state: 'state'
-      })
-      const expected = {
-        state: 'state'
       }
       expect(result).toEqual(expected)
     })
@@ -225,77 +224,80 @@ describe('Parameters Mapper tests', () => {
       expect(result).toEqual(expected)
     })
   })
+
   describe('mapParamsToUrl(params, filters)', () => {
     it('should map filters (state, city, type and ranged price) to path starting with /state/city', () => {
-      const params = {
-        city: 'city',
-        state: 'state'
-      }
       const filters = {
+        citySlug: 'sao-paulo',
+        stateSlug: 'sp',
         types: ['Casa'],
         price: {min: 100000, max: 10000000}
       }
 
-      const result = ParamsMapper.mapParamsToUrl(params, filters)
+      const result = ParamsMapper.mapParamsToUrl(filters)
       expect(result).toEqual(
-        '/state/city/casa/preco-min-100000/preco-max-10000000'
+        '/sp/sao-paulo/casa/preco-min-100000/preco-max-10000000'
       )
     })
 
-    it('should map filters (type and ranged price) to path starting with /busca', () => {
-      const params = {}
+    it('should map filters (type and ranged price) to path starting with /state/city', () => {
       const filters = {
+        citySlug: 'sao-paulo',
+        stateSlug: 'sp',
         types: ['Casa'],
         price: {min: 100000, max: 10000000},
         area: {min: 200, max: 400}
       }
 
-      const result = ParamsMapper.mapParamsToUrl(params, filters)
+      const result = ParamsMapper.mapParamsToUrl(filters)
       expect(result).toEqual(
-        '/busca/casa/preco-min-100000/preco-max-10000000/area-min-200/area-max-400'
+        '/sp/sao-paulo/casa/preco-min-100000/preco-max-10000000/area-min-200/area-max-400'
       )
     })
 
     it(
       'should map filters (type and ranged price - max and min ' +
-        'equals) to path starting with /busca and quartos should contains only value and label',
+        'equals) to path starting with /state/city and quartos should contains only value and label',
       () => {
-        const params = {}
         const filters = {
+          citySlug: 'sao-paulo',
+          stateSlug: 'sp',
           types: ['Casa'],
           rooms: {min: 3, max: 3}
         }
-        const result = ParamsMapper.mapParamsToUrl(params, filters)
-        expect(result).toEqual('/busca/casa/3-quartos')
+        const result = ParamsMapper.mapParamsToUrl(filters)
+        expect(result).toEqual('/sp/sao-paulo/casa/3-quartos')
 
-        const params2 = {}
         const filters2 = {
+          citySlug: 'sao-paulo',
+          stateSlug: 'sp',
           types: ['Casa'],
           garageSpots: {min: 3, max: 3}
         }
-        const result2 = ParamsMapper.mapParamsToUrl(params2, filters2)
-        expect(result2).toEqual('/busca/casa/3-vagas')
+        const result2 = ParamsMapper.mapParamsToUrl(filters2)
+        expect(result2).toEqual('/sp/sao-paulo/casa/3-vagas')
       }
     )
 
     it(
       'should map filters (type and neighborhood) to path ' +
-        'starting with /bairros when no city and state is given',
+        'starting with /state/city',
       () => {
-        const params = {}
         const filters = {
+          citySlug: 'sao-paulo',
+          stateSlug: 'sp',
           types: ['Casa'],
           neighborhoods: ['neighborhoods', 'neighborhoods1'],
           rooms: {min: 3, max: 3}
         }
 
-        let result = ParamsMapper.mapParamsToUrl(params, filters)
+        let result = ParamsMapper.mapParamsToUrl(filters)
         expect(result).toEqual(
-          '/bairros/neighborhoods/neighborhoods1/casa/3-quartos'
+          '/sp/sao-paulo/neighborhoods/neighborhoods1/casa/3-quartos'
         )
         filters.neighborhoods = ['neighborhoods']
-        result = ParamsMapper.mapParamsToUrl(params, filters)
-        expect(result).toEqual('/bairros/neighborhoods/casa/3-quartos')
+        result = ParamsMapper.mapParamsToUrl(filters)
+        expect(result).toEqual('/sp/sao-paulo/neighborhoods/casa/3-quartos')
       }
     )
   })

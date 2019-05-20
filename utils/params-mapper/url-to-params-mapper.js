@@ -204,20 +204,28 @@ const getFiltersByPath = (rest = '') => {
   if (neighborhoods && neighborhoods.length > 0) {
     filters.neighborhoods = neighborhoods
   }
+  const stateAndCity = rest.split('/imoveis/')[1]
+  if (stateAndCity) {
+    const state = stateAndCity.split('/')[0]
+    const city = stateAndCity.split('/')[1]
+    filters.stateSlug = state
+    filters.citySlug = city
+  }
   return filters
 }
 
 const mapUrlToParams = (params) => {
-  const {state, city, rest} = params
+  const {stateSlug, citySlug, rest} = params
   const filters = getFiltersByPath(rest)
   const newParams = {}
-  if (city) {
-    filters.citiesSlug = [city]
-    newParams.city = city
+  if (citySlug) {
+    filters.citySlug = citySlug
+    newParams.citySlug = citySlug
   }
 
-  if (state) {
-    newParams.state = state
+  if (stateSlug) {
+    filters.stateSlug = stateSlug
+    newParams.stateSlug = stateSlug
   }
 
   if (Object.keys(filters).length > 0) {

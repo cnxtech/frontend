@@ -31,7 +31,10 @@ class ListingList extends Component {
       excludedListingIds: []
     }
   }
-  state = {}
+
+  state = {
+    isFirstLoad: true
+  }
 
   componentWillReceiveProps(newProps) {
     const currentFilters = this.props.filters
@@ -64,7 +67,7 @@ class ListingList extends Component {
       neighborhoodListener
     } = this.props
 
-    if (loading) {
+    if (loading && this.state.isFirstLoad) {
       return this.getLoading()
     }
 
@@ -89,8 +92,8 @@ class ListingList extends Component {
                     params.neighborhood && (
                       <Neighborhood
                         neighborhood={params.neighborhood}
-                        state={params.state}
-                        city={params.city}
+                        state={params.stateSlug}
+                        city={params.citySlug}
                         neighborhoodListener={neighborhoodListener}
                       />
                     )
@@ -99,6 +102,7 @@ class ListingList extends Component {
                   filters={filters}
                   remaining_count={result.remainingCount}
                   onLoad={async () => {
+                    this.setState({isFirstLoad: false})
                     const loadedListings = await fetchMore({
                       variables: {
                         pagination: {
