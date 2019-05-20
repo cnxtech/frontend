@@ -82,9 +82,9 @@ class NeighborhoodPicker extends Component {
 
   getUserCityByGeoIp = (result) => {
     if (result && result.location && result.location.city) {
-      const {city} = result.location
+      const {city, region} = result.location
       const citySlug = slugify(city.toLowerCase())
-      const cityFound = cities.find((city) => city.citySlug === citySlug)
+      const cityFound = cities.find((city) => city.citySlug === citySlug || city.state === region)
       const userCity = cityFound ? cityFound : null
       return userCity
     }
