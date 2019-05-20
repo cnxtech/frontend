@@ -2,8 +2,15 @@ import styled from 'styled-components'
 import {themeGet} from 'styled-system'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import Text from '@emcasa/ui-dom/components/Text'
+import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  margin: auto;
+  max-width: ${LISTING_MAX_WIDTH}px;
+  @media ${breakpoint.up('desktop')} {
+    padding: 0 ${themeGet('space.2')}px;
+  }
+`
 
 export const Title = styled(Text).attrs({fontSize: 'small'})`
   background: ${themeGet('colors.snow')};
