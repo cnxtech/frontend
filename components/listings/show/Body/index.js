@@ -12,10 +12,9 @@ import View from '@emcasa/ui-dom/components/View'
 import Col from '@emcasa/ui-dom/components/Col'
 import ListingInfo from './ListingInfo'
 import ListingDescription from './ListingDescription'
-import DevelopmentDescription from './DevelopmentDescription'
 import DevelopmentPhase from './DevelopmentPhase'
-import ListingsFeed from 'components/shared/Listing/Feed/Grid'
-import {Container, DevelopmentContainer} from './styles'
+import DevelopmentListings from './DevelopmentListings'
+import {Container} from './styles'
 
 class ListingMainContent extends Component {
   componentDidMount() {
@@ -23,7 +22,10 @@ class ListingMainContent extends Component {
   }
 
   onExpandDescription = () => {
-    log(LISTING_DETAIL_EXPAND_DESCRIPTION, getListingInfoForLogs(this.props.listing))
+    log(
+      LISTING_DETAIL_EXPAND_DESCRIPTION,
+      getListingInfoForLogs(this.props.listing)
+    )
   }
 
   render() {
@@ -35,17 +37,12 @@ class ListingMainContent extends Component {
       openStreetViewPopup
     } = this.props
     const {street, neighborhood, streetNumber} = listing.address
-    const paragraphs = getParagraphs(listing.description)
     const ownerOrAdmin = canEdit(user, listing)
     const listingUserInfo = ownerOrAdmin
       ? `${street}, ${streetNumber} ${
-        listing.complement ? `- ${listing.complement}` : ''}`
+          listing.complement ? `- ${listing.complement}` : ''
+        }`
       : `${street}`
-    const developmentListings = listing.development
-        ? listing.development.listings.filter(
-          ({id}) => id !== listing.id
-        )
-        : []
     return (
       <Col alignItems="center" width="100%" mt={5}>
         <Container>
@@ -71,25 +68,10 @@ class ListingMainContent extends Component {
             />
           </View>
         </Container>
-        {listing.development > 0 && (
-          <DevelopmentContainer>
-            <DevelopmentDescription
-              bg="snow"
-              title="Sobre o empreendimento"
-              paragraphs={getParagraphs(listing.development.description)}
-              collapsedHeight={0}
-            >
-              {developmentListings.length && (
-                <View className="listingsFeed" width="100vw">
-                  <ListingsFeed
-                    bg="snow"
-                    title="Imóveis do empreendimento"
-                    listings={developmentListings}
-                  />
-                </View>
-              )}
-            </DevelopmentDescription>
-          </DevelopmentContainer>
+        {Boolean(listing.development) && (
+          <View>
+            <DevelopmentListings uuid={listing.development.uuid} />
+          </View>
         )}
       </Col>
     )
