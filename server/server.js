@@ -119,10 +119,6 @@ const startServer = () => {
         }
       })
 
-      server.get('/privacy_policy', (req, res) => {
-        return app.render(req, res, '/privacy_policy', req.query)
-      })
-
       server.get('/vender-imovel', (req, res) => {
         res.redirect(301, '/vender')
       })
