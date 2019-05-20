@@ -7,7 +7,7 @@ import {Container} from './styles'
 
 class ListingFeedGrid extends Component {
   render() {
-    const {children, currentUser, listings, title} = this.props
+    const {children, currentUser, listings, title, favorites} = this.props
     return (
       <Container>
         <Text as="h3" color="grey" fontWeight="bold">
@@ -19,7 +19,7 @@ class ListingFeedGrid extends Component {
               key={listing.id}
               listing={listing}
               currentUser={currentUser}
-              favorited={[]}
+              favorited={favorites}
               related
             />
           ))}
@@ -33,7 +33,8 @@ class ListingFeedGrid extends Component {
 ListingFeedGrid.propTypes = {
   listings: PropTypes.array,
   currentUser: PropTypes.object,
-  title: PropTypes.string
+  title: PropTypes.string,
+  favorites: PropTypes.array
 }
 
 export default ListingFeedGrid
