@@ -32,7 +32,9 @@ const startServer = () => {
     .then(() => {
       const server = express()
       server.use(compression())
-      server.use(timber.middlewares.express())
+      if (process.env.NODE_ENV === 'production') {
+        server.use(timber.middlewares.express())
+      }
       server.use(function(req, res, next) {
         if (process.env.NODE_ENV === 'production') {
           if (req.headers['x-forwarded-proto'] !== 'https' && !isELBHealthCheck(req)) {
