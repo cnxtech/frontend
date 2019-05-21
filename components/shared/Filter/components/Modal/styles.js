@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import View from '@emcasa/ui-dom/components/View'
 import {zIndexModal} from 'constants/zIndex'
+import {HEADER_HEIGHT} from 'constants/dimensions'
+import {themeGet} from 'styled-system'
 
 export const Background = styled(View)`
   position: fixed;
@@ -15,6 +17,8 @@ export const Background = styled(View)`
 `
 
 export const Container = styled(View)`
+  border-top: 1px solid ${themeGet('colors.smoke')};
+  margin-top: ${HEADER_HEIGHT}px;
   display: flex;
   flex-direction: column;
   ${({justifyContent}) => justifyContent ? `justify-content: ${justifyContent};` : ``}

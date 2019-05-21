@@ -4,7 +4,6 @@ import {
   getListingFiltersFromState,
   getLocationFromPath
 } from 'utils/filter-params.js'
-import ListingFilter from 'components/listings/shared/ListingFilter'
 import ListingList from 'components/listings/shared/ListingList'
 import ParamsMapper from 'utils/params-mapper'
 import {clone} from 'utils/clone'
@@ -18,7 +17,7 @@ import {getCookie} from 'lib/session'
 import LdJson from './components/ld-json'
 import ListingHead from './components/head'
 import {NEIGHBORHOOD_SELECTION_CHANGE} from '../../components/shared/NeighborhoodPicker/events'
-import Filter from '../../components/shared/Filter'
+import ActionsBar from 'components/shared/ActionsBar'
 
 class ListingSearch extends Component {
   constructor(props) {
@@ -55,7 +54,7 @@ class ListingSearch extends Component {
       transparentHeader: false,
       params,
       renderFooter: false,
-      headerSearch: true,
+      headerSearch: false,
       flagrFlags
     }
   }
@@ -152,10 +151,10 @@ class ListingSearch extends Component {
                   url={url}
                 />
                 <LdJson />
-                <Filter filters={filters} onSubmit={this.onChangeFilter} />
-                <ListingFilter
+                <ActionsBar
+                  user={user}
+                  filters={filters}
                   onSubmit={this.onChangeFilter}
-                  values={filters}
                 />
                 <ListingList
                   isRoot={isRoot}

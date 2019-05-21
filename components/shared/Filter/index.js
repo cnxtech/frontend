@@ -1,12 +1,11 @@
 import React, {Component, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import Button from '@emcasa/ui-dom/components/Button'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faSlidersHSquare from '@fortawesome/fontawesome-pro-regular/faSlidersHSquare'
-import {ButtonText} from './styles'
 import {clone} from 'utils/clone'
 import Content from './components/Content'
 import {ChangeTypeEnum} from './components/Content/changeTypes'
+import theme from '@emcasa/ui'
+import {Icon} from './styles'
 
 class Filter extends Component {
   constructor(props) {
@@ -37,7 +36,7 @@ class Filter extends Component {
   }
 
   applyBackup = () => {
-    if(this.filterBackup){
+    if (this.filterBackup) {
       this.setState({filters: this.filterBackup}, this.cleanBackup)
     }
   }
@@ -88,9 +87,14 @@ class Filter extends Component {
   render() {
     return (
       <Fragment>
-        <Button onClick={this.toggleContent}>
-          <FontAwesomeIcon icon={faSlidersHSquare} />
-          <ButtonText>Filtros</ButtonText>
+        <Button
+          fontSize="small"
+          noBorder
+          iconColor={theme.colors.pink}
+          onClick={this.toggleContent}
+        >
+          <Icon />
+          Filtros
         </Button>
         {this.state.showContent && (
           <Content
