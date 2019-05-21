@@ -55,7 +55,7 @@ class ListingFeed extends Component {
         fetchPolicy="cache-and-network"
         ssr={true}
       >
-        {({error, data, loading}) => {
+        {({error, data}) => {
           if (!data) {
             return null
           }
@@ -79,7 +79,7 @@ class ListingFeed extends Component {
           skip={!currentUser.authenticated}
           variables={variables}
         >
-          {data => {
+          {(data) => {
             const userProfile = data ? data.userProfile : null
             const favorites = userProfile ? userProfile.favorites : []
             const filteredListings = differenceBy(result.listings, 'id')
