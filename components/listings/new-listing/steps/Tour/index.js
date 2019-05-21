@@ -1,5 +1,5 @@
-import React, { Fragment, Component } from 'react'
-import { Formik, Field } from 'formik'
+import React, {Fragment, Component} from 'react'
+import {Formik, Field} from 'formik'
 import RadioButton from '@emcasa/ui-dom/components/RadioButton'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
@@ -11,14 +11,15 @@ import TourDays from './components/TourDays'
 import Container from 'components/listings/new-listing/shared/Container'
 import {requestCreateTour, requestCreateSellerLead} from 'components/listings/new-listing/lib/seller-lead'
 import {
+  getTimeRange,
   getTourDays,
   getTourMonths,
   getTimeDisplay,
   TOUR_HOURS,
-  EARLY,
-  LATE,
+  MORNING,
+  AFTERNOON
 } from 'components/listings/new-listing/lib/times'
-import { BUTTON_WIDTH } from 'components/listings/new-listing/styles'
+import {BUTTON_WIDTH} from 'components/listings/new-listing/styles'
 
 class Tour extends Component {
   constructor(props) {
@@ -166,15 +167,7 @@ class Tour extends Component {
     if (tourHours.length === 0) {
       return false
     }
-    return !(tourHours.includes(EARLY) && tourHours.includes(LATE) && tourHours.length === 2)
-  }
-
-  getTimeRange(time) {
-    if (time === '09') {
-      return ['09', '12']
-    } else if (time === '17') {
-      return ['16', '19']
-    }
+    return !(tourHours.includes(MORNING) && tourHours.includes(AFTERNOON) && tourHours.length === 2)
   }
 
   selectCustomTime() {
@@ -267,7 +260,7 @@ class Tour extends Component {
                         <Col width={1}>
                           <RadioButton.Group>
                             {TOUR_HOURS.map((item, index) => {
-                              if (item !== EARLY && item !== LATE) {
+                              if (item !== MORNING && item !== AFTERNOON) {
                                 return null
                               }
                               return (
