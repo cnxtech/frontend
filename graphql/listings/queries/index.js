@@ -239,3 +239,35 @@ export const TOUR_OPTIONS = gql`
     tourOptions
   }
 `
+
+
+
+export const GET_DEVELOPMENT_LISTINGS = gql`
+  query getDevelopment($uuid: UUID!) {
+    development(uuid: $uuid) {
+      address {
+        street
+        neighborhood
+        state
+        city
+        lat
+        lng
+        postalCode
+      }
+      listings(filters: {statuses: ["active"]}) {
+        id
+        type
+        area
+        floor
+        price
+        rooms
+        suites
+        bathrooms
+        garageSpots
+        development {
+          uuid
+        }
+      }
+    }
+  }
+`
