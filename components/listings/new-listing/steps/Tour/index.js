@@ -273,7 +273,7 @@ class Tour extends Component {
                                       setFieldValue('time', item)
                                       setFieldTouched('time')
                                       this.setState({customTime: false})
-                                      const timeRange = this.getTimeRange(item)
+                                      const timeRange = getTimeRange(item)
                                       this.selectTime(item, timeRange)
                                     }}
                                   />
