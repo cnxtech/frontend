@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import {themeGet} from 'styled-system'
 import Row from '@emcasa/ui-dom/components/Row'
-import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import Icon from '@emcasa/ui-dom/components/Icon'
 
