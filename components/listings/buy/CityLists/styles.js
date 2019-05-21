@@ -63,7 +63,7 @@ export const HighlightsLink = styled.a`
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .9) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%);
   }
 `
 
@@ -80,8 +80,6 @@ export const HighlightsLabel = styled(Text)`
   left: 0;
   width: 100%;
   margin: 0;
-  color: ${theme.colors.white};
-  font-size: ${theme.fontSizes[1]}px;
   text-align: center;
 `
 

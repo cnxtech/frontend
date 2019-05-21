@@ -6,7 +6,6 @@ import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import View from '@emcasa/ui-dom/components/View'
 import Button from '@emcasa/ui-dom/components/Button'
-import CustomTime from './components/CustomTime'
 import TourMonths from './components/TourMonths'
 import TourDays from './components/TourDays'
 import Container from 'components/listings/new-listing/shared/Container'
@@ -290,27 +289,6 @@ class Tour extends Component {
                               )
                             })}
                           </RadioButton.Group>
-                          {this.hasCustomTime(TOUR_HOURS) &&
-                            <CustomTime
-                              onClick={this.selectCustomTime}
-                              selected={this.state.customTime}
-                              selectedTime={this.state.time}
-                            >
-                              {TOUR_HOURS.map((item, index) => {
-                                return (
-                                  <Fragment key={index}>
-                                    <CustomTime.Item
-                                      onClick={() => {
-                                        setFieldValue('time', item)
-                                        setFieldTouched('time')
-                                        this.selectTime(item)
-                                      }}
-                                    >{getTimeDisplay(item, false)}</CustomTime.Item>
-                                    <View mb={2} mr={2} />
-                                  </Fragment>
-                                )
-                              })}
-                            </CustomTime>}
                         </Col>
                       }/>
                   </Row>}

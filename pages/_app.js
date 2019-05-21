@@ -19,6 +19,11 @@ import { DEVICE_ID_COOKIE } from 'components/shared/Flagr'
 import uuid from 'utils/uuid'
 import HTTPMessage from 'components/shared/Shell/HTTPMessage'
 import GlobalStyles from 'styles/global'
+import {
+  ALLOW_URLS,
+  IGNORE_URLS,
+  IGNORE_ERRORS
+} from 'lib/sentry'
 
 class MyApp extends App {
   static async getInitialProps(ctx) {
@@ -62,7 +67,10 @@ class MyApp extends App {
   componentDidMount() {
     Sentry.init({
       release: process.env.SENTRY_RELEASE,
-      dsn: this.props.SENTRY_DSN
+      dsn: this.props.SENTRY_DSN,
+      whitelistUrls: ALLOW_URLS,
+      blacklistUrls: IGNORE_URLS,
+      ignoreErrors: IGNORE_ERRORS
     })
     if (getCookie('resetAuth')) {
       removeCookie('jwt')

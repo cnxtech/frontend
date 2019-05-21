@@ -1,12 +1,30 @@
 import {Component, Fragment} from 'react'
 import {imageUrl} from 'utils/image_url'
+import {getCookie} from 'lib/session'
 import NextHead from 'components/shared/NextHead'
 import BuyHeader from 'components/listings/buy/BuyHeader'
 import BuyBar from 'components/listings/buy/BuyBar'
 import CityLists from 'components/listings/buy/CityLists'
 import ListingFeed from 'components/shared/Listing/Feed'
+import {fetchFlag, DEVICE_ID_COOKIE} from 'components/shared/Flagr'
+import FlagrProvider from 'components/shared/Flagr/Context'
+import {TEST_SAVE_LISTING_TEXT} from 'components/shared/Flagr/tests'
 
 class HomePage extends Component {
+  static async getInitialProps(context) {
+    // Flagr
+    const deviceId = getCookie(DEVICE_ID_COOKIE, context.req)
+    const flagrFlags = {
+      [TEST_SAVE_LISTING_TEXT]: await fetchFlag(
+        TEST_SAVE_LISTING_TEXT,
+        deviceId
+      )
+    }
+
+    return {
+      flagrFlags
+    }
+  }
   render() {
     const {router, user} = this.props
     const city = (router.query || {}).city || 'all'
@@ -121,36 +139,38 @@ class HomePage extends Component {
     const CITY_CONTENT = CONTENT[city.replace(/[^a-z]/g, '')]
 
     return (
-      <Fragment>
-        <NextHead
-          title={CITY_CONTENT.seoTitle}
-          description={CITY_CONTENT.seoDescription}
-          imageSrc={CITY_CONTENT.seoImg}
-          imageWidth={'1476'}
-          imageHeight={'838'}
-          url={CITY_CONTENT.seoURL}
-        />
-        <BuyHeader />
-        <BuyBar user={user} />
-        {CITY_CONTENT.feed.map((item, index) => {
-          return (
-            <ListingFeed
-              key={index}
-              highlight={index === 0}
-              currentUser={user}
-              button={item.button}
-              variables={{
-                ...item.variables,
-                pagination: {
-                  pageSize: 4
-                }
-              }}
-              title={item.title}
-            />
-          )
-        })}
-        <CityLists city={city} />
-      </Fragment>
+      <FlagrProvider flagrFlags={this.props.flagrFlags}>
+        <Fragment>
+          <NextHead
+            title={CITY_CONTENT.seoTitle}
+            description={CITY_CONTENT.seoDescription}
+            imageSrc={CITY_CONTENT.seoImg}
+            imageWidth={'1476'}
+            imageHeight={'838'}
+            url={CITY_CONTENT.seoURL}
+          />
+          <BuyHeader />
+          <BuyBar user={user} />
+          {CITY_CONTENT.feed.map((item, index) => {
+            return (
+              <ListingFeed
+                key={index}
+                highlight={item.highlight}
+                title={item.title}
+                button={item.button}
+                currentUser={user}
+                variables={{
+                  ...item.variables,
+                  pagination: {
+                    pageSize: 4
+                  }
+                }}
+              />
+            )
+          })}
+          <CityLists city={city} />
+        </Fragment>
+      </FlagrProvider>
     )
   }
 }
