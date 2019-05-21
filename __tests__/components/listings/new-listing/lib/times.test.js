@@ -1,8 +1,16 @@
 import {
+  getTimeRange,
   getTourMonths,
   getTourDays,
   getDateDisplay,
-  getFullTourDateDisplay
+  getFullTourDateDisplay,
+  getTimeDisplay,
+  MORNING,
+  AFTERNOON,
+  MORNING_RANGE,
+  AFTERNOON_RANGE,
+  MORNING_DISPLAY,
+  AFTERNOON_DISPLAY
 } from 'components/listings/new-listing/lib/times'
 
 const fullList = [
@@ -57,5 +65,29 @@ describe('Tour dates', () => {
     const tour = {}
     const tourTimeDisplay = getFullTourDateDisplay(tour)
     expect(tourTimeDisplay).toBe('00/00/0000 - entre 00h e 00h')
+  })
+
+  it('should return the morning time range when the morning time is passed', () => {
+    expect(getTimeRange(MORNING)).toBe(MORNING_RANGE)
+  })
+
+  it('should return the afternoon time range when the afternoon time is passed', () => {
+    expect(getTimeRange(AFTERNOON)).toBe(AFTERNOON_RANGE)
+  })
+
+  it('should return the formatted morning time display when the morning time is passed', () => {
+    expect(getTimeDisplay(MORNING)).toBe('09:00h')
+  })
+
+  it('should return the formatted afternoon time display when the afternoon time is passed', () => {
+    expect(getTimeDisplay(AFTERNOON)).toBe('13:00h')
+  })
+
+  it('should return the full morning time display when the morning time is passed', () => {
+    expect(getTimeDisplay(MORNING, true)).toBe(MORNING_DISPLAY)
+  })
+
+  it('should return the full afternoon time display when the afternoon time is passed', () => {
+    expect(getTimeDisplay(AFTERNOON, true)).toBe(AFTERNOON_DISPLAY)
   })
 })
