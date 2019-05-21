@@ -18,6 +18,7 @@ import {getCookie} from 'lib/session'
 import LdJson from './components/ld-json'
 import ListingHead from './components/head'
 import {NEIGHBORHOOD_SELECTION_CHANGE} from '../../components/shared/NeighborhoodPicker/events'
+import Filter from '../../components/shared/Filter'
 
 class ListingSearch extends Component {
   constructor(props) {
@@ -151,6 +152,7 @@ class ListingSearch extends Component {
                   url={url}
                 />
                 <LdJson />
+                <Filter filters={filters} onSubmit={this.onChangeFilter} />
                 <ListingFilter
                   onSubmit={this.onChangeFilter}
                   values={filters}
