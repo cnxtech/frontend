@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {getParagraphs} from 'utils/text-utils'
 import {canEdit} from 'permissions/listings-permissions'
@@ -10,20 +10,29 @@ import {
 } from 'lib/logging'
 import View from '@emcasa/ui-dom/components/View'
 import Col from '@emcasa/ui-dom/components/Col'
+import Row from '@emcasa/ui-dom/components/Row'
+import Button from '@emcasa/ui-dom/components/Button'
+import Text from '@emcasa/ui-dom/components/Text'
+import Icon from '@emcasa/ui-dom/components/Icon'
+import Breakpoint from '@emcasa/ui-dom/components/Breakpoint'
 import ListingInfo from './ListingInfo'
 import ListingDescription from './ListingDescription'
-import DevelopmentDescription from './DevelopmentDescription'
 import DevelopmentPhase from './DevelopmentPhase'
-import ListingsFeed from 'components/shared/Listing/Feed/Grid'
-import {Container, DevelopmentContainer} from './styles'
+import DevelopmentListings from './DevelopmentListings'
+import {Container} from './styles'
 
 class ListingMainContent extends Component {
   componentDidMount() {
     log(LISTING_DETAIL_OPEN, getListingInfoForLogs(this.props.listing))
   }
 
+  onClickDevelopmentListings = () => {}
+
   onExpandDescription = () => {
-    log(LISTING_DETAIL_EXPAND_DESCRIPTION, getListingInfoForLogs(this.props.listing))
+    log(
+      LISTING_DETAIL_EXPAND_DESCRIPTION,
+      getListingInfoForLogs(this.props.listing)
+    )
   }
 
   render() {
@@ -35,17 +44,15 @@ class ListingMainContent extends Component {
       openStreetViewPopup
     } = this.props
     const {street, neighborhood, streetNumber} = listing.address
-    const paragraphs = getParagraphs(listing.description)
     const ownerOrAdmin = canEdit(user, listing)
     const listingUserInfo = ownerOrAdmin
       ? `${street}, ${streetNumber} ${
-        listing.complement ? `- ${listing.complement}` : ''}`
+          listing.complement ? `- ${listing.complement}` : ''
+        }`
       : `${street}`
-    const developmentListings = listing.development
-        ? listing.development.listings.filter(
-          ({id}) => id !== listing.id
-        )
-        : []
+    const description = getParagraphs(listing.description)
+    if (listing.development)
+      description.push(...getParagraphs(listing.development.description))
     return (
       <Col alignItems="center" width="100%" mt={5}>
         <Container>
@@ -60,36 +67,37 @@ class ListingMainContent extends Component {
           />
           <View flex="1 1 100%" pb={5}>
             {Boolean(listing.development) && (
-              <DevelopmentPhase phase={listing.development.phase} />
+              <>
+                <DevelopmentPhase phase={listing.development.phase} />
+                <Breakpoint down="tablet">
+                  <a href="#unidades">
+                    <Button mb={4}>
+                      <Row alignItems="center">
+                        <Icon name="arrow-down" size={16} mr={2} />
+                        <Text inline fontSize="small">
+                          Ver unidades disponíveis
+                        </Text>
+                      </Row>
+                    </Button>
+                  </a>
+                </Breakpoint>
+              </>
             )}
             <ListingDescription
-              title="Sobre o imóvel"
+              title={`Sobre o ${
+                listing.development ? 'empreendimento' : 'imóvel'
+              }`}
               address={listing.address}
               tags={listing.tags}
-              paragraphs={getParagraphs(listing.description)}
+              paragraphs={description}
               onExpand={this.onExpandDescription}
             />
           </View>
         </Container>
-        {listing.development > 0 && (
-          <DevelopmentContainer>
-            <DevelopmentDescription
-              bg="snow"
-              title="Sobre o empreendimento"
-              paragraphs={getParagraphs(listing.development.description)}
-              collapsedHeight={0}
-            >
-              {developmentListings.length && (
-                <View className="listingsFeed" width="100vw">
-                  <ListingsFeed
-                    bg="snow"
-                    title="Imóveis do empreendimento"
-                    listings={developmentListings}
-                  />
-                </View>
-              )}
-            </DevelopmentDescription>
-          </DevelopmentContainer>
+        {Boolean(listing.development) && (
+          <View id="unidades">
+            <DevelopmentListings uuid={listing.development.uuid} />
+          </View>
         )}
       </Col>
     )
