@@ -12,7 +12,10 @@ describe('<BuyBar/>', () => {
       <ThemeProvider theme={theme}>
         <MockedProvider>
           <BuyBar
-            user={{authenticated: false}}
+            user={{
+              id: 1,
+              authenticated: true
+            }}
           />
         </MockedProvider>
       </ThemeProvider>).toJSON()
