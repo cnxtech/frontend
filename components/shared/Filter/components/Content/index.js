@@ -7,7 +7,7 @@ import {Separator, Container} from './styles'
 import NeighborhoodFilter from '../NeighborhoodFilter'
 import FeatureFilter from '../FeatureFilter'
 import TagsFilter from '../TagsFilter'
-import Modal from 'components/shared/Modal'
+import Modal from '../Modal'
 import {infraestrutura, beneficios} from '../TagsFilter/constansts'
 import {ChangeTypeEnum} from './changeTypes'
 
@@ -41,13 +41,13 @@ class Content extends Component {
           <TagsFilter
             onChange={this.changeTags}
             tags={beneficios}
-            selected={filters.tagsSlug}
+            selected={filters.tagsSlug || []}
             title="Benefícios do imóvel"
           />
           <TagsFilter
             onChange={this.changeTags}
             tags={infraestrutura}
-            selected={filters.tagsSlug}
+            selected={filters.tagsSlug || []}
             title="Infraestrutura"
           />
           <Col mt={4}>
@@ -56,7 +56,7 @@ class Content extends Component {
           <Col>
             <Row p={4} justifyContent="flex-end">
               <Button mr={2} onClick={this.props.onCleanup}>Limpar</Button>
-              <Button onClick={this.props.onSubmit}>Aplicar</Button>
+              <Button active onClick={this.props.onSubmit}>Aplicar</Button>
             </Row>
           </Col>
         </Container>

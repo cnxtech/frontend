@@ -2,10 +2,9 @@ import React, {Component, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
+import Icon from '@emcasa/ui-dom/components/Icon'
 import View from '@emcasa/ui-dom/components/View'
-import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
-import theme from 'config/theme'
 import {log, LISTING_SEARCH_NEIGHBORHOOD_SELECT_ALL} from 'lib/logging'
 import {
   isNeighborhoodSelected,
@@ -13,7 +12,7 @@ import {
   selectCity,
   sortByPopularity
 } from './selection'
-import {CitiesWrapper, NeighborhoodButton} from './styles'
+import {CitiesWrapper, NeighborhoodButton, LinkButton} from './styles'
 
 class CityContainer extends Component {
   static defaultProps = {
@@ -38,6 +37,8 @@ class CityContainer extends Component {
           onClick={() => {
             this.updateCurrentSelection(neighborhood.nameSlug)
           }}
+          height="tall"
+          fontSize="small"
         >
           {neighborhood.name}
         </NeighborhoodButton>
@@ -59,43 +60,24 @@ class CityContainer extends Component {
     this.props.selectNeighborhoods(newSelection)
   }
 
-  getSelectedAndDeselectedNeighborhoods = () => {
+  getSelectedNeighborhoods = () => {
     const {selectedCity, selectedNeighborhoods} = this.props
-    const selectedNeighborhoodList = []
-    let deselectedNeighborhoodList = []
+    const elems = []
     selectedCity &&
       selectedCity.neighborhoods.forEach((neighborhood, j) => {
         const isSelected = isNeighborhoodSelected(
           selectedNeighborhoods,
           neighborhood.nameSlug
         )
-        const isNewSelection = isNeighborhoodSelected(
-          this.props.selectedNeighborhoods,
-          neighborhood.nameSlug
-        )
-        if (isSelected) {
-          selectedNeighborhoodList.push(
-            this.getNeighborhoodButton(j, isNewSelection, neighborhood)
-          )
-        } else {
-          deselectedNeighborhoodList.push(
-            this.getNeighborhoodButton(j, isNewSelection, neighborhood)
-          )
-        }
+        elems.push(this.getNeighborhoodButton(j, isSelected, neighborhood))
       })
-    if (!selectedCity) {
-      deselectedNeighborhoodList = sortByPopularity(deselectedNeighborhoodList)
-    }
 
-    return {selectedNeighborhoodList, deselectedNeighborhoodList}
+    return elems
   }
 
   render() {
     const {cities, selectCity, selectedCity} = this.props
-    const {
-      selectedNeighborhoodList,
-      deselectedNeighborhoodList
-    } = this.getSelectedAndDeselectedNeighborhoods()
+    const neighborhoods = this.getSelectedNeighborhoods()
 
     return (
       <CitiesWrapper>
@@ -105,16 +87,22 @@ class CityContainer extends Component {
               {!selectedCity && <Text>Escolha uma cidade</Text>}
               {selectedCity && (
                 <Fragment>
-                  <Text>{selectedCity.name}</Text>
-                  <Button
+                  <Icon name="map-marker-alt" size={24} mr={2} color="pink" />
+                  <Text fontWeight="bold" fontSize="small">
+                    Você está em {selectedCity.name}
+                  </Text>
+                  <LinkButton
                     link
-                    fontSize={theme.fontSizes[1]}
+                    fontSize="small"
+                    height="tall"
+                    p={0}
+                    ml={1}
                     onClick={() => {
                       this.resetCurrentSelection()
                     }}
                   >
-                    Trocar cidade
-                  </Button>
+                    trocar cidade
+                  </LinkButton>
                 </Fragment>
               )}
             </Row>
@@ -125,6 +113,8 @@ class CityContainer extends Component {
                 <Fragment>
                   <View mr={2} mb={2}>
                     <NeighborhoodButton
+                      height="tall"
+                      fontSize="small"
                       onClick={() => {
                         this.selectAllNeighborhoodInCity(
                           cities,
@@ -135,8 +125,7 @@ class CityContainer extends Component {
                       Todos
                     </NeighborhoodButton>
                   </View>
-                  {selectedNeighborhoodList.map((Item) => Item)}
-                  {deselectedNeighborhoodList.map((Item) => Item)}
+                  {neighborhoods.map((Item) => Item)}
                 </Fragment>
               )}
               {!selectedCity && (
@@ -144,6 +133,7 @@ class CityContainer extends Component {
                   {cities.map((city, i) => (
                     <View mr={2} mb={2} key={i}>
                       <NeighborhoodButton
+                        fontSize="small"
                         active={
                           selectedCity &&
                           selectedCity.citySlug === city.citySlug
@@ -151,6 +141,7 @@ class CityContainer extends Component {
                         onClick={() => {
                           selectCity(city)
                         }}
+                        height="tall"
                       >
                         {city.name}
                       </NeighborhoodButton>

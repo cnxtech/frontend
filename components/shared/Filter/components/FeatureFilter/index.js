@@ -1,6 +1,5 @@
 import {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import theme from '@emcasa/ui'
 import Filters from '@emcasa/ui-dom/components/Filters'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
@@ -11,9 +10,10 @@ import {
   RoomsFilter,
   GarageSpotsFilter
 } from '@emcasa/ui-dom/components/Filters/ListingFilters'
+
+import {buttonsBlue} from './styles'
 import {zIndexFilter} from 'constants/zIndex'
 import Text from '@emcasa/ui-dom/components/Text'
-import Button from '@emcasa/ui-dom/components/Button'
 
 const ListingFilter = (props) => {
   return (
@@ -21,8 +21,9 @@ const ListingFilter = (props) => {
       <Col>
         <Row flexDirection="row" alignItems="center">
           <Fragment>
-            <Text>Características do imóvel</Text>
-            <Button link fontSize={theme.fontSizes[1]} onClick={() => {}}>Ver Todos</Button>
+            <Text fontSize="small" fontWeight="bold">
+              Características do imóvel
+            </Text>
           </Fragment>
         </Row>
       </Col>

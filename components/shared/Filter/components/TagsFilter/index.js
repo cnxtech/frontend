@@ -4,7 +4,7 @@ import Button from '@emcasa/ui-dom/components/Button'
 import Col from '@emcasa/ui-dom/components/Col'
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
-import theme from '@emcasa/ui'
+import {ButtonFilter} from './styles'
 
 class TagsFilter extends Component {
   render() {
@@ -14,23 +14,29 @@ class TagsFilter extends Component {
         <Col>
           <Row flexDirection="row" alignItems="center">
             <Fragment>
-              <Text>{title}</Text>
-              <Button link fontSize={theme.fontSizes[1]} onClick={() => {}}>
-                Ver Todos
-              </Button>
+              <Text fontWeight="bold" fontSize="small">
+                {title}
+              </Text>
             </Fragment>
           </Row>
         </Col>
         <Col>
           <Button.Group
+            flexWrap="wrap"
             strategy="multi"
             selectedValue={selected}
             onChange={onChange}
           >
             {tags.map((tag) => (
-              <Button key={tag.value} mr={2} value={tag.value}>
+              <ButtonFilter
+                fontSize="small"
+                value={tag.value}
+                mr={2}
+                mb={2}
+                key={tag.value}
+              >
                 {tag.label}
-              </Button>
+              </ButtonFilter>
             ))}
           </Button.Group>
         </Col>

@@ -124,4 +124,8 @@ export default createGlobalStyle`
       transform: rotate(360deg);
     }
   }
+  
+  .no-scroll {
+    overflow: hidden;
+  }
 `
