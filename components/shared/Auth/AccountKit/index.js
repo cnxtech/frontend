@@ -57,6 +57,11 @@ class AccountKit extends Component {
   }
 
   signIn = () => {
+    if (!window.AccountKit) {
+      // Wait for AccountKit to finish loading
+      return
+    }
+
     const {loginType, countryCode, phoneNumber, emailAddress, onSuccess} = this.props
 
     const options = {}
