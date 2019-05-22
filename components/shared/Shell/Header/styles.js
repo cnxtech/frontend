@@ -56,9 +56,10 @@ export const NavButton = styled.button`
   font-weight: ${theme.fontWeights[2]};
   transform: scale(1.5, 1);
   padding: ${theme.space[1]}px;
-
+  
   @media ${breakpoint.down('tablet')} {
     display: ${(props) => (props.visible ? 'block' : 'none')};
+    margin-left: auto;
   }
 `
 

@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import {breakpoint} from '@emcasa/ui/lib/styles'
 import View from '@emcasa/ui-dom/components/View'
 import {zIndexModal} from 'constants/zIndex'
 import {HEADER_HEIGHT} from 'constants/dimensions'
@@ -28,11 +27,4 @@ export const Container = styled(View)`
   width: 100%;
   z-index: 1;
   ${({padding}) => padding ? `padding: 0 20px;` : ``}
-
-
-  @media ${breakpoint.only('phone')} {
-    width: auto;
-    height: 100%;
-    margin: 0;
-  }
 `

@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react'
+import Router from 'next/router'
 import PropTypes from 'prop-types'
 import Button from '@emcasa/ui-dom/components/Button'
 import {clone} from 'utils/clone'
@@ -16,6 +17,28 @@ class Filter extends Component {
       showContent: false,
       filters: clone(props.filters || {})
     }
+  }
+
+  componentDidMount() {
+    if (!process.browser) {
+      return false
+    }
+    window.addEventListener('keydown', this.handleEscapeButtonPressed)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleEscapeButtonPressed)
+  }
+
+  handleEscapeButtonPressed = (event) => {
+    if (event.key === 'Escape' || event.keyCode === 8) {
+      this.closeContent()
+    }
+  }
+
+  closeContent = () => {
+    this.applyBackup()
+    this.setState({showContent: false})
   }
 
   toggleContent = () => {

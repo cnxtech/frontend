@@ -6,17 +6,24 @@ import Icon from '@emcasa/ui-dom/components/Icon'
 import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
 import {log, LISTING_SEARCH_NEIGHBORHOOD_SELECT_ALL} from 'lib/logging'
-import {
-  isNeighborhoodSelected,
-  updateSelection,
-  selectCity,
-  sortByPopularity
-} from './selection'
-import {CitiesWrapper, NeighborhoodButton, LinkButton} from './styles'
+import {isNeighborhoodSelected, updateSelection, selectCity} from './selection'
 
+import {
+  CitiesWrapper,
+  NeighborhoodButton,
+  LinkButton,
+  RowMobile,
+  LinkButtonMobile,
+  SecondaryButton
+} from './styles'
+const NUMBER_OF_INITIAL_NEIGHBORHOOD_TO_SHOW = 6
 class CityContainer extends Component {
   static defaultProps = {
     cities: []
+  }
+
+  state = {
+    isShowAll: false
   }
 
   selectAllNeighborhoodInCity = (cities, citySlug) => {
@@ -62,23 +69,80 @@ class CityContainer extends Component {
 
   getSelectedNeighborhoods = () => {
     const {selectedCity, selectedNeighborhoods} = this.props
+    const {isShowAll} = this.state
     const elems = []
-    selectedCity &&
-      selectedCity.neighborhoods.forEach((neighborhood, j) => {
+    if (selectedCity) {
+      const neighborhoods = isShowAll
+        ? selectedCity.neighborhoods
+        : selectedCity.neighborhoods.slice(
+          0,
+          NUMBER_OF_INITIAL_NEIGHBORHOOD_TO_SHOW - 1
+        )
+
+      neighborhoods.forEach((neighborhood, j) => {
         const isSelected = isNeighborhoodSelected(
           selectedNeighborhoods,
           neighborhood.nameSlug
         )
         elems.push(this.getNeighborhoodButton(j, isSelected, neighborhood))
       })
-
+    }
     return elems
+  }
+
+  isDisplayShowHideButtons = () => {
+    const {selectedCity} = this.props
+    return (
+      selectedCity &&
+      selectedCity.neighborhoods.length > NUMBER_OF_INITIAL_NEIGHBORHOOD_TO_SHOW
+    )
+  }
+
+  isDisplayShowMoreButton = () => {
+    return this.isDisplayShowHideButtons() && !this.state.isShowAll
+  }
+
+  isDisplayShowLessButton = () => {
+    return this.isDisplayShowHideButtons() && this.state.isShowAll
+  }
+
+  changeShowAllState = (newState = false) => {
+    this.setState({isShowAll: newState})
+  }
+
+  showMoreButton = () => {
+    return (
+      <SecondaryButton
+        link
+        height="tall"
+        onClick={() => {
+          this.changeShowAllState(true)
+        }}
+      >
+        ver todos
+      </SecondaryButton>
+    )
+  }
+
+  showLessButton = () => {
+    return (
+      <SecondaryButton
+        link
+        height="tall"
+        onClick={() => {
+          this.changeShowAllState(false)
+        }}
+      >
+        ver menos
+      </SecondaryButton>
+    )
   }
 
   render() {
     const {cities, selectCity, selectedCity} = this.props
     const neighborhoods = this.getSelectedNeighborhoods()
-
+    const isDisplayShowMoreBtn = this.isDisplayShowMoreButton()
+    const isDisplayShowLessBtn = this.isDisplayShowLessButton()
     return (
       <CitiesWrapper>
         <Row flexDirection="column">
@@ -88,7 +152,11 @@ class CityContainer extends Component {
               {selectedCity && (
                 <Fragment>
                   <Icon name="map-marker-alt" size={24} mr={2} color="pink" />
-                  <Text fontWeight="bold" fontSize="small">
+                  <Text
+                    fontWeight="bold"
+                    flexDirection="column"
+                    fontSize="small"
+                  >
                     Você está em {selectedCity.name}
                   </Text>
                   <LinkButton
@@ -106,6 +174,21 @@ class CityContainer extends Component {
                 </Fragment>
               )}
             </Row>
+            <RowMobile>
+              {selectedCity && (
+                <LinkButtonMobile
+                  link
+                  fontSize="small"
+                  p={0}
+                  ml={1}
+                  onClick={() => {
+                    this.resetCurrentSelection()
+                  }}
+                >
+                  trocar cidade
+                </LinkButtonMobile>
+              )}
+            </RowMobile>
           </Col>
           <Col>
             <Row flexWrap="wrap">
@@ -126,6 +209,8 @@ class CityContainer extends Component {
                     </NeighborhoodButton>
                   </View>
                   {neighborhoods.map((Item) => Item)}
+                  {isDisplayShowMoreBtn && this.showMoreButton()}
+                  {isDisplayShowLessBtn && this.showLessButton()}
                 </Fragment>
               )}
               {!selectedCity && (

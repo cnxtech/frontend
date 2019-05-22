@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Row from '@emcasa/ui-dom/components/Row'
 import Button from '@emcasa/ui-dom/components/Button'
 import Col from '@emcasa/ui-dom/components/Col'
-import {Separator, Container} from './styles'
+import {Separator, Container, Footer} from './styles'
 import NeighborhoodFilter from '../NeighborhoodFilter'
 import FeatureFilter from '../FeatureFilter'
 import TagsFilter from '../TagsFilter'
@@ -52,12 +52,10 @@ class Content extends Component {
           />
           <Col mt={4}>
             <Separator px={4} />
-          </Col>
-          <Col>
-            <Row p={4} justifyContent="flex-end">
+            <Footer p={4} justifyContent="flex-end">
               <Button mr={2} onClick={this.props.onCleanup}>Limpar</Button>
               <Button active onClick={this.props.onSubmit}>Aplicar</Button>
-            </Row>
+            </Footer>
           </Col>
         </Container>
       </Modal>
