@@ -63,6 +63,7 @@ export default styled(Row)`
   flex-direction: row-reverse;
   box-sizing: border-box;
   flex: 1 1 100%;
+  margin: ${themeGet('space.4')}px;
   margin-bottom: ${themeGet('space.5')}px;
   ${Phase}:first-child ${Hr}:last-child,
   ${Phase}:last-child ${Hr}:first-child {
