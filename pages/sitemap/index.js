@@ -69,11 +69,6 @@ export default class MyPage extends Component {
                 </ul>
               </li>
               <li>
-                <Link passHref href="/sobmedida">
-                  <a title="EmCasa Sob Medida">EmCasa Sob Medida</a>
-                </Link>
-              </li>
-              <li>
                 <Link passHref href="/listings/new-listing" as="/vender">
                   <a title="Venda seu imóvel">Venda seu imóvel</a>
                 </Link>

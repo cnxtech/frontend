@@ -38,8 +38,10 @@ const Footer = () => (
             <Logo logoFill={theme.colors.white} textFill={theme.colors.white} />
           </LogoWrapper>
           <AboutText fontSize="small" color="disabled">
-            A EmCasa é uma imobiliária digital tem como objetivo transformar a
-            maneira que o brasileiro compra ou vende imóvel.
+            A EmCasa é uma imobiliária que utiliza dados para recomendar imóveis
+            com base no perfil de cada pessoa. Nossos especialistas fazem a
+            intermediação no processo de compra e venda, conduzindo a negociação
+            e simplificando a burocracia.
           </AboutText>
           <AboutText fontSize="small" color="disabled">CRECI-RJ J-7712</AboutText>
         </AboutContainer>
