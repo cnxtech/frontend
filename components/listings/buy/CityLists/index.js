@@ -21,53 +21,6 @@ class CityLists extends Component {
     const {city} = this.props
 
     const CONTENT = {
-      all: {
-        title: 'Imóveis à venda no Rio de Janeiro e São Paulo',
-        highlights: [
-          {
-            stateSlug: 'sp',
-            citySlug: 'sao-paulo',
-            nameSlug: 'perdizes',
-            name: 'Perdizes',
-            preposition: 'em'
-          },
-          {
-            stateSlug: 'rj',
-            citySlug: 'rio-de-janeiro',
-            nameSlug: 'botafogo',
-            name: 'Botafogo',
-            preposition: 'em'
-          },
-          {
-            stateSlug: 'sp',
-            citySlug: 'sao-paulo',
-            nameSlug: 'pinheiros',
-            name: 'Pinheiros',
-            preposition: 'em'
-          },
-          {
-            stateSlug: 'rj',
-            citySlug: 'rio-de-janeiro',
-            nameSlug: 'copacabana',
-            name: 'Copacabana',
-            preposition: 'em'
-          },
-          {
-            stateSlug: 'sp',
-            citySlug: 'sao-paulo',
-            nameSlug: 'sumare',
-            name: 'Sumaré',
-            preposition: 'no'
-          },
-          {
-            stateSlug: 'rj',
-            citySlug: 'rio-de-janeiro',
-            nameSlug: 'flamengo',
-            name: 'Flamengo',
-            preposition: 'no'
-          }
-        ]
-      },
       saopaulo: {
         title: 'Imóveis à venda em São Paulo',
         highlights: [

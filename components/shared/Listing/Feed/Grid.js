@@ -1,18 +1,13 @@
-import {Component} from 'react'
+import {Component, Fragment} from 'react'
 import PropTypes from 'prop-types'
-import Text from '@emcasa/ui-dom/components/Text'
 import ListingCard from 'components/listings/shared/ListingCard'
 import ListingsGrid from 'components/listings/shared/ListingsGrid'
-import {Container} from './styles'
 
 class ListingFeedGrid extends Component {
   render() {
-    const {children, currentUser, listings, title, favorites} = this.props
+    const {children, currentUser, listings, favorites} = this.props
     return (
-      <Container>
-        <Text as="h3" color="grey" fontWeight="bold">
-          {title}
-        </Text>
+      <Fragment>
         <ListingsGrid>
           {listings.map(listing => (
             <ListingCard
@@ -25,7 +20,7 @@ class ListingFeedGrid extends Component {
           ))}
         </ListingsGrid>
         {children}
-      </Container>
+      </Fragment>
     )
   }
 }
