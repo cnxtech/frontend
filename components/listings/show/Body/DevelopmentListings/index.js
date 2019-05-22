@@ -2,7 +2,6 @@ import React from 'react'
 import {GET_DEVELOPMENT_LISTINGS} from 'graphql/listings/queries'
 import {graphql} from 'react-apollo'
 import compose from 'recompose/compose'
-import View from '@emcasa/ui-dom/components/View'
 import Row from '@emcasa/ui-dom/components/Row'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
@@ -19,75 +18,46 @@ class DevelopmentListings extends React.PureComponent {
 
   state = {
     groups: this.groupListings(),
-    expandedRows: []
+    expanded: false
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.listings !== this.props.listings)
-      this.setState({groups: this.groupListings(), expandedRows: []})
+      this.setState({groups: this.groupListings()})
   }
 
   groupListings() {
     return new Map(groupListings(this.props.listings))
   }
 
-  expandRow = (index) =>
-    this.setState(({expandedRows}) => ({
-      expandedRows: [index, ...expandedRows]
-    }))
+  expand = () => this.setState({expanded: true})
 
-  collapseRow = (index) =>
-    this.setState(({expandedRows}) => ({
-      expandedRows: expandedRows.filter((i) => i !== index)
-    }))
+  collapse = () => this.setState({expanded: false})
 
-  renderRow = (groups, index) => {
+  renderRow = (groups) => {
     const {address, breakpoint} = this.props
-    const {expandedRows} = this.state
-    const expanded = expandedRows.findIndex((i) => i == index) !== -1
+    const {expanded} = this.state
 
     return (
-      <View>
-        <UnitsRow>
-          {groups.map(([group, listings]) => (
-            <Group
-              {...group}
-              expanded={breakpoint === 'desktop' ? expanded : undefined}
-              address={address}
-              listings={listings}
-            />
-          ))}
-          {Array(3 - groups.length)
-            .fill(null)
-            .map(() => <div />)}
-        </UnitsRow>
-        <Breakpoint up="desktop">
-          <Row flex={1} mt={4} mb={2} justifyContent="center">
-            <Button
-              height="tall"
-              onClick={() =>
-                (expanded ? this.collapseRow : this.expandRow)(index)
-              }
-            >
-              <Row alignItems="center">
-                <Icon
-                  name={`chevron-${expanded ? 'up' : 'down'}`}
-                  size={14}
-                  mr={2}
-                />
-                <Text inline fontSize="small">
-                  Mostrar todas as unidades
-                </Text>
-              </Row>
-            </Button>
-          </Row>
-        </Breakpoint>
-      </View>
+      <UnitsRow>
+        {groups.map(([group, listings]) => (
+          <Group
+            {...group}
+            expanded={breakpoint === 'desktop' ? expanded : undefined}
+            address={address}
+            listings={listings}
+          />
+        ))}
+        {Array(3 - groups.length)
+          .fill(null)
+          .map(() => <div />)}
+      </UnitsRow>
     )
   }
 
   render() {
     const {listings} = this.props
+    const {expanded} = this.state
     const groups = Array.from(this.state.groups)
     const rows = Math.ceil(groups.length / 3)
 
@@ -105,6 +75,25 @@ class DevelopmentListings extends React.PureComponent {
         {Array(rows)
           .fill(null)
           .map((_, i) => this.renderRow(groups.slice(i * 3, (i + 1) * 3), i))}
+        <Breakpoint up="desktop">
+          <Row flex={1} mt={4} mb={2} justifyContent="center">
+            <Button
+              height="tall"
+              onClick={expanded ? this.collapse : this.expand}
+            >
+              <Row alignItems="center">
+                <Icon
+                  name={`chevron-${expanded ? 'up' : 'down'}`}
+                  size={14}
+                  mr={2}
+                />
+                <Text inline fontSize="small">
+                  Mostrar todas as unidades
+                </Text>
+              </Row>
+            </Button>
+          </Row>
+        </Breakpoint>
       </Container>
     )
   }

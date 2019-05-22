@@ -2,15 +2,17 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 moment.locale('pt-br')
 
-const EARLY = '09'
-const LATE = '17'
-const EARLY_DISPLAY = 'No começo do dia (das 09h às 12h)'
-const LATE_DISPLAY = 'No final do dia (das 16h às 19h)'
+export const MORNING = '09'
+export const AFTERNOON = '13'
+export const MORNING_RANGE = ['09', '12']
+export const AFTERNOON_RANGE = ['13', '18']
+export const MORNING_DISPLAY = 'Manhã (das 09h às 12h)'
+export const AFTERNOON_DISPLAY = 'Tarde (das 13h às 18h)'
 
-const MONTH_KEY_FORMAT = 'YYYY-MM'
-const DAY_KEY_FORMAT = 'YYYY-MM-DD'
+export const MONTH_KEY_FORMAT = 'YYYY-MM'
+export const DAY_KEY_FORMAT = 'YYYY-MM-DD'
 
-const getTourMonths = (timeList) => {
+export const getTourMonths = (timeList) => {
   const tourMonths = {}
   timeList.forEach((item) => {
     const parser = moment(item)
@@ -29,7 +31,7 @@ const getTourMonths = (timeList) => {
   return Object.values(tourMonths).reverse()
 }
 
-const getTourDays = (timeList, month) => {
+export const getTourDays = (timeList, month) => {
   const tourDays = {}
   timeList.forEach((item) => {
     const date = new Date(item)
@@ -51,21 +53,21 @@ const getTourDays = (timeList, month) => {
   return tourDaysValues.reverse()
 }
 
-const getTimeDisplay = (time, longText) => {
-  if (time === EARLY && longText) {
-    return EARLY_DISPLAY
-  } else if (time === LATE && longText) {
-    return LATE_DISPLAY
+export const getTimeDisplay = (time, longText) => {
+  if (time === MORNING && longText) {
+    return MORNING_DISPLAY
+  } else if (time === AFTERNOON && longText) {
+    return AFTERNOON_DISPLAY
   }
   return `${time}:00h`
 }
 
-const getDateDisplay = (date) => {
+export const getDateDisplay = (date) => {
   const parser = moment(date)
   return parser.format('DD/MM/YY')
 }
 
-const getFullTourDateDisplay = (tour) => {
+export const getFullTourDateDisplay = (tour) => {
   if (tour && tour.day && tour.time) {
     const date = moment(tour.day).format('DD/MM/YYYY')
     if (tour.timeRange) {
@@ -77,18 +79,12 @@ const getFullTourDateDisplay = (tour) => {
   }
 }
 
-const TOUR_HOURS = ['09', '10', '11', '12', '13', '14', '15', '16', '17']
-
-export {
-  getTourMonths,
-  getTourDays,
-  getTimeDisplay,
-  getDateDisplay,
-  getFullTourDateDisplay,
-
-  TOUR_HOURS,
-  EARLY,
-  LATE,
-  EARLY_DISPLAY,
-  LATE_DISPLAY
+export const getTimeRange = (time) => {
+  if (time === MORNING) {
+    return MORNING_RANGE
+  } else if (time === AFTERNOON) {
+    return AFTERNOON_RANGE
+  }
 }
+
+export const TOUR_HOURS = ['09', '10', '11', '12', '13', '14', '15', '16', '17']
