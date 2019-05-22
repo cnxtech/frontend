@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react'
-import Router from 'next/router'
 import PropTypes from 'prop-types'
 import Button from '@emcasa/ui-dom/components/Button'
 import {clone} from 'utils/clone'
@@ -7,6 +6,7 @@ import Content from './components/Content'
 import {ChangeTypeEnum} from './components/Content/changeTypes'
 import theme from '@emcasa/ui'
 import {Icon} from './styles'
+import {DEFAULT_CITY} from 'utils/location-utils'
 
 class Filter extends Component {
   constructor(props) {
@@ -126,15 +126,20 @@ class Filter extends Component {
             onChange={this.onChange}
             onCleanup={this.onCleanup}
             filters={this.state.filters}
+            currentCity={this.props.currentCity}
           />
         )}
       </Fragment>
     )
   }
 }
-
+Filter.defaultProps = {
+  filters: {},
+  currentCity: DEFAULT_CITY
+}
 Filter.propTypes = {
   filters: PropTypes.object,
+  currentCity: PropTypes.object,
   onSubmit: PropTypes.func.isRequired
 }
 

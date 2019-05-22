@@ -15,76 +15,16 @@ import {
   LISTING_SEARCH_NEIGHBORHOOD_EXPAND,
   LISTING_SEARCH_NEIGHBORHOOD_CHANGE_CITY
 } from 'lib/logging'
-
-export const DEFAULT_CITY_SLUG = 'sao-paulo'
-export const DEFAULT_CITY = cities.find(
-  (city) => city.citySlug === DEFAULT_CITY_SLUG
-)
+import {DEFAULT_CITY} from 'utils/location-utils'
 
 class NeighborhoodPicker extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.containerRef = React.createRef()
     this.state = {
       selectedNeighborhoods: props.neighborhoods || [],
-      selectedCity: null
+      selectedCity: props.currentCity || DEFAULT_CITY
     }
-  }
-
-  componentDidMount() {
-    if (!process.browser) {
-      return
-    }
-
-    fetch('/location', {method: 'POST'})
-      .then((response) => response.json())
-      .then((result) => {
-        const userCity = this.getUserCityByGeoIp(result)
-        if (userCity) {
-          let identify = new amplitude.Identify().set(
-            'geoIpCity',
-            userCity.name
-          )
-          amplitude.identify(identify)
-          this.applyUserCityFromGeoIp(userCity)
-        } else {
-          this.applyUserCityFromGeoIp(DEFAULT_CITY)
-        }
-      })
-  }
-
-  getUserCityByGeoIp = (result) => {
-    if (result && result.location && result.location.city) {
-      const {city} = result.location
-      const citySlug = slugify(city.toLowerCase())
-      const cityFound = cities.find((city) => city.citySlug === citySlug)
-      const userCity = cityFound ? cityFound : DEFAULT_CITY
-      return userCity
-    }
-    return null
-  }
-
-  applyUserCityFromGeoIp = (userCity) => {
-    const {pathname} = location
-    let city = userCity
-    if (pathname !== '/imoveis') {
-      const location = pathname.split('/imoveis/')[1]
-      if (location) {
-        const citySlug = location.split('/')[1]
-        const urlCity = cities.find((city) => city.citySlug === citySlug)
-        if (urlCity) {
-          city = urlCity
-        }
-      }
-      if (pathname === '/') {
-        const cityAutoSelection = cities.find((city) => city.citySlug === userCity.citySlug)
-        if (cityAutoSelection) {
-          city = cityAutoSelection
-        }
-      }
-    }
-    this.selectCity(city, this.props.neighborhoods)
   }
 
   selectCity = (city, neighborhoods = []) => {
@@ -143,16 +83,29 @@ class NeighborhoodPicker extends Component {
     }
   }
 
+  getSelectedCity = (availableCities) => {
+    const {selectedCity} = this.state
+
+    if (!selectedCity) {
+      return null
+    }
+
+    return availableCities.find(
+      (city) => city.citySlug === selectedCity.citySlug
+    )
+  }
+
   render() {
     return (
       <Query query={GET_DISTRICTS} ssr={true}>
         {({data}) => {
           const availableCities = this.getCities(data)
+          const selectedCity = this.getSelectedCity(availableCities)
           return (
             <CityContainer
               cities={availableCities}
               selectedNeighborhoods={this.state.selectedNeighborhoods}
-              selectedCity={this.state.selectedCity}
+              selectedCity={selectedCity}
               isCitySelected={this.isCitySelected}
               selectCity={this.selectCity}
               selectNeighborhoods={this.selectNeighborhoods}
@@ -168,7 +121,8 @@ class NeighborhoodPicker extends Component {
 
 NeighborhoodPicker.propTypes = {
   onChange: PropTypes.func.isRequired,
-  neighborhoods: PropTypes.array
+  neighborhoods: PropTypes.array,
+  currentCity: PropTypes.object.isRequired
 }
 
 export default enhanceWithClickOutside(NeighborhoodPicker)

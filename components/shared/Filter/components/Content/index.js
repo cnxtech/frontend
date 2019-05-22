@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import Row from '@emcasa/ui-dom/components/Row'
 import Button from '@emcasa/ui-dom/components/Button'
 import Col from '@emcasa/ui-dom/components/Col'
 import {Separator, Container, Footer} from './styles'
@@ -29,12 +28,13 @@ class Content extends Component {
   }
 
   render() {
-    const {onClose, filters} = this.props
+    const {onClose, filters, currentCity} = this.props
     return (
       <Modal width="100%" onClose={onClose}>
         <Container flexDirection="column">
           <NeighborhoodFilter
             onChange={this.changeLocation}
+            currentCity={currentCity}
             neighborhoods={filters.neighborhoods}
           />
           <FeatureFilter onChange={this.changeFeature} values={filters} />
@@ -53,8 +53,12 @@ class Content extends Component {
           <Col mt={4}>
             <Separator px={4} />
             <Footer p={4} justifyContent="flex-end">
-              <Button mr={2} onClick={this.props.onCleanup}>Limpar</Button>
-              <Button active onClick={this.props.onSubmit}>Aplicar</Button>
+              <Button mr={2} onClick={this.props.onCleanup}>
+                Limpar
+              </Button>
+              <Button active onClick={this.props.onSubmit}>
+                Aplicar
+              </Button>
             </Footer>
           </Col>
         </Container>
@@ -67,7 +71,8 @@ Content.propTypes = {
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCleanup: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired
+  filters: PropTypes.object.isRequired,
+  currentCity: PropTypes.object.isRequired
 }
 
 export default Content

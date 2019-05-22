@@ -8,8 +8,8 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/neighborhood
         const result = ParamsMapper.mapUrlToParams({
-          stateSlug: 'state',
-          citySlug: 'city',
+          state: 'state',
+          city: 'city',
           rest: 'neighborhood'
         })
         const expected = {
@@ -31,8 +31,8 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/piscina
         const result = ParamsMapper.mapUrlToParams({
-          stateSlug: 'state',
-          citySlug: 'city',
+          state: 'state',
+          city: 'city',
           rest: 'piscina'
         })
         const expected = {
@@ -54,8 +54,8 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/casa
         const result = ParamsMapper.mapUrlToParams({
-          stateSlug: 'state',
-          citySlug: 'city',
+          state: 'state',
+          city: 'city',
           rest: 'casa'
         })
         const expected = {
@@ -77,8 +77,8 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/neighborhood/piscina
         const result = ParamsMapper.mapUrlToParams({
-          stateSlug: 'state',
-          citySlug: 'city',
+          state: 'state',
+          city: 'city',
           rest: 'neighborhood/piscina'
         })
         const expected = {
@@ -100,8 +100,8 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/neighborhood/casa
         const result = ParamsMapper.mapUrlToParams({
-          stateSlug: 'state',
-          citySlug: 'city',
+          state: 'state',
+          city: 'city',
           rest: 'neighborhood/casa'
         })
         const expected = {
@@ -124,8 +124,8 @@ describe('Parameters Mapper tests', () => {
       () => {
         //simulates => /imoveis/state/city/casa/piscina
         const result = ParamsMapper.mapUrlToParams({
-          stateSlug: 'state',
-          citySlug: 'city',
+          state: 'state',
+          city: 'city',
           rest: 'casa/piscina'
         })
         const expected = {
@@ -145,8 +145,8 @@ describe('Parameters Mapper tests', () => {
     it('should identify "preco minimo" as a filter', () => {
       //simulates => /imoveis/state/city/preco-min-10000
       const result = ParamsMapper.mapUrlToParams({
-        stateSlug: 'state',
-        citySlug: 'city',
+        state: 'state',
+        city: 'city',
         rest: 'preco-min-10000'
       })
       const expected = {
@@ -164,8 +164,8 @@ describe('Parameters Mapper tests', () => {
     it('should identify "preco minimo" and "preco-maximo" as a filter', () => {
       //simulates => /imoveis/state/city/preco-min-10000
       const result = ParamsMapper.mapUrlToParams({
-        stateSlug: 'state',
-        citySlug: 'city',
+        state: 'state',
+        city: 'city',
         rest: 'preco-min-10000/preco-max-1000000000'
       })
       const expected = {
@@ -183,8 +183,8 @@ describe('Parameters Mapper tests', () => {
     it('should identify "quartos" and "preco minimo" and "preco-maximo" as a filter', () => {
       //simulates => /imoveis/state/city/preco-min-10000
       const result = ParamsMapper.mapUrlToParams({
-        stateSlug: 'state',
-        citySlug: 'city',
+        state: 'state',
+        city: 'city',
         rest: '3-quartos/preco-min-10000/preco-max-1000000000'
       })
       const expected = {
@@ -201,10 +201,10 @@ describe('Parameters Mapper tests', () => {
     })
 
     it('should return only city and state when rest param is null', () => {
-      //simulates => /imoveis/state/city/preco-min-10000
+      //simulates => /imoveis/state/city
       const result = ParamsMapper.mapUrlToParams({
-        citySlug: 'city',
-        stateSlug: 'state'
+        city: 'city',
+        state: 'state'
       })
       const expected = {
         stateSlug: 'state',

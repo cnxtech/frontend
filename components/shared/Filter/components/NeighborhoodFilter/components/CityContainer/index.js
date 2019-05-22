@@ -152,11 +152,7 @@ class CityContainer extends Component {
               {selectedCity && (
                 <Fragment>
                   <Icon name="map-marker-alt" size={24} mr={2} color="pink" />
-                  <Text
-                    fontWeight="bold"
-                    flexDirection="column"
-                    fontSize="small"
-                  >
+                  <Text fontWeight="bold" fontSize="small">
                     Você está em {selectedCity.name}
                   </Text>
                   <LinkButton

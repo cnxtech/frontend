@@ -36,17 +36,6 @@ router.get('/:state/:city/:rest([0-9a-z-]*)', (req, res) => {
   res.locals.app.render(req, res, actualPage, req.query)
 })
 
-router.get('/:state/:city/:neighborhood/', (req, res) => {
-  const actualPage = '/listings'
-  const neighborhood = req.params.neighborhood
-  const queryParams = {
-    neighborhoodSlug: neighborhood,
-    state: req.params.state,
-    city: req.params.city
-  }
-  res.locals.app.render(req, res, actualPage, queryParams)
-})
-
 router.get('/:id(\\d+)/editar', (req, res) => {
   const actualPage = '/listings/edit'
   const queryParams = {id: req.params.id}
