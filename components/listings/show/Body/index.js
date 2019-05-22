@@ -71,7 +71,7 @@ class ListingMainContent extends Component {
                 <DevelopmentPhase phase={listing.development.phase} />
                 <Breakpoint down="tablet">
                   <a href="#unidades">
-                    <Button mb={4}>
+                    <Button mt={1} mb={5}>
                       <Row alignItems="center">
                         <Icon name="arrow-down" size={16} mr={2} />
                         <Text inline fontSize="small">
