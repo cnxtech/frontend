@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Row from '@emcasa/ui-dom/components/Row'
 import View from '@emcasa/ui-dom/components/View'
 import {themeGet} from 'styled-system'
 
@@ -16,18 +15,15 @@ const Footer = styled.footer`
   font-size: 0.7em;
   background-color: ${themeGet('colors.white')};
   cursor: pointer;
+
   a {
     display: block;
     width: 100%;
     height: 100%;
-    padding: 25px;
     color: inherit;
     text-decoration: none;
     box-sizing: border-box;
   }
 `
 
-export {
-  Container,
-  Footer
-}
+export {Container, Footer}

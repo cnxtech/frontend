@@ -2,11 +2,12 @@ import {Component} from 'react'
 import throttle from 'lodash/throttle'
 import {getY, getX} from 'utils/polyfills/bounding-rect'
 import {FadeLoader} from 'react-spinners'
-import Row from '@emcasa/ui-dom/components/Row'
+import Col from '@emcasa/ui-dom/components/Col'
 import theme from 'config/theme'
 import {log, LISTING_SEARCH_LOAD_MORE} from 'lib/logging'
 import {Container, Footer} from './styles'
 import ListingsGrid from 'components/listings/shared/ListingsGrid'
+import ListingsLoad from 'components/listings/shared/ListingsLoad'
 
 class ListingInfiniteScroll extends Component {
   static defaultProps = {
@@ -92,15 +93,9 @@ class ListingInfiniteScroll extends Component {
               onClick={() => !this.state.loading && this.loadMore()}
               title="Próxima página"
             >
-              <Row justifyContent="center">
-                <FadeLoader
-                  width={10}
-                  height={10}
-                  margin="2"
-                  radius={8}
-                  color={theme.colors.pink}
-                />
-              </Row>
+              <Col py={4}>
+                <ListingsLoad length={4} />
+              </Col>
             </a>
           </Footer>
         )}

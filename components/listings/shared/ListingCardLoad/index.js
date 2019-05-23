@@ -8,8 +8,10 @@ import {
 } from 'components/listings/shared/ListingCard/styles.js'
 import styled, {keyframes} from 'styled-components'
 
+const BLINK_ANIM_TIME = 0.3
+
 const animationName = keyframes`
-  0% { opacity: 0.7; }
+  0% { opacity: 0.6; }
   100% { opacity: 1; }
 `
 
@@ -18,7 +20,7 @@ const Container = styled.span`
 `
 
 const BlinkContainer = styled(Row)`
-  animation: ${animationName} 0.35s linear 0s infinite alternate;
+  animation: ${animationName} ${BLINK_ANIM_TIME}s linear 0s infinite alternate;
 `
 
 export default function ListingCardLoad() {
@@ -37,27 +39,27 @@ export default function ListingCardLoad() {
               <Col
                 backgroundColor={theme.colors.smoke}
                 as="span"
-                height={theme.space[4]}
+                height="14px"
                 width="55%"
               />
               <Col
                 backgroundColor={theme.colors.smoke}
                 as="span"
-                height={theme.space[4]}
+                height="14px"
                 width="30%"
               />
             </Row>
             <Col
               backgroundColor={theme.colors.smoke}
               as="span"
-              height={theme.space[2]}
+              height="8px"
               width="65%"
               mb={1}
             />
             <Col
               backgroundColor={theme.colors.smoke}
               as="span"
-              height={theme.space[2]}
+              height="8px"
               width="55%"
               mb={1}
             />

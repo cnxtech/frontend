@@ -22,6 +22,7 @@ import {log, LISTING_SEARCH_MAP_PIN, LISTING_SEARCH_RESULTS} from 'lib/logging'
 import {Container, MapContainer, Title} from './styles'
 import {buildSlug} from 'lib/listings'
 import {thumbnailUrl} from 'utils/image_url'
+import ListingsLoad from 'components/listings/shared/ListingsLoad'
 
 class ListingList extends Component {
   constructor(props) {
@@ -45,15 +46,9 @@ class ListingList extends Component {
   }
 
   getLoading = () => (
-    <Row justifyContent="center" mt="80px">
-      <FadeLoader
-        width={10}
-        height={10}
-        margin="2"
-        radius={8}
-        color={theme.colors.pink}
-      />
-    </Row>
+    <Col px={4}>
+      <ListingsLoad />
+    </Col>
   )
 
   getListings = (result, fetchMore, loading) => {
