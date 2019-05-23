@@ -3,10 +3,6 @@ const express = require('express')
 const _ = require('lodash')
 const router = express.Router()
 
-router.get('/favoritos', (req, res) => {
-  return res.locals.app.render(req, res, '/meu-perfil', req.query)
-})
-
 router.get('/:id(\\d+)', (req, res) => {
   const actualPage = '/listings/show'
   const queryParams = {id: req.params.id, ...req.query}
