@@ -1,4 +1,4 @@
-import styled, {createGlobalStyle} from 'styled-components'
+import styled, {css} from 'styled-components'
 import theme from '@emcasa/ui'
 
 export const MIN_CARD_WIDTH = 280
@@ -23,30 +23,34 @@ export const Wrapper = styled.article`
   }
 `
 
-export const Container = styled.a`
+export const CardStyle = css`
   position: relative;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  cursor: pointer;
   width: 100%;
   overflow: hidden;
   backface-visibility: hidden;
   border: 1px solid ${theme.colors.lightGrey};
   border-radius: ${theme.space[2]}px;
   background-color: ${theme.colors.white};
-  transition: border .25s, box-shadow .25s ease-in;
-
-  :hover {
-    border-color: ${theme.colors.pink};
-    box-shadow: 0 0 2px ${theme.colors.pink};
-  }
 
   img {
     box-sizing: border-box;
     object-fit: cover;
     width: 100%;
     height: ${LISTING_CARD_IMAGE_HEIGHT}px;
+  }
+`
+
+export const Container = styled.a`
+  ${CardStyle}
+  cursor: pointer;
+  transition: border .25s, box-shadow .25s ease-in;
+
+  :hover {
+    border-color: ${theme.colors.pink};
+    box-shadow: 0 0 2px ${theme.colors.pink};
   }
 `
 
