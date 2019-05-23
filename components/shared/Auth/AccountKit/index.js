@@ -118,6 +118,13 @@ class AccountKit extends Component {
 
       log(LOGIN_SUCCESS)
       this.setState({loading: false})
+
+      // Tag user as admin in Amplitude
+      if (user.role === 'admin') {
+        let identify = new amplitude.Identify().set('isAdmin', true)
+        amplitude.identify(identify)
+      }
+
       return userInfo
     } else if (resp.status === 'NOT_AUTHENTICATED') {
       log(LOGIN_ERROR, resp)
