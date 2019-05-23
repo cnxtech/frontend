@@ -213,32 +213,7 @@ export default class Listings extends Component {
   }
 
   getMap = () => {
-    const {highlight, mapOpened} = this.state
-    const {filters} = this.props
-
-    return (
-      <Query query={GET_LISTINGS_COORDINATES} variables={{filters}}>
-        {({data: {listings: mapListings}}) => (
-          <Fragment>
-            <MapButton opened={mapOpened} onClick={this.handleMap} />
-            <MapContainer opened={mapOpened}>
-              {process.browser ? (
-                <Map
-                  zoom={13}
-                  onSelect={this.onSelectListing}
-                  listings={mapListings.listings}
-                  highlight={highlight}
-                  onChange={this.onChangeMap}
-                  updateAfterApiCall
-                />
-              ) : (
-                <Loading>Carregando mapa...</Loading>
-              )}
-            </MapContainer>
-          </Fragment>
-        )}
-      </Query>
-    )
+    return null
   }
 
   render() {
