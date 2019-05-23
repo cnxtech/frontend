@@ -73,6 +73,9 @@ class ListingSearch extends Component {
       LocationUtils.getUserLocationByIp().then(this.updateCurrentCity)
     }
     window.onpopstate = (event) => {
+      if (!event || !event.state || !event.state.as) {
+        return
+      }
       const newFilters = ParamsMapper.getFiltersByPath(event.state.as)
       this.setState(
         {filters: newFilters},
