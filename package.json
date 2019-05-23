@@ -31,6 +31,7 @@
     "@fortawesome/fontawesome-pro-regular": "5.0.13",
     "@fortawesome/fontawesome-pro-solid": "5.0.13",
     "@fortawesome/pro-solid-svg-icons": "5.7.1",
+    "@fortawesome/pro-light-svg-icons": "5.7.1",
     "@fortawesome/react-fontawesome": "0.0.17",
     "@google/maps": "0.4.6",
     "@sentry/browser": "4.4.0",

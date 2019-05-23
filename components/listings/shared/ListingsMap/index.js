@@ -21,7 +21,7 @@ export default class ListingsMap extends PureComponent {
   isHighlight = ({id}) => this.state.highlight === id
 
   onMapLoaded = ({map}) => {
-    map.addListener('click', this.onClickMarker)
+    if (map) map.addListener('click', this.onClickMarker)
   }
 
   onClickMarker = (e) => {
