@@ -236,7 +236,30 @@ class ListingList extends Component {
   }
 
   getMap = () => {
-    return null
+    const {highlight} = this.state
+    const {filters} = this.props
+
+    return (
+      <Query query={GET_LISTINGS_COORDINATES} variables={{filters}}>
+        {({data: {listings: mapListings}}) => {
+          if (!mapListings) {
+            return <MapContainer />
+          }
+          return (
+            <MapContainer>
+              <Map
+                zoom={13}
+                onSelect={this.onSelectListing}
+                listings={mapListings.listings}
+                highlight={highlight}
+                onChange={this.onChangeMap}
+                updateAfterApiCall
+              />
+            </MapContainer>
+          )
+        }}
+      </Query>
+    )
   }
 
   getItemList = (listings) => {
