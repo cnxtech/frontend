@@ -6,6 +6,10 @@ import MultiMarker from './MultiMarker'
 import {getListingPrice} from 'lib/listings'
 
 export default class ListingsMap extends PureComponent {
+  static defaultProps = {
+    isFavorite: () => false
+  }
+
   state = {
     highlight: undefined
   }
@@ -32,6 +36,7 @@ export default class ListingsMap extends PureComponent {
   }
 
   renderListing = (listing) => {
+    const {user, isFavorite} = this.props
     const {id, address: {lat, lng}} = listing
     const isHighlight = this.isHighlight(listing)
     return (
@@ -43,7 +48,11 @@ export default class ListingsMap extends PureComponent {
         highlight={isHighlight}
         onClick={() => this.setHighlight({id})}
       >
-        {!isHighlight ? getListingPrice(listing) : <Card listing={listing} />}
+        {!isHighlight ? (
+          getListingPrice(listing)
+        ) : (
+          <Card listing={listing} user={user} favorite={isFavorite(listing)} />
+        )}
       </Marker>
     )
   }

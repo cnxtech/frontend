@@ -1,3 +1,4 @@
+import uniqBy from 'lodash/uniqBy'
 import {PureComponent} from 'react'
 import Router from 'next/router'
 import {graphql} from 'react-apollo'
@@ -9,9 +10,22 @@ import Map from 'components/listings/shared/ListingsMap'
 import {GET_USER_INFO, GET_FAVORITE_LISTINGS} from 'graphql/user/queries'
 
 class UserFavoritesMap extends PureComponent {
+  state = {
+    listings: this.props.listings || []
+  }
+
   static async getInitialProps() {
     return {
       renderFooter: false
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.listings && this.props.listings !== prevProps.listings) {
+      // Keep unfavorited listing cards mounted
+      this.setState(({listings}) => ({
+        listings: uniqBy([...listings, ...this.props.listings], 'id')
+      }))
     }
   }
 
@@ -21,11 +35,20 @@ class UserFavoritesMap extends PureComponent {
     }
   }
 
+  isFavorite = ({id}) =>
+    Boolean(this.props.listings.find((listing) => listing.id === id))
+
   render() {
-    const {listings = []} = this.props
+    const {user} = this.props
+    const {listings} = this.state
     return (
       <View height={`calc(100vh - ${HEADER_HEIGHT}px)`} width="100vw">
-        <Map data={listings} getInitialFrame={({markers}) => markers} />
+        <Map
+          user={user}
+          data={listings}
+          isFavorite={this.isFavorite}
+          getInitialFrame={({markers}) => markers}
+        />
       </View>
     )
   }
