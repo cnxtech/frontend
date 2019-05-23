@@ -1,6 +1,7 @@
 import {PureComponent} from 'react'
 import Map from '@emcasa/ui-dom/components/Map'
 import Card from './Card'
+import Marker from './Marker'
 import MultiMarker from './MultiMarker'
 import {getListingPrice} from 'lib/listings'
 
@@ -11,23 +12,39 @@ export default class ListingsMap extends PureComponent {
 
   selectListing = ({id}) => this.setState({highlight: id})
 
-  setHighlight = (id) => this.setState({highlight: id})
+  setHighlight = ({id}) => this.setState({highlight: id})
 
   isHighlight = ({id}) => this.state.highlight === id
+
+  onMapLoaded = ({map}) => {
+    map.addListener('click', this.onClickMarker)
+  }
+
+  onClickMarker = (e) => {
+    if (e.placeId) {
+      // Prevent place info popup from showing.
+      e.stop()
+    }
+  }
+
+  onChange = (bounds, framedPoints) => {
+    if (framedPoints.length === 1) this.setHighlight({id: framedPoints[0]})
+  }
 
   renderListing = (listing) => {
     const {id, address: {lat, lng}} = listing
     const isHighlight = this.isHighlight(listing)
     return (
-      <Map.Marker
+      <Marker
         key={id}
         id={id}
         lat={lat}
         lng={lng}
-        onClick={() => this.setHighlight(id)}
+        highlight={isHighlight}
+        onClick={() => this.setHighlight({id})}
       >
-        {!isHighlight ? getListingPrice(listing) : <Card id={id} />}
-      </Map.Marker>
+        {!isHighlight ? getListingPrice(listing) : <Card listing={listing} />}
+      </Marker>
     )
   }
 
@@ -49,7 +66,15 @@ export default class ListingsMap extends PureComponent {
           ]
         }}
         MultiMarker={MultiMarker}
-        onMapLoaded={console.log}
+        getClusterProps={(props) => ({
+          currentIndex: props.points.findIndex(
+            ({id}) => id == this.state.highlight
+          ),
+          onChangePage: this.setHighlight,
+          ...props
+        })}
+        onChange={this.onChange}
+        onMapLoaded={this.onMapLoaded}
       >
         {data.map(this.renderListing)}
       </Map>
