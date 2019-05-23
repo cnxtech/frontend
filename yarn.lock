@@ -1694,32 +1694,32 @@
   dependencies:
     lodash.once "^4.1.1"
 
-"@emcasa/ui-dom@2.0.13":
-  version "2.0.13"
-  resolved "https://registry.yarnpkg.com/@emcasa/ui-dom/-/ui-dom-2.0.13.tgz#ca44005939e0fc0454d380a7165eac5b93b5e058"
-  integrity sha512-S2bRBDK1LV3Cjgy1Pv6/SCgMRiEWSxcr8EUi3yG9jx3i+gBa+YRv1wiB5Szag3XRUxIM8k1Bl6lkCEUPhaYduQ==
+"@emcasa/ui-dom@2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@emcasa/ui-dom/-/ui-dom-2.1.2.tgz#730c17db4ec1e563956c26f17ed1e4bdc6016d0c"
+  integrity sha512-PTQKNaNFweg5NI9FE9jHclrLHw4iz/B9c18OC55nNxQo38dzEwj37uqL/Q7oD4QEvfnMy9bzznG+PdwYKQwwBA==
   dependencies:
-    "@emcasa/ui" "^2.0.13"
+    "@emcasa/ui" "^2.1.2"
     "@rebass/grid" "6.0.0-4"
+    "@turf/helpers" "^6.1.4"
     classnames "^2.2.6"
     deepmerge "^3.2.0"
     element-class "^0.2.2"
     fbjs "^1.0.0"
-    google-map-react "^1.1.2"
     hoist-non-react-statics "^3.3.0"
     md5.js "^1.3.5"
     number-abbreviate "^2.0.0"
     numeral "^2.0.6"
-    points-cluster "^0.1.4"
     recompose "~0.30.0"
     styled-icons "7.9.0"
     styled-system "4.1.0"
+    supercluster "^6.0.1"
     tinycolor2 "^1.4.1"
 
-"@emcasa/ui@2.0.13", "@emcasa/ui@^2.0.13":
-  version "2.0.13"
-  resolved "https://registry.yarnpkg.com/@emcasa/ui/-/ui-2.0.13.tgz#517c226c91c123e57e4490039b4a811fff34be24"
-  integrity sha512-ydr/Go0AOgRahSoJPntsmhmGyXYMHD73opj2roFw4Xs3oZKaWNqGjXsucdgdpPtUiggcEk5SCzAgVp0EZajWBA==
+"@emcasa/ui@2.1.2", "@emcasa/ui@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@emcasa/ui/-/ui-2.1.2.tgz#00b326b9368ebb8e2bb23e2c0fdca7ba412de1c7"
+  integrity sha512-iNmR4sB0R4cBDAmCgSEYk3YNdfej/iey//Selc5st6DZPjJ+hCuOWBZmCuL9PEYyEN5q7YM0YlrgDAJypdpRfQ==
   dependencies:
     "@fortawesome/free-solid-svg-icons" "^5.4.1"
     everpolate "^0.0.3"
@@ -2188,6 +2188,11 @@
   dependencies:
     "@sentry/types" "4.4.0"
     tslib "^1.9.3"
+
+"@turf/helpers@^6.1.4":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@turf/helpers/-/helpers-6.1.4.tgz#d6fd7ebe6782dd9c87dca5559bda5c48ae4c3836"
+  integrity sha512-vJvrdOZy1ngC7r3MDA7zIGSoIgyrkWcGnNIEaqn/APmw+bVLF2gAW7HIsdTxd12s5wQMqEpqIQrmrbRRZ0xC7g==
 
 "@types/accepts@^1.3.5":
   version "1.3.5"
@@ -7464,15 +7469,6 @@ google-map-react@1.0.6:
     eventemitter3 "^1.1.0"
     scriptjs "^2.5.7"
 
-google-map-react@^1.1.2:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/google-map-react/-/google-map-react-1.1.4.tgz#ebf649b3cb985c645a0b7a05eb4e1c3f80482c80"
-  integrity sha512-+XcOu7QrRrlDa7Bk25oVV4FSsvMorAupuBrnDjA28Zz+HE+wEz79igqn+0KCHbemjgEHz51sHk0wm+IodvLoMg==
-  dependencies:
-    "@mapbox/point-geometry" "^0.1.0"
-    eventemitter3 "^1.1.0"
-    scriptjs "^2.5.7"
-
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
   version "4.1.15"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
@@ -9091,6 +9087,11 @@ junk@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/junk/-/junk-1.0.3.tgz#87be63488649cbdca6f53ab39bec9ccd2347f592"
   integrity sha1-h75jSIZJy9ym9Tqzm+yczSNH9ZI=
+
+kdbush@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/kdbush/-/kdbush-3.0.0.tgz#f8484794d47004cc2d85ed3a79353dbe0abc2bf0"
+  integrity sha512-hRkd6/XW4HTsA9vjVpY9tuXJYLSlelnkTmVFu4M9/7MIYQtFcHpbugAU7UbOfjOiVSVYl2fqgBuJ32JUmRo5Ew==
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
@@ -10790,7 +10791,7 @@ pn@^1.1.0:
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
   integrity sha512-2qHaIQr2VLRFoxe2nASzsV6ef4yOOH+Fi9FBOVH6cqeSgUnoyySPZkxzLuzd+RYOQTRpROA0ztTMqxROKSb/nA==
 
-points-cluster@0.1.4, points-cluster@^0.1.4:
+points-cluster@0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/points-cluster/-/points-cluster-0.1.4.tgz#409bdbf1e0cc18b6ec80f0d357d40bafae69affc"
   integrity sha1-QJvb8eDMGLbsgPDTV9QLr65pr/w=
@@ -13014,6 +13015,13 @@ superagent@3.8.3:
     mime "^1.4.1"
     qs "^6.5.1"
     readable-stream "^2.3.5"
+
+supercluster@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/supercluster/-/supercluster-6.0.1.tgz#4c0177d96daa195d58a5bad9f55dbf12fb727a4c"
+  integrity sha512-NTth/FBFUt9mwW03+Z6Byscex+UHu0utroIe6uXjGu9PrTuWtW70LYv9I1vPSYYIHQL74S5zAkrXrHEk0L7dGA==
+  dependencies:
+    kdbush "^3.0.0"
 
 supports-color@5.1.0:
   version "5.1.0"

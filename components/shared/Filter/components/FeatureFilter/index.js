@@ -11,7 +11,6 @@ import {
   GarageSpotsFilter
 } from '@emcasa/ui-dom/components/Filters/ListingFilters'
 
-import {buttonsBlue} from './styles'
 import {zIndexFilter} from 'constants/zIndex'
 import Text from '@emcasa/ui-dom/components/Text'
 
@@ -33,6 +32,7 @@ const ListingFilter = (props) => {
           zIndex={zIndexFilter}
           initialValues={props.initialValues}
           values={props.values}
+          width="100%"
         >
           <TypesFilter />
           <PriceFilter />
