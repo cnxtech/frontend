@@ -1,5 +1,6 @@
-import {Component, Fragment} from 'react'
+import {Component} from 'react'
 import Router from 'next/router'
+import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
 import {
   getListingFiltersFromState,
   getLocationFromPath
@@ -126,38 +127,53 @@ class ListingSearch extends Component {
             if (error) return <p>ERROR</p>
             const districts = data ? data.districts : []
             return (
-              <Fragment>
-                <ListingHead
-                  districts={districts}
-                  filters={filters}
-                  params={params || {}}
-                  url={url}
-                />
-                <LdJson />
-                {currentCity && (
-                  <ActionsBar
-                    user={user}
-                    filters={filters}
-                    currentCity={currentCity}
-                    onSubmit={this.onChangeFilter}
-                  />
-                )}
-                <ListingList
-                  isRoot={isRoot}
-                  query={query}
-                  params={params || {}}
-                  user={user}
-                  resetFilters={this.onResetFilter}
-                  filters={listingFilters}
-                  apolloClient={client}
-                  districts={districts}
-                  neighborhoodListener={(neighborhood) => {
-                    if (!this.state.neighborhood) {
-                      this.setState({neighborhood: neighborhood})
-                    }
-                  }}
-                />
-              </Fragment>
+              <Query
+                query={GET_USER_LISTINGS_ACTIONS}
+                ssr={true}
+                skip={!user.authenticated}
+              >
+                {({data, loading}) => {
+                  if (loading) {
+                    return <div />
+                  }
+                  const userProfile = data ? data.userProfile : null
+                  const favorites = userProfile ? userProfile.favorites : []
+                  return (
+                    <>
+                      <ListingHead
+                        districts={districts}
+                        filters={filters}
+                        params={params || {}}
+                        url={url}
+                      />
+                      <LdJson />
+                      {currentCity && (
+                        <ActionsBar
+                          user={user}
+                          filters={filters}
+                          currentCity={currentCity}
+                          onSubmit={this.onChangeFilter}
+                          favorites={favorites}
+                        />
+                      )}
+                      <ListingList
+                        isRoot={isRoot}
+                        query={query}
+                        params={params || {}}
+                        user={user}
+                        resetFilters={this.onResetFilter}
+                        filters={listingFilters}
+                        apolloClient={client}
+                        districts={districts}
+                        neighborhoodListener={(neighborhood) => {
+                          if (!this.state.neighborhood) {
+                            this.setState({neighborhood: neighborhood})
+                          }
+                        }}
+                      />
+                    </>
+                  )}}
+              </Query>
             )
           }}
         </Query>

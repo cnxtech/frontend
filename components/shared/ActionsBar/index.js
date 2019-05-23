@@ -9,7 +9,7 @@ import {DEFAULT_CITY} from 'utils/location-utils'
 
 class ActionsBar extends Component {
   render() {
-    const {user, onSubmit, filters, currentCity} = this.props
+    const {user, onSubmit, filters, currentCity, favorites} = this.props
     return (
       <Wrapper>
         <Container>
@@ -19,7 +19,7 @@ class ActionsBar extends Component {
                 <FontAwesomeIcon icon={faHeart} size="1x" />
                 <Text fontSize={1}>
                   Favoritos<Text fontSize={1} inline color="pink">
-                    4
+                    {favorites ? favorites.length : 0}
                   </Text>
                 </Text>
               </Fragment>
@@ -43,6 +43,7 @@ ActionsBar.defaultProps = {
 ActionsBar.propTypes = {
   filters: PropTypes.object,
   currentCity: PropTypes.object,
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  favorites: PropTypes.array
 }
 export default ActionsBar
