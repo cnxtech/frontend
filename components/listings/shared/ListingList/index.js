@@ -235,7 +235,7 @@ class ListingList extends Component {
     const {filters} = this.props
 
     return (
-      <Query query={GET_LISTINGS_COORDINATES} variables={{filters}}>
+      <Query query={GET_LISTINGS_COORDINATES} variables={{filters}} ssr={false}>
         {({data: {listings: mapListings}}) => {
           if (!mapListings) {
             return <MapContainer />
