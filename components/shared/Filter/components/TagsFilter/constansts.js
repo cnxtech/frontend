@@ -9,7 +9,7 @@ const beneficios = [
 const infraestrutura = [
   {label: 'Academia', value: 'academia'},
   {label: 'Bicicletario', value: 'bicicletario'},
-  {label: 'Pscina', value: 'pscina'},
+  {label: 'Piscina', value: 'piscina'},
   {label: 'Playground', value: 'playground'},
   {label: 'Quadra', value: 'quadra'}
 ]

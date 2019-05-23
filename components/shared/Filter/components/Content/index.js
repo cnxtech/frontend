@@ -40,12 +40,6 @@ class Content extends Component {
           <FeatureFilter onChange={this.changeFeature} values={filters} />
           <TagsFilter
             onChange={this.changeTags}
-            tags={beneficios}
-            selected={filters.tagsSlug || []}
-            title="Benefícios do imóvel"
-          />
-          <TagsFilter
-            onChange={this.changeTags}
             tags={infraestrutura}
             selected={filters.tagsSlug || []}
             title="Infraestrutura"
