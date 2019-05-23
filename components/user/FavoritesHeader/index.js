@@ -1,11 +1,12 @@
 import React, {PureComponent} from 'react'
+import Router from 'next/router'
 import Row from '@emcasa/ui-dom/components/Row'
 import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
 import Icon from '@emcasa/ui-dom/components/Icon'
 import Button from '@emcasa/ui-dom/components/Button'
 import {LISTING_MAX_WIDTH} from 'constants/dimensions'
-import {Main} from './styles'
+import Container, {Main} from './styles'
 
 export default class UserFavoritesHeader extends PureComponent {
   static defaultProps = {
@@ -44,7 +45,7 @@ export default class UserFavoritesHeader extends PureComponent {
       onClickView
     } = this.props
     return (
-      <View ref={contentRef}>
+      <Container ref={contentRef}>
         <Main>
           <Row
             maxWidth={LISTING_MAX_WIDTH}
@@ -96,12 +97,26 @@ export default class UserFavoritesHeader extends PureComponent {
             imóveis selecionados
           </Text>
           <Row width={['100%', null, null, 'auto']} mt={[2, null, null, 0]}>
-            <Button active flex={1} onClick={onInterestCreate}>
-              Falar com especialista
+            <Button
+              className="desktop-only"
+              mr={2}
+              fontSize="small"
+              onClick={() => Router.push('/')}
+            >
+              Voltar para home
+            </Button>
+            <Button
+              active
+              flex={1}
+              fontSize="small"
+              fontWeight="bold"
+              onClick={onInterestCreate}
+            >
+              Falar com Especialista
             </Button>
           </Row>
         </Row>
-      </View>
+      </Container>
     )
   }
 }
