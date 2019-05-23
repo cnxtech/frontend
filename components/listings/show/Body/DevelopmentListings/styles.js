@@ -7,6 +7,7 @@ import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 export const Container = styled.div`
   margin: auto;
   max-width: ${LISTING_MAX_WIDTH}px;
+  box-sizing: border-box;
   @media ${breakpoint.up('desktop')} {
     padding: 0 ${themeGet('space.2')}px;
   }

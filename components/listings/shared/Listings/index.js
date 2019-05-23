@@ -217,7 +217,7 @@ export default class Listings extends Component {
     const {filters} = this.props
 
     return (
-      <Query query={GET_LISTINGS_COORDINATES} variables={{filters}}>
+      <Query query={GET_LISTINGS_COORDINATES} variables={{filters}} ssr={false}>
         {({data: {listings: mapListings}}) => (
           <Fragment>
             <MapButton opened={mapOpened} onClick={this.handleMap} />
