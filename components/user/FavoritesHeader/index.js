@@ -56,7 +56,7 @@ export default class UserFavoritesHeader extends PureComponent {
             style={{boxSizing: 'border-box'}}
           >
             <Row alignItems="center">
-              <Icon mr={1} name="heart" type="light" color="pink" size={16} />
+              <Icon mr={1} name="heart" color="pink" size={16} />
               <Text inline mr={1} fontSize="small">
                 Favoritos
               </Text>
@@ -84,6 +84,8 @@ export default class UserFavoritesHeader extends PureComponent {
           width="100%"
           m="auto"
           p={2}
+          pt={4}
+          pb={4}
           flexDirection={['column', null, null, 'row']}
           alignItems="center"
           justifyContent="space-between"
