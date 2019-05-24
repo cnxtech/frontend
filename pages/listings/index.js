@@ -18,6 +18,7 @@ import {getCookie} from 'lib/session'
 import LdJson from './components/ld-json'
 import ListingHead from './components/head'
 import {NEIGHBORHOOD_SELECTION_CHANGE} from '../../components/shared/NeighborhoodPicker/events'
+import FavMessageBar from 'components/listings/shared/FavMessageBar'
 
 class ListingSearch extends Component {
   constructor(props) {
@@ -26,7 +27,8 @@ class ListingSearch extends Component {
     this.state = {
       mapOpened: false,
       filters: clone(params.filters || {}),
-      neighborhood: null
+      neighborhood: null,
+      showFavMessageBar: false
     }
   }
 
@@ -61,6 +63,11 @@ class ListingSearch extends Component {
 
   componentDidMount() {
     log(LISTING_SEARCH_OPEN)
+
+    if (!localStorage.getItem('hideFavMessageBar')) {
+      this.setState({showFavMessageBar: true})
+    }
+
     window.onpopstate = (event) => {
       if (!event || !event.state || !event.state.as) {
         return
@@ -135,7 +142,7 @@ class ListingSearch extends Component {
 
   render() {
     const {asPath, query, params, user, client, url} = this.props
-    const {filters} = this.state
+    const {filters, showFavMessageBar} = this.state
     const listingFilters = getListingFiltersFromState(filters)
     const isRoot = asPath === '/'
     return (
@@ -158,6 +165,14 @@ class ListingSearch extends Component {
                   onSubmit={this.onChangeFilter}
                   values={filters}
                 />
+                {showFavMessageBar && (
+                  <FavMessageBar
+                    onClickCloseButton={() =>{
+                      localStorage.setItem('hideFavMessageBar', true)
+                      this.setState({showFavMessageBar: false})
+                    }}
+                  />
+                )}
                 <ListingList
                   isRoot={isRoot}
                   query={query}

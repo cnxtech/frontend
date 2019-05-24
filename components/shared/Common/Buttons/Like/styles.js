@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-import * as colors from 'constants/colors'
+import styled, {css} from 'styled-components'
 import theme from '@emcasa/ui'
-import {breakpoint} from '@emcasa/ui/lib/styles'
 import Button from '@emcasa/ui-dom/components/Button'
 
 export const BUTTON_LIKE_CIRCLE_HEIGHT = 40
@@ -20,11 +18,7 @@ export const TextButton = styled(Button)`
   }
 `
 
-export const Circle = styled(Button)`
-  position: absolute;
-  cursor: pointer;
-  right: ${theme.space[3]}px;
-  top: ${({top}) => top ? `${top}px` : `0px`};
+export const CircleStyle = css`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,4 +40,12 @@ export const Circle = styled(Button)`
       stroke-width: 60;
     }
   }
+`
+
+export const Circle = styled(Button)`
+  ${CircleStyle}
+  position: absolute;
+  cursor: pointer;
+  right: ${theme.space[3]}px;
+  top: ${({top}) => (top ? `${top}px` : '0px')};
 `
