@@ -10,7 +10,7 @@ import differenceBy from 'lodash/differenceBy'
 import map from 'lodash/map'
 import InfiniteScroll from 'components/shared/InfiniteScroll'
 import Listing from 'components/listings/shared/Listing'
-import Map from 'components/listings/shared/Map'
+import Map from 'components/listings/shared/ListingMap'
 import ListingsNotFound from 'components/listings/shared/NotFound'
 import Neighborhood from 'components/listings/shared/Neighborhood'
 import Container, {
