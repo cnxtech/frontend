@@ -20,6 +20,8 @@ import ListingHead from './components/head'
 import ActionsBar from 'components/shared/ActionsBar'
 import {cities} from 'constants/cities'
 import LocationUtils from '../../utils/location-utils'
+import {NEIGHBORHOOD_SELECTION_CHANGE} from '../../components/shared/NeighborhoodPicker/events'
+import FavMessageBar from 'components/listings/shared/FavMessageBar'
 
 class ListingSearch extends Component {
   constructor(props) {
@@ -29,7 +31,8 @@ class ListingSearch extends Component {
       mapOpened: false,
       filters: clone(params.filters || {}),
       neighborhood: null,
-      currentCity: params.currentCity
+      currentCity: params.currentCity,
+      showFavMessageBar: false
     }
   }
 
@@ -73,6 +76,11 @@ class ListingSearch extends Component {
     if (!this.state.currentCity) {
       LocationUtils.getUserLocationByIp().then(this.updateCurrentCity)
     }
+
+    if (!localStorage.getItem('hideFavMessageBar')) {
+      this.setState({showFavMessageBar: true})
+    }
+
     window.onpopstate = (event) => {
       if (!event || !event.state || !event.state.as) {
         return
@@ -116,7 +124,7 @@ class ListingSearch extends Component {
 
   render() {
     const {asPath, query, params, user, client, url} = this.props
-    const {filters, currentCity} = this.state
+    const {filters, currentCity, showFavMessageBar} = this.state
     const listingFilters = getListingFiltersFromState(filters)
     const isRoot = asPath === '/'
     return (
@@ -154,6 +162,14 @@ class ListingSearch extends Component {
                           currentCity={currentCity}
                           onSubmit={this.onChangeFilter}
                           favorites={favorites}
+                        />
+                      )}
+                      {showFavMessageBar && (
+                        <FavMessageBar
+                          onClickCloseButton={() =>{
+                            localStorage.setItem('hideFavMessageBar', true)
+                            this.setState({showFavMessageBar: false})
+                          }}
                         />
                       )}
                       <ListingList

@@ -12,6 +12,7 @@ const app = next({dir: '.', dev})
 const handle = app.getRequestHandler()
 const MapsService = require('../services/google-maps-api')
 const listingsRouter = require('./routes/listings')
+const userRouter = require('./routes/user')
 const timber = require('timber')
 const geoip = require('geoip-lite')
 
@@ -69,6 +70,8 @@ const startServer = () => {
       })
 
       server.use('/imoveis', listingsRouter)
+
+      server.use('/meu-perfil', userRouter)
 
       server.get(
         '/:state/:city/:neighborhood/:street/:listingId(id-\\d+)',
@@ -196,10 +199,6 @@ const startServer = () => {
           evaluation: true
         })
         return app.render(req, res, '/listings/sell', query)
-      })
-
-      server.get('/meu-perfil', (req, res) => {
-        app.render(req, res, '/user/profile', req.query)
       })
 
       server.get('/meus-imoveis', (req, res) => {
