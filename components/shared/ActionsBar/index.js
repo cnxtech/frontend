@@ -1,4 +1,5 @@
 import {Component, Fragment} from 'react'
+import Link from 'next/link'
 import PropTypes from 'prop-types'
 import Text from '@emcasa/ui-dom/components/Text'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -6,6 +7,7 @@ import faHeart from '@fortawesome/fontawesome-free-solid/faHeart'
 import Filter from 'components/shared/Filter'
 import {Wrapper, Container, FavCount} from './styles'
 import {DEFAULT_CITY} from 'utils/location-utils'
+import {FAVORITES_TAB} from 'pages/user/profile'
 
 class ActionsBar extends Component {
   render() {
@@ -13,18 +15,20 @@ class ActionsBar extends Component {
     return (
       <Wrapper>
         <Container>
-          <FavCount>
-            {user.authenticated && (
-              <Fragment>
-                <FontAwesomeIcon icon={faHeart} size="1x" />
-                <Text fontSize={1}>
-                  Favoritos<Text fontSize={1} inline color="pink">
-                    {favorites ? favorites.length : 0}
+          <Link href={`/meu-perfil?tab=${FAVORITES_TAB}`}>
+            <FavCount>
+              {user.authenticated && (
+                <Fragment>
+                  <FontAwesomeIcon icon={faHeart} size="1x" />
+                  <Text fontSize={1}>
+                    Favoritos<Text fontSize={1} inline color="pink">
+                      {favorites ? favorites.length : 0}
+                    </Text>
                   </Text>
-                </Text>
-              </Fragment>
-            )}
-          </FavCount>
+                </Fragment>
+              )}
+            </FavCount>
+          </Link>
           <Filter
             onSubmit={onSubmit}
             filters={filters}
