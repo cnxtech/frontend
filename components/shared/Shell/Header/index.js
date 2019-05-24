@@ -105,12 +105,8 @@ class Header extends Component {
     const {authenticated, router, pageProps} = this.props
     const search = pageProps.headerSearch
     const transparent = pageProps.transparentHeader
-    const {sticky, isMobileNavVisible, showFullScreenSearch} = this.state
+    const {sticky, isMobileNavVisible} = this.state
     const currentPath = router.asPath
-
-    if (showFullScreenSearch) {
-      return this.renderFullScreenSearch()
-    }
 
     return (
       <Container
@@ -133,7 +129,6 @@ class Header extends Component {
               </a>
             </Link>
           </LogoWrapper>
-          <SearchWrapper>{search && this.renderSearch()}</SearchWrapper>
           <Overlay
             visible={isMobileNavVisible}
             onClick={this.toggleMobileNavVisibility}
