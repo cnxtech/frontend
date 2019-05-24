@@ -1,5 +1,5 @@
 import uniqBy from 'lodash/uniqBy'
-import {PureComponent} from 'react'
+import React, {PureComponent} from 'react'
 import Router from 'next/router'
 import {graphql} from 'react-apollo'
 import {compose, hoistStatics} from 'recompose'
@@ -13,8 +13,10 @@ import {GET_USER_INFO, GET_FAVORITE_LISTINGS} from 'graphql/user/queries'
 class UserFavoritesMap extends PureComponent {
   state = {
     listings: this.props.listings || [],
-    offset: HEADER_HEIGHT
+    height: `calc(100vh - ${HEADER_HEIGHT}px)`
   }
+
+  topBarRef = React.createRef()
 
   static async getInitialProps() {
     return {
@@ -34,22 +36,35 @@ class UserFavoritesMap extends PureComponent {
   componentDidMount() {
     if (!this.props.currentUser) {
       Router.push('/')
+      return
     }
+    window.addEventListener('resize', this.onResize)
+    this.onResize()
   }
 
-  onHeaderLayout = ({height}) => this.setState({offset: HEADER_HEIGHT + height})
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize)
+  }
+
+  onResize = () => {
+    this.setState({
+      height:
+        window.innerHeight -
+        (this.topBarRef.current.clientHeight + HEADER_HEIGHT)
+    })
+  }
 
   isFavorite = ({id}) =>
     Boolean(this.props.listings.find((listing) => listing.id === id))
 
   render() {
     const {user} = this.props
-    const {listings, offset} = this.state
+    const {listings, height} = this.state
     return (
-      <View height={`calc(100vh - ${offset}px)`} width="100vw">
+      <View height={height} width="100vw">
         <FavoritesHeader
-          onLayout={this.onHeaderLayout}
-          favorites={this.props.listings}
+          ref={this.topBarRef}
+          favorites={this.props.listings || []}
           onClickView={() =>
             Router.push('/user/favorites', '/meu-perfil/favoritos')
           }
