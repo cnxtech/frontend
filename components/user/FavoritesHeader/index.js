@@ -62,7 +62,7 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
           <Text inline color="pink" fontSize="small">
             {favorites.length}
           </Text>{' '}
-          imóveis selecionados
+          imóveis salvos
         </Text>
         <Row width={['100%', null, null, 'auto']} mt={[2, null, null, 0]}>
           <Button
