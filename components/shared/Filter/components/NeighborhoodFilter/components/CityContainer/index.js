@@ -114,6 +114,7 @@ class CityContainer extends Component {
     return (
       <SecondaryButton
         link
+        p={0}
         height="medium"
         onClick={() => {
           this.changeShowAllState(true)
@@ -128,7 +129,8 @@ class CityContainer extends Component {
     return (
       <SecondaryButton
         link
-        height="medium"
+        height="small"
+        p={0}
         onClick={() => {
           this.changeShowAllState(false)
         }}
@@ -205,8 +207,6 @@ class CityContainer extends Component {
                     </NeighborhoodButton>
                   </View>
                   {neighborhoods.map((Item) => Item)}
-                  {isDisplayShowMoreBtn && this.showMoreButton()}
-                  {isDisplayShowLessBtn && this.showLessButton()}
                 </Fragment>
               )}
               {!selectedCity && (
@@ -230,6 +230,10 @@ class CityContainer extends Component {
                   ))}
                 </Fragment>
               )}
+            </Row>
+            <Row>
+              {isDisplayShowMoreBtn && this.showMoreButton()}
+              {isDisplayShowLessBtn && this.showLessButton()}
             </Row>
           </Col>
         </Row>
