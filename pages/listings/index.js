@@ -164,10 +164,6 @@ class ListingSearch extends Component {
                           favorites={favorites}
                         />
                       )}
-                      <ListingFilter
-                        onSubmit={this.onChangeFilter}
-                        values={filters}
-                      />
                       {showFavMessageBar && (
                         <FavMessageBar
                           onClickCloseButton={() =>{
