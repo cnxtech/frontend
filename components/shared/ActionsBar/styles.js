@@ -25,6 +25,7 @@ export const Container = styled(Row)`
 `
 
 export const FavCount = styled(Row)`
+  cursor: pointer;
   align-items: center;
 
   svg {
