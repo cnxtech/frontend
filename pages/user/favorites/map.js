@@ -76,6 +76,7 @@ class UserFavoritesMap extends PureComponent {
           data={listings}
           isFavorite={this.isFavorite}
           getInitialFrame={({markers}) => markers}
+          getListingData={(listing) => listing}
         />
       </View>
     )
