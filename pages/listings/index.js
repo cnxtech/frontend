@@ -42,7 +42,7 @@ class ListingSearch extends Component {
       params = getLocationFromPath(asPath)
     }
 
-    if (params.filters) {
+    if (params && params.filters) {
       const {citySlug} = params.filters
       const currentCity = cities.find((city) => city.citySlug === citySlug)
       params.currentCity = currentCity
