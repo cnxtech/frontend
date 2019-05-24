@@ -127,10 +127,6 @@ exports[`<ListingCard/> should render component 1`] = `
   font-size: 18px;
   -webkit-font-smoothing: antialiased;
   border-style: solid;
-  position: absolute;
-  cursor: pointer;
-  right: 14px;
-  top: 90px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -147,6 +143,10 @@ exports[`<ListingCard/> should render component 1`] = `
   height: 40px;
   border-radius: 50%;
   box-shadow: 0 6px 16px 0 rgba(38,38,38,0.15);
+  position: absolute;
+  cursor: pointer;
+  right: 14px;
+  top: 90px;
 }
 
 .c8 svg {
