@@ -271,7 +271,7 @@ export const getLocationFromPath = (asPath) => {
     const state = urlParts[0]
     const city = urlParts[1]
     let rest = locationString.split(`${state}/${city}/`)[1]
-    return ParamsMapper.mapUrlToParams({stateSlug: state, citySlug: city, rest})
+    return ParamsMapper.mapUrlToParams({state, city, rest})
   }
   return null
 }
