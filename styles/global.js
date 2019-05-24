@@ -125,7 +125,11 @@ export default createGlobalStyle`
     }
   }
   
-  .no-scroll {
+  .js-no-scroll {
     overflow: hidden;
+  }
+  
+  .js-no-scroll header {
+    display: none;
   }
 `

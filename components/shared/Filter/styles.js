@@ -18,8 +18,8 @@ const Icon = styled((props) => (
 ))`
   margin-right: 10px;
   display: inline-block;
-  width: 1em;
-  height: 1em;
+  width: 1.5em;
+  height: 1.2em;
   vertical-align: -0.125em;
   font-size: inherit;
   overflow: visible;

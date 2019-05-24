@@ -17,7 +17,6 @@ export const Background = styled(View)`
 
 export const Container = styled(View)`
   border-top: 1px solid ${themeGet('colors.smoke')};
-  margin-top: ${HEADER_HEIGHT}px;
   display: flex;
   flex-direction: column;
   ${({justifyContent}) => justifyContent ? `justify-content: ${justifyContent};` : ``}

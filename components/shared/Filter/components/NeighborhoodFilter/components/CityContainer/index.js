@@ -44,7 +44,7 @@ class CityContainer extends Component {
           onClick={() => {
             this.updateCurrentSelection(neighborhood.nameSlug)
           }}
-          height="tall"
+          height="medium"
           fontSize="small"
         >
           {neighborhood.name}
@@ -114,7 +114,7 @@ class CityContainer extends Component {
     return (
       <SecondaryButton
         link
-        height="tall"
+        height="medium"
         onClick={() => {
           this.changeShowAllState(true)
         }}
@@ -128,7 +128,7 @@ class CityContainer extends Component {
     return (
       <SecondaryButton
         link
-        height="tall"
+        height="medium"
         onClick={() => {
           this.changeShowAllState(false)
         }}
@@ -158,7 +158,7 @@ class CityContainer extends Component {
                   <LinkButton
                     link
                     fontSize="small"
-                    height="tall"
+                    height="medium"
                     p={0}
                     ml={1}
                     onClick={() => {
@@ -192,7 +192,7 @@ class CityContainer extends Component {
                 <Fragment>
                   <View mr={2} mb={2}>
                     <NeighborhoodButton
-                      height="tall"
+                      height="medium"
                       fontSize="small"
                       onClick={() => {
                         this.selectAllNeighborhoodInCity(
@@ -222,7 +222,7 @@ class CityContainer extends Component {
                         onClick={() => {
                           selectCity(city)
                         }}
-                        height="tall"
+                        height="medium"
                       >
                         {city.name}
                       </NeighborhoodButton>
