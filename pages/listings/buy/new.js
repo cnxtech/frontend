@@ -1,9 +1,9 @@
 import {Component, Fragment} from 'react'
 import {imageUrl} from 'utils/image_url'
 import {getCookie} from 'lib/session'
-import slugify from 'slug'
-import * as Sentry from '@sentry/browser'
+import {hoistStatics, compose} from 'recompose'
 import {withBreakpoint} from '@emcasa/ui-dom/components/Breakpoint'
+import {withUserLocation} from 'components/providers/Location'
 import NextHead from 'components/shared/NextHead'
 import BuyHeader from 'components/listings/buy/BuyHeader'
 import BuyBar from 'components/shared/BuyBar'
@@ -103,6 +103,11 @@ const CONTENT = {
 }
 
 class HomePage extends Component {
+  state = {
+    userFeed: {},
+    cityFeed: {}
+  }
+
   static async getInitialProps(context) {
     // Flagr
     const deviceId = getCookie(DEVICE_ID_COOKIE, context.req)
@@ -118,89 +123,43 @@ class HomePage extends Component {
     }
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      userCity: undefined,
-      userFeed: undefined
-    }
-  }
-
-  componentDidMount() {
-    if (!process.browser) {
-      return
-    }
-
-    const {router} = this.props
+  static getDerivedStateFromProps({userLocation, router}, state) {
     const city = (router.query || {}).city
-
-    if (!city) {
-      fetch('/location', {method: 'POST'})
-        .then((response) => response.json())
-        .then((result) => {
-          let userCity = this.getUserCityByGeoIp(result)
-          if (userCity) {
-            let identify = new amplitude.Identify().set('geoIpCity', userCity.name)
-            amplitude.identify(identify)
-          } else {
-            userCity = DEFAULT_CITY_SLUG
-          }
-          this.setState({
-            userCity: userCity,
-            userFeed: CONTENT[userCity.replace(/[^a-z]/g, '')]
-          })
-        })
-        .catch((e) => {
-          Sentry.captureException(e)
-          this.setState({
-            userCity: DEFAULT_CITY_SLUG,
-            userFeed: CONTENT[DEFAULT_CITY_SLUG.replace(/[^a-z]/g, '')]
-          })
-        })
-    }
-  }
-
-  getUserCityByGeoIp = (result) => {
-    if (result && result.location && result.location.city) {
-      const {city} = result.location
-      const citySlug = slugify(city.toLowerCase())
-      return citySlug
-    }
-    return null
+    const userCity = userLocation.citySlug || DEFAULT_CITY_SLUG
+    const nextState = {city, userCity}
+    if (userCity !== state.userCity)
+      nextState.userFeed =
+        CONTENT[(userCity || '').replace(/[^a-z]/g, '')] || {}
+    if (city !== state.city)
+      nextState.cityFeed = CONTENT[(city || '').replace(/[^a-z]/g, '')] || {}
+    return nextState
   }
 
   render() {
-    const {router, user} = this.props
-    const {userCity, userFeed} = this.state
-    const city = (router.query || {}).city
-    let HEAD_CONTENT = {
+    const {user} = this.props
+    const {userCity, userFeed, city, cityFeed} = this.state
+    let headContent = cityFeed.seo || {
       seoURL: 'http://www.emcasa.com',
       seoImg: imageUrl('buy'),
       seoTitle: `${BASE_TITLE} no Rio de Janeiro e São Paulo | EmCasa`,
-      seoDescription: `Encontre ${BASE_TITLE} no Rio de Janeiro em toda Zona Sul ou em São Paulo ${BASE_DESCRIPTION}`,
-    }
-    let CITY_CONTENT = {}
-
-    if (city) {
-      HEAD_CONTENT = CONTENT[city.replace(/[^a-z]/g, '')].seo
-      CITY_CONTENT = CONTENT[city.replace(/[^a-z]/g, '')]
+      seoDescription: `Encontre ${BASE_TITLE} no Rio de Janeiro em toda Zona Sul ou em São Paulo ${BASE_DESCRIPTION}`
     }
 
     return (
       <FlagrProvider flagrFlags={this.props.flagrFlags}>
         <Fragment>
           <NextHead
-            title={HEAD_CONTENT.seoTitle}
-            description={HEAD_CONTENT.seoDescription}
-            imageSrc={HEAD_CONTENT.seoImg}
+            title={headContent.seoTitle}
+            description={headContent.seoDescription}
+            imageSrc={headContent.seoImg}
             imageWidth={'1476'}
             imageHeight={'838'}
-            url={HEAD_CONTENT.seoURL}
+            url={headContent.seoURL}
           />
           <BuyHeader />
           <BuyBar user={user} />
-          {CITY_CONTENT.feed &&
-            CITY_CONTENT.feed.map((item, index) => {
+          {cityFeed.feed &&
+            cityFeed.feed.map((item, index) => {
               return (
                 <ListingFeed
                   key={index}
@@ -212,13 +171,13 @@ class HomePage extends Component {
                 />
               )
             })}
-          {userFeed &&
+          {userFeed.feed &&
             userFeed.feed.map((item, index) => {
               return (
                 <ListingFeed
+                  client
                   key={index}
                   highlight={item.highlight}
-                  client={true}
                   title={item.title}
                   button={item.button}
                   currentUser={user}
@@ -233,4 +192,6 @@ class HomePage extends Component {
   }
 }
 
-export default withBreakpoint()(HomePage)
+export default hoistStatics(compose(withBreakpoint(), withUserLocation))(
+  HomePage
+)

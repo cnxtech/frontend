@@ -47,7 +47,6 @@ export default class LocationProvider extends PureComponent {
   async componentDidMount() {
     try {
       let {loaded, citySlug} = this.state
-      alert(JSON.stringify(this.state))
       if (!loaded) citySlug = (await this.update()).citySlug
       if ('amplitude' in window) {
         let identify = new window.amplitude.Identify().set(
