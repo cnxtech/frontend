@@ -85,9 +85,10 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
             flex={1}
             fontSize="small"
             fontWeight="bold"
+            disabled={!favorites || favorites.length === 0}
             onClick={onInterestCreate}
           >
-            Falar com Especialista
+            Falar com especialista
           </Button>
         </Row>
       </Row>
