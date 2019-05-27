@@ -45,7 +45,7 @@ workflows:
           <<: *build-and-push-image
           filters:
             branches:
-              only: master
+              only: feature/new-search
       - aws-ecs/deploy-service-update:
           context: frontend-staging
           <<: *deploy-service-update
