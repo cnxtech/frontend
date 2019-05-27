@@ -18,6 +18,7 @@ import {
   PROFILE_FAVORITES_EXPLORE_LISTINGS
 } from 'lib/logging'
 import {
+  CardContainer,
   InitialView,
   ProfileList,
   Icon
@@ -91,23 +92,25 @@ class UserFavorites extends PureComponent {
             const userProfile = data ? data.userProfile : null
             if (userProfile.favorites.length > 0) {
               return (
-                <ProfileList
-                  width="100%"
-                  flexWrap="wrap"
-                  justifyContent="space-between"
-                >
-                  {userProfile.favorites.map((listing) => {
-                    return (
-                      <ListingCard
-                        key={listing.id}
-                        listing={listing}
-                        currentUser={user}
-                        loading={loading}
-                        favorited={userProfile.favorites || []}
-                      />
-                    )
-                  })}
-                </ProfileList>
+                <CardContainer>
+                  <ProfileList
+                    width="100%"
+                    flexWrap="wrap"
+                    justifyContent="space-between"
+                  >
+                    {userProfile.favorites.map((listing) => {
+                      return (
+                        <ListingCard
+                          key={listing.id}
+                          listing={listing}
+                          currentUser={user}
+                          loading={loading}
+                          favorited={userProfile.favorites || []}
+                        />
+                      )
+                    })}
+                  </ProfileList>
+                </CardContainer>
               )
             } else {
               return (

@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 import theme from 'config/theme'
+import View from '@emcasa/ui-dom/components/View'
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
 import {Container} from 'components/listings/shared/ListingCard/styles'
+import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 
 const PROFILE_GRID_MEDIAQUERY = 'only screen and (max-width: 1024px)'
 export const PROFILE_TABWRAPPER_MAX_WIDTH = 710
@@ -32,13 +34,22 @@ export const InitialView = styled(Row)`
   }
 `
 
+export const CardContainer = styled(View)`
+  max-width: ${LISTING_MAX_WIDTH}px;
+  margin: auto;
+
+  @media ${PROFILE_GRID_MEDIAQUERY} {
+    margin: 0 ${theme.space[4]}px;
+  }
+`
+
 export const ProfileList = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-column-gap: ${theme.space[2]}px;
   grid-row-gap: ${theme.space[2]}px;
-  margin: ${theme.space[5]}px 0 0;
+  margin: ${theme.space[5]}px auto;
 
   @media ${PROFILE_GRID_MEDIAQUERY} {
     grid-template-columns: repeat(auto-fill, minmax(${Math.round((PROFILE_TABWRAPPER_MAX_WIDTH / 3) - (theme.space[2] * 2))}px, 1fr));
