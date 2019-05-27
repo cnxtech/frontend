@@ -1,5 +1,5 @@
 import uniqBy from 'lodash/uniqBy'
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 import Router from 'next/router'
 import {Query, Mutation, graphql} from 'react-apollo'
 import Link from 'next/link'
@@ -13,6 +13,7 @@ import Col from '@emcasa/ui-dom/components/Col'
 import Row from '@emcasa/ui-dom/components/Row'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
+import Map from 'components/listings/shared/ListingsMap'
 import {
   log,
   PROFILE_FAVORITES_EXPLORE_LISTINGS
@@ -24,17 +25,24 @@ import {
   Icon
 } from './styles'
 
-class UserFavorites extends PureComponent {
-  state = {
-    listings: this.props.listings || [],
-    height: `calc(100vh - ${HEADER_HEIGHT}px)`
+const VIEW_LIST = 'list'
+const VIEW_MAP = 'map'
+
+class UserFavorites extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      listings: this.props.listings || [],
+      height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+      view: props.initialView === VIEW_MAP ? VIEW_MAP : VIEW_LIST
+    }
+    this.topBarRef = React.createRef()
   }
 
-  topBarRef = React.createRef()
-
-  static async getInitialProps() {
+  static async getInitialProps({query}) {
     return {
-      renderFooter: false
+      renderFooter: false,
+      initialView: query.initialView || VIEW_LIST
     }
   }
 
@@ -54,6 +62,10 @@ class UserFavorites extends PureComponent {
     }
     window.addEventListener('resize', this.onResize)
     this.onResize()
+
+    const {initialView} = this.props
+    console.log('initial view:', initialView)
+    this.setState({view: initialView})
   }
 
   componentWillUnmount() {
@@ -73,17 +85,19 @@ class UserFavorites extends PureComponent {
 
   render() {
     const {user} = this.props
-    const {listings, height} = this.state
+    const {listings, height, view} = this.state
     return (
       <View height={height} width="100vw">
         <FavoritesHeader
           ref={this.topBarRef}
           favorites={this.props.listings || []}
-          onClickView={() =>
-            Router.push('/user/favorites/map', '/meu-perfil/favoritos/mapa')
-          }
-          viewIcon="map"
-          viewLabel="Mapa"
+          onClickView={() => {
+            this.setState({view: view === VIEW_LIST ? VIEW_MAP : VIEW_LIST}, () => {
+              Router.push('/user/favorites', `/meu-perfil/favoritos${this.state.view === VIEW_MAP ? '/mapa' : ''}`, {shallow: true})
+            })
+          }}
+          viewIcon={view === VIEW_LIST ? 'map' : 'th'}
+          viewLabel={view === VIEW_LIST ? 'Mapa' : 'Lista'}
         />
         <Query query={GET_FAVORITE_LISTINGS}>
           {({loading, error, data}) => {
@@ -91,27 +105,38 @@ class UserFavorites extends PureComponent {
             if (error) return `Error!: ${error}`
             const userProfile = data ? data.userProfile : null
             if (userProfile.favorites.length > 0) {
-              return (
-                <CardContainer>
-                  <ProfileList
-                    width="100%"
-                    flexWrap="wrap"
-                    justifyContent="space-between"
-                  >
-                    {userProfile.favorites.map((listing) => {
-                      return (
-                        <ListingCard
-                          key={listing.id}
-                          listing={listing}
-                          currentUser={user}
-                          loading={loading}
-                          favorited={userProfile.favorites || []}
-                        />
-                      )
-                    })}
-                  </ProfileList>
-                </CardContainer>
-              )
+              if (view === VIEW_LIST) {
+                return (
+                  <CardContainer>
+                    <ProfileList
+                      width="100%"
+                      flexWrap="wrap"
+                      justifyContent="space-between"
+                    >
+                      {userProfile.favorites.map((listing) => {
+                        return (
+                          <ListingCard
+                            key={listing.id}
+                            listing={listing}
+                            currentUser={user}
+                            loading={loading}
+                            favorited={userProfile.favorites || []}
+                          />
+                        )
+                      })}
+                    </ProfileList>
+                  </CardContainer>
+                )
+              } else {
+                return (
+                  <Map
+                    user={user}
+                    data={listings}
+                    isFavorite={this.isFavorite}
+                    getInitialFrame={({markers}) => markers}
+                  />
+                )
+              }
             } else {
               return (
                 <InitialView maxWidth="440px">
