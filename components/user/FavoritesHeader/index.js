@@ -7,6 +7,10 @@ import Icon from '@emcasa/ui-dom/components/Icon'
 import Button from '@emcasa/ui-dom/components/Button'
 import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import Container, {Main} from './styles'
+import {
+  log,
+  PROFILE_FAVORITES_GO_TO_HOME
+} from 'lib/logging'
 
 export default React.forwardRef(function UserFavoritesHeader(props, ref) {
   const {favorites, viewIcon, viewLabel, onInterestCreate, onClickView} = props
@@ -69,7 +73,10 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
             className="desktop-only"
             mr={2}
             fontSize="small"
-            onClick={() => Router.push('/')}
+            onClick={() => {
+              log(PROFILE_FAVORITES_GO_TO_HOME)
+              Router.push('/')
+            }}
           >
             Voltar para home
           </Button>

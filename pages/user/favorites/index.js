@@ -16,7 +16,9 @@ import Text from '@emcasa/ui-dom/components/Text'
 import Map from 'components/listings/shared/ListingsMap'
 import {
   log,
-  PROFILE_FAVORITES_EXPLORE_LISTINGS
+  PROFILE_FAVORITES_EXPLORE_LISTINGS,
+  PROFILE_FAVORITES_VIEW_LISTING,
+  PROFILE_FAVORITES_VIEW_MAP
 } from 'lib/logging'
 import {
   CardContainer,
@@ -64,7 +66,6 @@ class UserFavorites extends Component {
     this.onResize()
 
     const {initialView} = this.props
-    console.log('initial view:', initialView)
     this.setState({view: initialView})
   }
 
@@ -94,6 +95,7 @@ class UserFavorites extends Component {
           onClickView={() => {
             this.setState({view: view === VIEW_LIST ? VIEW_MAP : VIEW_LIST}, () => {
               Router.push('/user/favorites', `/meu-perfil/favoritos${this.state.view === VIEW_MAP ? '/mapa' : ''}`, {shallow: true})
+              log(this.state.view === VIEW_MAP ? PROFILE_FAVORITES_VIEW_MAP : PROFILE_FAVORITES_VIEW_LISTING)
             })
           }}
           viewIcon={view === VIEW_LIST ? 'map' : 'th'}
