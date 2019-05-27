@@ -125,7 +125,8 @@ class HomePage extends Component {
 
   static getDerivedStateFromProps({userLocation, router}, state) {
     const city = (router.query || {}).city
-    const userCity = userLocation.citySlug || DEFAULT_CITY_SLUG
+    const userCity =
+      userLocation.citySlug || (process.browser ? DEFAULT_CITY_SLUG : undefined)
     const nextState = {city, userCity}
     if (userCity !== state.userCity)
       nextState.userFeed =

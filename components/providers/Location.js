@@ -19,7 +19,7 @@ export default class LocationProvider extends PureComponent {
     }
   }
 
-  static async getLocation() {
+  static getLocation() {
     try {
       const cookie = getCookie(LOCATION_COOKIE)
       if (cookie) {
@@ -31,7 +31,7 @@ export default class LocationProvider extends PureComponent {
     }
   }
 
-  static async setLocation(location) {
+  static setLocation(location) {
     setCookie(LOCATION_COOKIE, pickLocation(location))
     if ('amplitude' in window) {
       let identify = new window.amplitude.Identify().set(
