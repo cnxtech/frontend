@@ -33,6 +33,7 @@ const ListingFilter = (props) => {
           initialValues={props.initialValues}
           values={props.values}
           width="100%"
+          startExpanded
         >
           <TypesFilter />
           <PriceFilter />

@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import View from '@emcasa/ui-dom/components/View'
-import {zIndexModal} from 'constants/zIndex'
-import {HEADER_HEIGHT} from 'constants/dimensions'
+import {zIndexFilterModal} from 'constants/zIndex'
 import {themeGet} from 'styled-system'
 
 export const Background = styled(View)`
@@ -12,7 +11,7 @@ export const Background = styled(View)`
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: ${zIndexModal};
+  z-index: ${zIndexFilterModal};
 `
 
 export const Container = styled(View)`
@@ -24,6 +23,5 @@ export const Container = styled(View)`
   cursor: default;
   background-color: white;
   width: 100%;
-  z-index: 1;
   ${({padding}) => padding ? `padding: 0 20px;` : ``}
 `
