@@ -4,7 +4,7 @@ describe('Parameters Mapper tests', () => {
   describe('.mapUrlToParams(params)', () => {
     it(
       'should identify first path after state and city paths as' +
-        'neighborhood when it doesn\'t match any tag or feature',
+      'neighborhood when it doesn\'t match any tag or feature',
       () => {
         //simulates => /imoveis/state/city/neighborhood
         const result = ParamsMapper.mapUrlToParams({
@@ -27,7 +27,7 @@ describe('Parameters Mapper tests', () => {
 
     it(
       'should identify first path after state and city paths as' +
-        'tag when it matches with defined tags',
+      'tag when it matches with defined tags',
       () => {
         //simulates => /imoveis/state/city/piscina
         const result = ParamsMapper.mapUrlToParams({
@@ -50,7 +50,7 @@ describe('Parameters Mapper tests', () => {
 
     it(
       'should identify first path after state and city paths as' +
-        'filter when it matches with defined filters',
+      'filter when it matches with defined filters',
       () => {
         //simulates => /imoveis/state/city/casa
         const result = ParamsMapper.mapUrlToParams({
@@ -73,7 +73,7 @@ describe('Parameters Mapper tests', () => {
 
     it(
       'should identify first path after state and city paths as' +
-        'neighborhood and the second as a tag',
+      'neighborhood and the second as a tag',
       () => {
         //simulates => /imoveis/state/city/neighborhood/piscina
         const result = ParamsMapper.mapUrlToParams({
@@ -96,7 +96,7 @@ describe('Parameters Mapper tests', () => {
     )
     it(
       'should identify first path after state and city paths as' +
-        'neighborhood and the second as a filter',
+      'neighborhood and the second as a filter',
       () => {
         //simulates => /imoveis/state/city/neighborhood/casa
         const result = ParamsMapper.mapUrlToParams({
@@ -120,7 +120,7 @@ describe('Parameters Mapper tests', () => {
 
     it(
       'should identify first path after state and city paths as' +
-        ' filter and the second as a tag',
+      ' filter and the second as a tag',
       () => {
         //simulates => /imoveis/state/city/casa/piscina
         const result = ParamsMapper.mapUrlToParams({
@@ -257,7 +257,7 @@ describe('Parameters Mapper tests', () => {
 
     it(
       'should map filters (type and ranged price - max and min ' +
-        'equals) to path starting with /state/city and quartos should contains only value and label',
+      'equals) to path starting with /state/city and quartos should contains only value and label',
       () => {
         const filters = {
           citySlug: 'sao-paulo',
@@ -281,7 +281,7 @@ describe('Parameters Mapper tests', () => {
 
     it(
       'should map filters (type and neighborhood) to path ' +
-        'starting with /state/city',
+      'starting with /state/city',
       () => {
         const filters = {
           citySlug: 'sao-paulo',
