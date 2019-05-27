@@ -1,7 +1,7 @@
 import uniqBy from 'lodash/uniqBy'
 import React, {Component} from 'react'
 import Router from 'next/router'
-import {Query, Mutation, graphql} from 'react-apollo'
+import {Query, graphql} from 'react-apollo'
 import Link from 'next/link'
 import {compose, hoistStatics} from 'recompose'
 import {HEADER_HEIGHT} from 'constants/dimensions'
@@ -9,16 +9,20 @@ import View from '@emcasa/ui-dom/components/View'
 import FavoritesHeader from 'components/user/FavoritesHeader'
 import ListingCard from 'components/listings/shared/ListingCard'
 import {GET_USER_INFO, GET_FAVORITE_LISTINGS} from 'graphql/user/queries'
+import {createInterest} from 'services/interest-api'
+import {getUserInfo} from 'lib/user'
 import Col from '@emcasa/ui-dom/components/Col'
 import Row from '@emcasa/ui-dom/components/Row'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
 import Map from 'components/listings/shared/ListingsMap'
+import ContactSuccess from 'components/listings/show/ContactSuccess'
 import {
   log,
   PROFILE_FAVORITES_EXPLORE_LISTINGS,
   PROFILE_FAVORITES_VIEW_LISTING,
-  PROFILE_FAVORITES_VIEW_MAP
+  PROFILE_FAVORITES_VIEW_MAP,
+  PROFILE_FAVORITES_SCHEDULE_VISIT
 } from 'lib/logging'
 import {
   CardContainer,
@@ -36,7 +40,8 @@ class UserFavorites extends Component {
     this.state = {
       listings: this.props.listings || [],
       height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-      view: props.initialView === VIEW_MAP ? VIEW_MAP : VIEW_LIST
+      view: props.initialView === VIEW_MAP ? VIEW_MAP : VIEW_LIST,
+      isInterestSuccessPopupVisible: false
     }
     this.topBarRef = React.createRef()
   }
@@ -84,9 +89,45 @@ class UserFavorites extends Component {
   isFavorite = ({id}) =>
     Boolean(this.props.listings.find((listing) => listing.id === id))
 
+  onSubmit = async () => {
+    const {currentUser} = this.props
+    const userInfo = await getUserInfo(currentUser.id)
+    if (!userInfo || !userInfo.phone) {
+      return
+    }
+
+    const {listings} = this.props
+    if (!listings || listings.length === 0) {
+      return
+    }
+
+    const listing = listings[0]
+    const {id} = listing
+
+    const res = await createInterest(id, {
+      name: userInfo.name,
+      phone: userInfo.phone
+    })
+
+    let identify = new amplitude.Identify().set('name', userInfo.name).set('phone', userInfo.phone)
+    amplitude.identify(identify)
+
+    if (res && res.data && res.data.errors) {
+      this.setState({errors: res.data.errors})
+      return
+    }
+
+    log(PROFILE_FAVORITES_SCHEDULE_VISIT, {listingId: id})
+    this.setState({isInterestSuccessPopupVisible: true})
+  }
+
+  closeSuccessPostInterestPopup = () => {
+    this.setState({isInterestSuccessPopupVisible: false})
+  }
+
   render() {
     const {user} = this.props
-    const {listings, height, view} = this.state
+    const {listings, height, view, isInterestSuccessPopupVisible} = this.state
     return (
       <View height={height} width="100vw">
         <FavoritesHeader
@@ -100,7 +141,14 @@ class UserFavorites extends Component {
           }}
           viewIcon={view === VIEW_LIST ? 'map' : 'th'}
           viewLabel={view === VIEW_LIST ? 'Mapa' : 'Lista'}
+          onInterestCreate={this.onSubmit}
         />
+        {isInterestSuccessPopupVisible && (
+          <ContactSuccess
+            onClose={this.closeSuccessPostInterestPopup}
+            currentUser={this.props.currentUser}
+          />
+        )}
         <Query query={GET_FAVORITE_LISTINGS}>
           {({loading, error, data}) => {
             if (loading) return <div />
