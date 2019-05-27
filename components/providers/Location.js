@@ -14,47 +14,52 @@ export default class LocationProvider extends PureComponent {
   constructor(props) {
     super(props)
     if (process.browser) {
-      try {
-        const cookie = getCookie(LOCATION_COOKIE)
-        if (cookie) {
-          this.state = pickLocation(JSON.parse(cookie))
-          this.state.loaded = true
-        }
-      } catch (e) {
-        // ...
-      }
+      // Populate initial state with previous location from cookie
+      this.state = this.constructor.getLocation()
     }
   }
 
-  fetch = async () => {
+  static async getLocation() {
+    try {
+      const cookie = getCookie(LOCATION_COOKIE)
+      if (cookie) {
+        return pickLocation(JSON.parse(cookie))
+      }
+    } catch (e) {
+      Sentry.captureException(e)
+      return {}
+    }
+  }
+
+  static async setLocation(location) {
+    setCookie(LOCATION_COOKIE, pickLocation(location))
+    if ('amplitude' in window) {
+      let identify = new window.amplitude.Identify().set(
+        'geoIpCity',
+        location.citySlug
+      )
+      window.amplitude.identify(identify)
+    }
+  }
+
+  static async fetch() {
+    // Only fetch location once per session
+    if (this._response) return this._response
     const response = await fetch('/location', {method: 'POST'})
     const data = await response.json()
-    this.setState({loaded: true})
-    if (data && data.location) {
-      data.location.citySlug = slugify(data.location.city.toLowerCase())
-      this.setState(data.location)
-      return data.location
-    }
-    return {}
-  }
-
-  update = async () => {
-    const location = await this.fetch()
-    setCookie(LOCATION_COOKIE, JSON.stringify(location))
+    const location = (data && data.location) || {}
+    if (location.city)
+      location.citySlug = slugify(data.location.city.toLowerCase())
+    this.setLocation(location)
+    this._response = location
     return location
   }
 
   async componentDidMount() {
     try {
-      let {loaded, citySlug} = this.state
-      if (!loaded) citySlug = (await this.update()).citySlug
-      if ('amplitude' in window) {
-        let identify = new window.amplitude.Identify().set(
-          'geoIpCity',
-          citySlug
-        )
-        window.amplitude.identify(identify)
-      }
+      // Attempt to update location on the client-side
+      const location = await this.constructor.fetch()
+      this.setState(location)
     } catch (e) {
       Sentry.captureException(e)
     }
