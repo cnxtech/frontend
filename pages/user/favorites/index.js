@@ -41,7 +41,8 @@ class UserFavorites extends Component {
       listings: this.props.listings || [],
       height: `calc(100vh - ${HEADER_HEIGHT}px)`,
       view: props.initialView === VIEW_MAP ? VIEW_MAP : VIEW_LIST,
-      isInterestSuccessPopupVisible: false
+      isInterestSuccessPopupVisible: false,
+      isLoading: false
     }
     this.topBarRef = React.createRef()
   }
@@ -90,14 +91,18 @@ class UserFavorites extends Component {
     Boolean(this.props.listings.find((listing) => listing.id === id))
 
   onSubmit = async () => {
+    this.setState({isLoading: true})
+
     const {currentUser} = this.props
     const userInfo = await getUserInfo(currentUser.id)
     if (!userInfo || !userInfo.phone) {
+      this.setState({isLoading: false})
       return
     }
 
     const {listings} = this.props
     if (!listings || listings.length === 0) {
+      this.setState({isLoading: false})
       return
     }
 
@@ -113,12 +118,18 @@ class UserFavorites extends Component {
     amplitude.identify(identify)
 
     if (res && res.data && res.data.errors) {
-      this.setState({errors: res.data.errors})
+      this.setState({
+        errors: res.data.errors,
+        isLoading: false
+      })
       return
     }
 
     log(PROFILE_FAVORITES_SCHEDULE_VISIT, {listingId: id})
-    this.setState({isInterestSuccessPopupVisible: true})
+    this.setState({
+      isInterestSuccessPopupVisible: true,
+      isLoading: false
+    })
   }
 
   closeSuccessPostInterestPopup = () => {
@@ -127,7 +138,7 @@ class UserFavorites extends Component {
 
   render() {
     const {user} = this.props
-    const {listings, height, view, isInterestSuccessPopupVisible} = this.state
+    const {listings, height, view, isInterestSuccessPopupVisible, isLoading} = this.state
     return (
       <View height={height} width="100vw">
         <FavoritesHeader
@@ -139,6 +150,7 @@ class UserFavorites extends Component {
               log(this.state.view === VIEW_MAP ? PROFILE_FAVORITES_VIEW_MAP : PROFILE_FAVORITES_VIEW_LISTING)
             })
           }}
+          loading={isLoading}
           viewIcon={view === VIEW_LIST ? 'map' : 'th'}
           viewLabel={view === VIEW_LIST ? 'Mapa' : 'Lista'}
           onInterestCreate={this.onSubmit}
@@ -215,7 +227,9 @@ class UserFavorites extends Component {
                         fluid
                         height="tall"
                         onClick={() => {log(PROFILE_FAVORITES_EXPLORE_LISTINGS)}}
-                      >Explorar</Button>
+                      >
+                        Explorar
+                      </Button>
                     </Link>
                   </Col>
                 </InitialView>

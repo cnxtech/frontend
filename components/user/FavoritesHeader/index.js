@@ -1,5 +1,6 @@
 import React from 'react'
 import Router from 'next/router'
+import theme from '@emcasa/ui'
 import Row from '@emcasa/ui-dom/components/Row'
 import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
@@ -13,7 +14,7 @@ import {
 } from 'lib/logging'
 
 export default React.forwardRef(function UserFavoritesHeader(props, ref) {
-  const {favorites, viewIcon, viewLabel, onInterestCreate, onClickView} = props
+  const {favorites, viewIcon, viewLabel, onInterestCreate, onClickView, loading} = props
   return (
     <Container ref={ref}>
       <Main>
@@ -80,16 +81,16 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
           >
             Voltar para home
           </Button>
-          <Button
-            active
-            flex={1}
-            fontSize="small"
-            fontWeight="bold"
-            disabled={!favorites || favorites.length === 0}
-            onClick={onInterestCreate}
-          >
-            Falar com especialista
-          </Button>
+            <Button
+              active
+              flex={1}
+              fontSize="small"
+              fontWeight="bold"
+              disabled={!favorites || favorites.length === 0 || loading}
+              onClick={onInterestCreate}
+            >
+              Falar com especialista
+            </Button>
         </Row>
       </Row>
     </Container>
