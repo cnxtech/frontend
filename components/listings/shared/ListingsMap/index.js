@@ -1,3 +1,4 @@
+import merge from 'lodash/merge'
 import {PureComponent} from 'react'
 import Map from '@emcasa/ui-dom/components/Map'
 import Card from './Card'
@@ -34,6 +35,7 @@ export default class ListingsMap extends PureComponent {
 
   onChange = (bounds, framedPoints) => {
     if (framedPoints.length === 1) this.setHighlight({id: framedPoints[0]})
+    if (this.props.onChange) this.props.onChange(bounds, framedPoints)
   }
 
   renderListing = (listing) => {
@@ -64,22 +66,25 @@ export default class ListingsMap extends PureComponent {
   }
 
   render() {
-    const {data, ...props} = this.props
+    const {children, data, options, ...props} = this.props
     return (
       <Map
         cluster
         apiKey={process.env.GOOGLE_MAPS_KEY}
         highlight={this.isHighlight}
         {...props}
-        options={{
-          styles: [
-            {
-              featureType: 'poi',
-              elementType: 'labels',
-              stylers: [{visibility: 'on'}]
-            }
-          ]
-        }}
+        options={merge(
+          {
+            styles: [
+              {
+                featureType: 'poi',
+                elementType: 'labels',
+                stylers: [{visibility: 'on'}]
+              }
+            ]
+          },
+          options
+        )}
         MultiMarker={MultiMarker}
         getClusterProps={(props) => ({
           currentIndex: props.points.findIndex(
@@ -91,6 +96,7 @@ export default class ListingsMap extends PureComponent {
         onChange={this.onChange}
         onMapLoaded={this.onMapLoaded}
       >
+        {children}
         {data.map(this.renderListing)}
       </Map>
     )
