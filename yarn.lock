@@ -1855,6 +1855,13 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.18"
 
+"@fortawesome/pro-light-svg-icons@5.7.1":
+  version "5.7.1"
+  resolved "https://npm.fontawesome.com/54D641BD-C80B-419D-91F6-D25A5073FBAA/@fortawesome/pro-light-svg-icons/-/pro-light-svg-icons-5.7.1.tgz#77cfc50fce11c892ccbbf19f728ea8dbf72724bd"
+  integrity sha512-tvzJ9UjJMhStl2N9bWaIP657pyvLgPK+s/8jjSvq+bbidhDE4xzBBbxJ2vzeAtKpesFTeQOlxStZyI+eBRF8vw==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.14"
+
 "@fortawesome/pro-solid-svg-icons@5.7.1":
   version "5.7.1"
   resolved "https://npm.fontawesome.com/54D641BD-C80B-419D-91F6-D25A5073FBAA/@fortawesome/pro-solid-svg-icons/-/pro-solid-svg-icons-5.7.1.tgz#6ee4630f8267e383193a4e199f4cb7f4debfe98f"
@@ -7460,10 +7467,10 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-google-map-react@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/google-map-react/-/google-map-react-1.0.6.tgz#79e4ad0ef442cb8607f479e9cc504d08760287a2"
-  integrity sha512-QHl0LxL8UJE8mniPGM/SZyjoF43qGBUqRxiXtcvCUenM0oCZNOnDq/6M9DegzvPYoPtgWrcZVGT4l0F9hoDu5g==
+google-map-react@1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/google-map-react/-/google-map-react-1.1.4.tgz#ebf649b3cb985c645a0b7a05eb4e1c3f80482c80"
+  integrity sha512-+XcOu7QrRrlDa7Bk25oVV4FSsvMorAupuBrnDjA28Zz+HE+wEz79igqn+0KCHbemjgEHz51sHk0wm+IodvLoMg==
   dependencies:
     "@mapbox/point-geometry" "^0.1.0"
     eventemitter3 "^1.1.0"
