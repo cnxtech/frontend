@@ -1,7 +1,10 @@
 import styled from 'styled-components'
 import theme from '@emcasa/ui'
 import Text from '@emcasa/ui-dom/components/Text'
-import {ListingSliderElementsStyles} from 'components/listings/show/ListingSlider/styles'
+import {
+  CarouselItem,
+  ListingSliderElementsStyles
+} from 'components/listings/show/ListingSlider/styles'
 export const MIN_CARD_WIDTH = 280
 export const LISTING_CARD_IMAGE_HEIGHT = 164
 
@@ -36,7 +39,8 @@ export const Container = styled.a`
   border: 1px solid ${theme.colors.lightGrey};
   border-radius: ${theme.space[2]}px;
   background-color: ${theme.colors.white};
-  transition: border .25s, box-shadow .25s ease-in;
+  transition: border 0.25s, box-shadow 0.25s ease-in;
+  -webkit-transform: rotate(0.000001deg);
 
   :hover {
     border-color: ${theme.colors.pink};
@@ -44,6 +48,10 @@ export const Container = styled.a`
   }
 
   ${ListingSliderElementsStyles}
+
+  ${CarouselItem}::before, ${CarouselItem}::after {
+    content: initial;
+  }
 
   img {
     box-sizing: border-box;
