@@ -29,7 +29,8 @@ import {
   PROFILE_LOGOUT,
   PROFILE_EDIT,
   PROFILE_EDIT_CANCEL,
-  PROFILE_EDIT_SAVE
+  PROFILE_EDIT_SAVE,
+  PROFILE_OPEN_FAVORITES
 } from 'lib/logging'
 import {
   InitialView,
@@ -226,9 +227,19 @@ class UserProfile extends Component {
                   >
                     Editar
                   </Button>
+                  <Link href="/profile/favorites" as="/meu-perfil/favoritos">
+                    <Button
+                      fluid
+                      height="tall"
+                      onClick={() => {log(PROFILE_OPEN_FAVORITES)}}
+                    >
+                      Ver meus favoritos
+                    </Button>
+                  </Link>
                   <Link href="/auth/logout">
                     <Button
                       fluid
+                      link
                       height="tall"
                       onClick={() => {log(PROFILE_LOGOUT)}}
                     >
