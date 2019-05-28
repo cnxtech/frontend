@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import Button from '@emcasa/ui-dom/components/Button'
+import Text from '@emcasa/ui-dom/components/Text'
 import {clone} from 'utils/clone'
 import Content from './components/Content'
 import {ChangeTypeEnum} from './components/Content/changeTypes'
@@ -113,11 +114,14 @@ class Filter extends Component {
         <Button
           fontSize="small"
           noBorder
+          link
           iconColor={theme.colors.pink}
           onClick={this.toggleContent}
         >
           <Icon />
-          Filtros
+          <Text inline>
+            Filtros
+          </Text>
         </Button>
         {this.state.showContent && (
           <Content

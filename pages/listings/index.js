@@ -1,4 +1,4 @@
-import {Component} from 'react'
+import {Component, Fragment} from 'react'
 import Router from 'next/router'
 import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
 import {
@@ -20,7 +20,6 @@ import ListingHead from './components/head'
 import ActionsBar from 'components/shared/ActionsBar'
 import {cities} from 'constants/cities'
 import LocationUtils from '../../utils/location-utils'
-import {NEIGHBORHOOD_SELECTION_CHANGE} from '../../components/shared/NeighborhoodPicker/events'
 import FavMessageBar from 'components/listings/shared/FavMessageBar'
 
 class ListingSearch extends Component {
@@ -73,14 +72,12 @@ class ListingSearch extends Component {
 
   componentDidMount() {
     log(LISTING_SEARCH_OPEN)
-    if (!this.state.currentCity) {
-      LocationUtils.getUserLocationByIp().then(this.updateCurrentCity)
-    }
-
     if (!localStorage.getItem('hideFavMessageBar')) {
       this.setState({showFavMessageBar: true})
     }
-
+    if (!this.state.currentCity) {
+      LocationUtils.getUserLocationByIp().then(this.updateCurrentCity)
+    }
     window.onpopstate = (event) => {
       if (!event || !event.state || !event.state.as) {
         return
@@ -147,7 +144,7 @@ class ListingSearch extends Component {
                   const userProfile = data ? data.userProfile : null
                   const favorites = userProfile ? userProfile.favorites : []
                   return (
-                    <>
+                    <Fragment>
                       <ListingHead
                         districts={districts}
                         filters={filters}
@@ -187,7 +184,7 @@ class ListingSearch extends Component {
                           }
                         }}
                       />
-                    </>
+                    </Fragment>
                   )}}
               </Query>
             )
