@@ -1,5 +1,4 @@
-import get from 'lodash/fp/get'
-import {Component} from 'react'
+import React, {Component} from 'react'
 import Router from 'next/router'
 import styled from 'styled-components'
 import {
@@ -65,6 +64,8 @@ class ListingMapSearch extends Component {
     height: `calc(100vh - ${HEADER_HEIGHT}px)`
   }
 
+  filterRef = React.createRef()
+
   constructor(props) {
     super(props)
     this.state.filters = props.params.filters || {}
@@ -114,6 +115,18 @@ class ListingMapSearch extends Component {
     Router.events.off('routeChangeStart', this.onChangeRoute)
   }
 
+  onMapLoaded = () => {
+    const interval = setInterval(() => {
+      const filter = this.filterRef.current
+      const body = filter && filter.bodyRef.current
+      const bodyHeight = body ? body.offsetHeight || body.clientHeight : 0
+      if (filter && bodyHeight) {
+        this.filterRef.current.measureBody()
+        clearInterval(interval)
+      }
+    }, 500)
+  }
+
   onResize = () => {
     this.setState({
       height: window.innerHeight - HEADER_HEIGHT
@@ -124,7 +137,10 @@ class ListingMapSearch extends Component {
     this.setState({filterHeight: isRowExpanded ? bodyHeight : rowHeight})
   }
 
-  onChangeRoute = console.log
+  onChangeRoute = (path) => {
+    const {filters} = getLocationFromPath(path) || {}
+    if (filters) this.setState({filters})
+  }
 
   onChangeFilter = (filters) => {
     const newPath = ParamsMapper.mapParamsToUrl(filters)
@@ -141,7 +157,6 @@ class ListingMapSearch extends Component {
     if (!location) return <div />
     if (error) return <p>ERROR</p>
     const listings = (data && data.listings && data.listings.listings) || []
-    console.log(listings)
     return (
       <MapContainer filterHeight={filterHeight}>
         <Map
@@ -151,13 +166,13 @@ class ListingMapSearch extends Component {
           defaultZoom={10}
           defaultCenter={location.center}
           options={location}
+          onMapLoaded={this.onMapLoaded}
         >
-          <MapControl m={0} width="100vw" bg="white" position="top">
+          <MapControl m={0} width="100vw" bg="white" position="top-center">
             <View pr={2} pl={2}>
               <ListingFilter
+                innerRef={this.filterRef}
                 onLayout={this.onResizeFilter}
-                onExpandRow={this.onResizeFilter}
-                onCollapseRow={this.onResizeFilter}
                 onSubmit={this.onChangeFilter}
                 values={filters}
               />

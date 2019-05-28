@@ -1,12 +1,12 @@
 import merge from 'lodash/merge'
-import {PureComponent} from 'react'
+import React, {PureComponent} from 'react'
 import Map from '@emcasa/ui-dom/components/Map'
 import Card from './Card'
 import Marker from './Marker'
 import MultiMarker from './MultiMarker'
 import {getListingPrice} from 'lib/listings'
 
-export default class ListingsMap extends PureComponent {
+class ListingsMap extends PureComponent {
   static defaultProps = {
     getListingData: () => undefined,
     isFavorite: () => undefined
@@ -22,8 +22,9 @@ export default class ListingsMap extends PureComponent {
 
   isHighlight = ({id}) => this.state.highlight === id
 
-  onMapLoaded = ({map}) => {
-    if (map) map.addListener('click', this.onClickMarker)
+  onMapLoaded = (options) => {
+    if (options.map) options.map.addListener('click', this.onClickMarker)
+    if (this.props.onMapLoaded) this.props.onMapLoaded(options)
   }
 
   onClickMarker = (e) => {
@@ -66,10 +67,11 @@ export default class ListingsMap extends PureComponent {
   }
 
   render() {
-    const {children, data, options, ...props} = this.props
+    const {children, data, options, mapRef, ...props} = this.props
     return (
       <Map
         cluster
+        ref={mapRef}
         apiKey={process.env.GOOGLE_MAPS_KEY}
         highlight={this.isHighlight}
         {...props}
@@ -87,7 +89,9 @@ export default class ListingsMap extends PureComponent {
         )}
         MultiMarker={MultiMarker}
         getClusterProps={(props) => ({
-          currentIndex: props.points.filter(Boolean).findIndex(this.isHighlight),
+          currentIndex: props.points
+            .filter(Boolean)
+            .findIndex(this.isHighlight),
           onChangePage: this.setHighlight,
           ...props
         })}
@@ -100,3 +104,7 @@ export default class ListingsMap extends PureComponent {
     )
   }
 }
+
+export default React.forwardRef((props, ref) => (
+  <ListingsMap {...props} mapRef={ref} />
+))
