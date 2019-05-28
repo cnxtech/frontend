@@ -59,36 +59,59 @@ const MapContainer = styled.div`
 
 class ListingMapSearch extends Component {
   state = {
-    location: undefined,
+    citySlug: undefined,
+    filters: {},
     filterHeight: 0,
-    height: `calc(100vh - ${HEADER_HEIGHT})`
+    height: `calc(100vh - ${HEADER_HEIGHT}px)`
   }
 
-  static async getInitialProps() {
+  constructor(props) {
+    super(props)
+    this.state.filters = props.params.filters || {}
+  }
+
+  static getDerivedStateFromProps({params, userLocation}, state) {
+    const citySlug =
+      userLocation.citySlug || params.citySlug || DEFAULT_LOCATION
+    if (citySlug !== state.citySlug) {
+      return {
+        citySlug,
+        filters: {
+          citySlug,
+          ...state.filters
+        }
+      }
+    }
+    return null
+  }
+
+  static async getInitialProps(context) {
+    let params
+    if (context.req && context.req.params) {
+      params = context.req.params
+    } else {
+      const {asPath} = context
+      params = getLocationFromPath(asPath)
+    }
     return {
+      params: params || {},
       renderFooter: false
     }
   }
 
-  get filters() {
-    return {
-      citiesSlug: [this.props.userLocation.citySlug || DEFAULT_LOCATION]
-    }
-  }
-
   get location() {
-    return LOCATION_OPTIONS[
-      this.props.userLocation.citySlug || DEFAULT_LOCATION
-    ]
+    return LOCATION_OPTIONS[this.state.citySlug]
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.onResize)
     this.onResize()
+    Router.events.on('routeChangeStart', this.onChangeRoute)
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize)
+    Router.events.off('routeChangeStart', this.onChangeRoute)
   }
 
   onResize = () => {
@@ -98,17 +121,27 @@ class ListingMapSearch extends Component {
   }
 
   onResizeFilter = ({isRowExpanded, bodyHeight, rowHeight}) => {
-    console.log({isRowExpanded, bodyHeight, rowHeight})
     this.setState({filterHeight: isRowExpanded ? bodyHeight : rowHeight})
   }
 
-  renderMap = ({data, loading, error}) => {
+  onChangeRoute = console.log
+
+  onChangeFilter = (filters) => {
+    const newPath = ParamsMapper.mapParamsToUrl(filters)
+    Router.push('/listings/map', `/imoveis/mapa${newPath}`, {
+      shallow: true
+    })
+    this.setState({filters: filters})
+  }
+
+  renderMap = ({data, error}) => {
     const {user} = this.props
-    const {filterHeight} = this.state
+    const {filters, filterHeight} = this.state
     const location = this.location
-    if (!location || loading) return <div />
+    if (!location) return <div />
     if (error) return <p>ERROR</p>
     const listings = (data && data.listings && data.listings.listings) || []
+    console.log(listings)
     return (
       <MapContainer filterHeight={filterHeight}>
         <Map
@@ -117,7 +150,6 @@ class ListingMapSearch extends Component {
           getInitialFrame={({markers}) => markers}
           defaultZoom={10}
           defaultCenter={location.center}
-          getInitialFrame={({markers}) => markers}
           options={location}
         >
           <MapControl m={0} width="100vw" bg="white" position="top">
@@ -127,7 +159,7 @@ class ListingMapSearch extends Component {
                 onExpandRow={this.onResizeFilter}
                 onCollapseRow={this.onResizeFilter}
                 onSubmit={this.onChangeFilter}
-                values={{}}
+                values={filters}
               />
             </View>
           </MapControl>
@@ -137,13 +169,13 @@ class ListingMapSearch extends Component {
   }
 
   render() {
-    const {height} = this.state
+    const {filters, height} = this.state
     return (
       <View height={height}>
         <LdJson />
         <Query
           query={GET_LISTINGS_COORDINATES}
-          variables={{filters: this.filters}}
+          variables={{filters: getListingFiltersFromState(filters)}}
         >
           {this.renderMap}
         </Query>

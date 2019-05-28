@@ -87,9 +87,7 @@ export default class ListingsMap extends PureComponent {
         )}
         MultiMarker={MultiMarker}
         getClusterProps={(props) => ({
-          currentIndex: props.points.findIndex(
-            ({id}) => id == this.state.highlight
-          ),
+          currentIndex: props.points.filter(Boolean).findIndex(this.isHighlight),
           onChangePage: this.setHighlight,
           ...props
         })}
