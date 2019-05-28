@@ -2,14 +2,12 @@ import styled from 'styled-components'
 import theme from '@emcasa/ui'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import Row from '@emcasa/ui-dom/components/Row'
-import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import {CircleStyle} from 'components/shared/Common/Buttons/Like/styles'
 
 const CLOSE_BUTTON_WIDTH = 60
 
 export const Container = styled(Row)`
   width: 100%;
-  max-width: ${LISTING_MAX_WIDTH}px;
   padding: ${theme.space[1]}px 0 ${theme.space[1]}px ${theme.space[4]}px;
   background-color: ${theme.colors.smoke};
 

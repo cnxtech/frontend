@@ -1,8 +1,6 @@
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 import Icon from '@emcasa/ui-dom/components/Icon'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faHeart from '@fortawesome/fontawesome-free-solid/faHeart'
 import {
   Container,
   Content,
@@ -13,14 +11,14 @@ import {
 
 export default function FavMessageBar(props) {
   return (
-    <Row justifyContent="center" my={4} my={2}>
+    <Row justifyContent="center" my={2} px={[null, null, null, 4]}>
       <Container alignItems="center">
         <Content
           alignItems="center"
           justifyContent={['flex-start', null, null, 'center']}
         >
           <FakeButton>
-            <FontAwesomeIcon icon={faHeart} size="1x" />
+            <Icon name="heart" />
           </FakeButton>
           <Text fontSize={[1, null, null, 2]}>
             Gostou de algum imóvel?<BreakTextMobile /> Adicione ele nos{' '}
