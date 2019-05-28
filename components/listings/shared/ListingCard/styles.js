@@ -72,8 +72,22 @@ export const PaginationTextWrapper = styled.div`
 `
 
 export const PaginationText = styled(Text)`
+  margin: 0;
   color: ${theme.colors.white};
   font-size: ${theme.fontSizes[1]}px;
   font-weight: ${theme.fontWeights[2]};
+`
+
+export const Label = styled(Text)`
+  z-index: 3;
+  position: absolute;
+  top: ${LISTING_CARD_IMAGE_HEIGHT - theme.space[2]}px;
+  left: ${theme.space[2]}px;
+  transform: translateY(-100%);
   margin: 0;
+  padding: ${theme.space[1]}px ${theme.space[2]}px;
+  color: ${theme.colors.white};
+  font-size: ${theme.fontSizes[1]}px;
+  border-radius: 4px;
+  background-color: ${theme.colors.green};
 `

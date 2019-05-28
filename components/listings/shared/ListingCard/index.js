@@ -80,8 +80,8 @@ class ListingCard extends Component {
             }}
           >
             <Carousel {...settings} ref={(slider) => (this.slider = slider)}>
-              {listing.images.map(image => (
-                <CarouselItem>
+              {listing.images.map((image, index) => (
+                <CarouselItem key={index}>
                   <img
                     decoding="async"
                     src={thumbnailUrl(image.filename ? image.filename : '', 400, 400 )}
@@ -96,9 +96,6 @@ class ListingCard extends Component {
               ))}
             </Carousel>
             <Row flexDirection="column" p={2}>
-              <PaginationTextWrapper>
-                <PaginationText>{currentImage + 1}/{imagesLength}</PaginationText>
-              </PaginationTextWrapper>
               <Row justifyContent="space-between" mb={1}>
                 <Title>
                   {`Imóvel na ${listing.address.street}, ${
@@ -120,6 +117,9 @@ class ListingCard extends Component {
               <Text inline fontSize="small">
                 {listingSummary}
               </Text>
+              <PaginationTextWrapper>
+                <PaginationText>{currentImage + 1}/{imagesLength}</PaginationText>
+              </PaginationTextWrapper>
             </Row>
           </Container>
         </Link>
