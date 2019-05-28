@@ -1,14 +1,9 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import theme from 'config/theme'
-import {
-  HEADER_HEIGHT,
-  LISTING_BUTTONSBAR_HEIGHT
-} from 'constants/dimensions'
-import {mobileMedia} from 'constants/media'
+import {HEADER_HEIGHT, LISTING_BUTTONSBAR_HEIGHT} from 'constants/dimensions'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import Button from '@emcasa/ui-dom/components/Button'
 import MoonLoader from 'react-spinners/MoonLoader'
-import {Content} from 'components/listings/show/Popup/styles'
 import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import {zIndexModal} from 'constants/zIndex'
 import Text from '@emcasa/ui-dom/components/Text'
@@ -18,33 +13,8 @@ export const LISTINGSLIDER_HEIGHT = 454
 export const LISTINGSLIDER_OFFSET = (HEADER_HEIGHT + LISTING_BUTTONSBAR_HEIGHT)
 const ARROW_SIZE = 48
 
-export default styled.div`
-  z-index: ${({isFullScreen}) => isFullScreen ? zIndexModal : null};
-  position: ${({isFullScreen}) => isFullScreen ? 'fixed' : 'relative'};
-  top: ${({isFullScreen}) => isFullScreen ? '0' : null};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: ${({isFullScreen}) => isFullScreen ? '100%' : `calc(62vh - ${LISTINGSLIDER_OFFSET}px)`};
-  max-width: 100%;
-  min-height: ${({isFullScreen}) => isFullScreen ? null : `${LISTINGSLIDER_HEIGHT / 2}px`};
-  overflow: hidden;
-  box-sizing: border-box;
-
-  @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
-    justify-content: flex-start;
-  }
-
-  @media screen and ${breakpoint.up('desktop')} {
-    height: ${({isFullScreen}) => isFullScreen ? null : '45vh'};
-    max-height: ${({isFullScreen}) => isFullScreen ? null : '540px'};
-    min-height: ${({isFullScreen}) => isFullScreen ? null : '300px'};
-  }
-
+export const ListingSliderElementsStyles = css`
   > button {
-
     @media screen and ${breakpoint.down('tablet')} {
       top: ${theme.space[1]}px;
       right: 0;
@@ -66,6 +36,10 @@ export default styled.div`
     height: 100%;
   }
 
+  .slick-track {
+    display: flex !important;
+  }
+
   .images-slider {
     z-index: 2;
     position: relative;
@@ -84,9 +58,12 @@ export default styled.div`
     }
   }
 
-  .slider-image {
+  img {
     z-index: 2;
     position: relative;
+  }
+
+  .slider-image {
     width: 100%;
     height: 100%;
     object-fit: ${({isFullScreen}) => isFullScreen ? 'contain' : 'cover'};
@@ -102,17 +79,90 @@ export default styled.div`
   }
 
   .slick-dots {
+    position: absolute;
     bottom: 0;
-    background-color: rgba(0, 0, 0, .3);
+    left: 0;
+    display: flex !important;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    height: 50%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.2) 55%,
+      rgba(0, 0, 0, 0.50) 80%,
+      rgba(0, 0, 0, 0.75) 100%
+    );
+    list-style: none;
+    text-align: center;
+    vertical-align: middle;
 
-    li.slick-active button:before {
-      color: ${theme.colors.pink};
+    li {
+      position: relative;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
     }
 
-    li button:before {
-      color: ${theme.colors.white};
-      opacity: .8;
+    li button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      font-size: 0;
+      line-height: 0;
+      background: 0;
+      border: none;
+      outline: 0;
+
+      &::before {
+        content: '';
+        border-radius: 100%;
+        width: 5px;
+        height: 5px;
+        background-color: ${theme.colors.white};
+        transition: background-color 0.5s,
+          transform 0.5s cubic-bezier(0.4, 0.2, 0, 1);
+      }
     }
+
+    li.slick-active button::before {
+      background-color: ${theme.colors.pink};
+      transform: scale(1.5);
+    }
+  }
+`
+
+export default styled.div`
+  z-index: ${({isFullScreen}) => isFullScreen ? zIndexModal : null};
+  position: ${({isFullScreen}) => isFullScreen ? 'fixed' : 'relative'};
+  top: ${({isFullScreen}) => isFullScreen ? '0' : null};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: ${({isFullScreen}) => isFullScreen ? '100%' : `calc(62vh - ${LISTINGSLIDER_OFFSET}px)`};
+  max-width: 100%;
+  min-height: ${({isFullScreen}) => isFullScreen ? null : `${LISTINGSLIDER_HEIGHT / 2}px`};
+  overflow: hidden;
+  box-sizing: border-box;
+
+  ${ListingSliderElementsStyles}
+
+  @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
+    justify-content: flex-start;
+  }
+
+  @media screen and ${breakpoint.up('desktop')} {
+    height: ${({isFullScreen}) => isFullScreen ? null : '45vh'};
+    max-height: ${({isFullScreen}) => isFullScreen ? null : '540px'};
+    min-height: ${({isFullScreen}) => isFullScreen ? null : '300px'};
   }
 `
 
@@ -133,7 +183,7 @@ export const Spinner = styled(MoonLoader).attrs(({theme}) => {
 
 export const CarouselItem = styled.div`
   height: 100%;
-  cursor: ${({isFullScreen}) => isFullScreen ? null : 'pointer'};
+  cursor: ${({isFullScreen}) => (isFullScreen ? null : 'pointer')};
   outline: none;
   box-sizing: border-box;
   position: relative;
@@ -164,7 +214,7 @@ export const Arrow = styled(Button)`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  ${({left}) => (!left ? `right: 0` : `left: 0`)};
+  ${({left}) => (!left ? 'right: 0' : 'left: 0')};
   width: ${ARROW_SIZE}px;
   height: ${ARROW_SIZE}px;
   color: white;
@@ -172,7 +222,7 @@ export const Arrow = styled(Button)`
   padding: 0;
   background: 0;
   border: 0;
-  cursor: ${({disabled}) => disabled ? 'default' : null};
+  cursor: ${({disabled}) => (disabled ? 'default' : null)};
   opacity: ${({disabled}) => disabled ? '0.5' : null};
 
   &:hover {
@@ -199,7 +249,7 @@ export const Arrow = styled(Button)`
 `
 
 export const Header = styled.div`
-  display: ${({isFullScreen}) => isFullScreen ? 'flex' : 'none'};
+  display: ${({isFullScreen}) => (isFullScreen ? 'flex' : 'none')};
   z-index: 2;
   align-items: center;
   justify-content: center;
@@ -233,7 +283,7 @@ export const TitleWrapper = styled.div`
   left: 0;
 
   @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
-    position: ${({isFullScreen}) => isFullScreen ? 'relative' : null};
+    position: ${({isFullScreen}) => (isFullScreen ? 'relative' : null)};
   }
 
   @media screen and ${breakpoint.up('desktop')} {
@@ -245,13 +295,13 @@ export const TitleWrapper = styled.div`
 
 export const OpenMatterportButtonWrapper = styled.div`
   z-index: 5;
-  position: ${({isFullScreen}) => isFullScreen ? 'relative' : 'absolute'};
-  top: ${({isFullScreen}) => isFullScreen ? null : `${theme.space[2]}px`};
-  left: ${({isFullScreen}) => isFullScreen ? null : '50%'};
-  transform: ${({isFullScreen}) => isFullScreen ? null : 'translateX(-50%)'};
+  position: ${({isFullScreen}) => (isFullScreen ? 'relative' : 'absolute')};
+  top: ${({isFullScreen}) => (isFullScreen ? null : `${theme.space[2]}px`)};
+  left: ${({isFullScreen}) => (isFullScreen ? null : '50%')};
+  transform: ${({isFullScreen}) => (isFullScreen ? null : 'translateX(-50%)')};
 
   @media screen and ${breakpoint.down('tablet')} {
-    display: ${({isFullScreen}) => isFullScreen ? 'none' : null};
+    display: ${({isFullScreen}) => (isFullScreen ? 'none' : null)};
   }
 
   @media screen and ${breakpoint.up('desktop')} {
@@ -263,13 +313,13 @@ export const OpenMatterportButtonWrapper = styled.div`
 `
 
 export const PaginationTextWrapper = styled.div`
-  display: ${({isFullScreen}) => isFullScreen ? null : 'none'};
+  display: ${({isFullScreen}) => (isFullScreen ? null : 'none')};
   z-index: 5;
   position: relative;
   margin-top: ${theme.space[2]}px;
 
   @media screen and ${breakpoint.down('tablet')} and (orientation: landscape) {
-    display: ${({isFullScreen}) => isFullScreen ? 'none' : null};
+    display: ${({isFullScreen}) => (isFullScreen ? 'none' : null)};
   }
 
   @media screen and ${breakpoint.up('desktop')} {
