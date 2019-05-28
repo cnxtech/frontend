@@ -1,6 +1,5 @@
 import React from 'react'
 import Router from 'next/router'
-import theme from '@emcasa/ui'
 import Row from '@emcasa/ui-dom/components/Row'
 import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
