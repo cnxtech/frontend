@@ -4,9 +4,7 @@ import Row from '@emcasa/ui-dom/components/Row'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import {MODAL_FOOTER_HEIGHT} from 'constants/dimensions'
 
-const Container = styled(Row)`
-  z-index: 1;
-`
+const Container = styled(Row)``
 
 const Separator = styled.hr`
   border: 0.5px solid ${themeGet('colors.lightGrey')};

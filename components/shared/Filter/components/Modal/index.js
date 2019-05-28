@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import enhanceWithClickOutside from 'react-click-outside'
 import CloseButton from 'components/shared/Common/Buttons/CloseButton'
 import {Background, Container} from './styles'
+import {zIndexFilterModal} from 'constants/zIndex'
 
 class ContainerClickOutside extends Component {
   handleClickOutside(e) {
@@ -45,6 +46,7 @@ class Modal extends Component {
           mobileKeyboard={this.props.mobileKeyboard}
         >
           <CloseButton
+            zIndex={zIndexFilterModal}
             onClick={this.props.onClose}
             color={this.props.closeIconColor}
           />
