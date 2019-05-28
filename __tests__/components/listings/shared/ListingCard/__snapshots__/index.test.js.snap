@@ -46,6 +46,19 @@ exports[`<ListingCard/> should render component 1`] = `
   font-size: 14px;
 }
 
+.c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: auto;
+  height: 20px;
+}
+
 .c0 {
   position: relative;
   width: 100%;
@@ -56,9 +69,9 @@ exports[`<ListingCard/> should render component 1`] = `
 }
 
 .c0 > button svg {
-  -webkit-transition: -webkit-transform .45s cubic-bezier(.4,.2,0,1);
-  -webkit-transition: transform .45s cubic-bezier(.4,.2,0,1);
-  transition: transform .45s cubic-bezier(.4,.2,0,1);
+  -webkit-transition: -webkit-transform 0.45s cubic-bezier(0.4,0.2,0,1);
+  -webkit-transition: transform 0.45s cubic-bezier(0.4,0.2,0,1);
+  transition: transform 0.45s cubic-bezier(0.4,0.2,0,1);
 }
 
 .c0 > button:hover svg {
@@ -85,8 +98,9 @@ exports[`<ListingCard/> should render component 1`] = `
   border: 1px solid #e0e6ed;
   border-radius: 10px;
   background-color: #ffffff;
-  -webkit-transition: border .25s,box-shadow .25s ease-in;
-  transition: border .25s,box-shadow .25s ease-in;
+  -webkit-transition: border 0.25s,box-shadow 0.25s ease-in;
+  transition: border 0.25s,box-shadow 0.25s ease-in;
+  -webkit-transform: rotate(0.000001deg);
 }
 
 .c1:hover {
@@ -94,11 +108,128 @@ exports[`<ListingCard/> should render component 1`] = `
   box-shadow: 0 0 2px #ff2b7f;
 }
 
+.c1 .slick-list {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.c1 .slick-list,
+.c1 .slick-track,
+.c1 .slick-slide > div {
+  height: 100%;
+}
+
+.c1 .slick-track {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+
+.c1 .images-slider {
+  z-index: 2;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+}
+
+.c1 img {
+  z-index: 2;
+  position: relative;
+}
+
+.c1 .slider-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.c1 .slick-dots {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100%;
+  height: 50%;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient( to bottom,rgba(0,0,0,0) 0%,rgba(0,0,0,0.2) 55%,rgba(0,0,0,0.50) 80%,rgba(0,0,0,0.75) 100% );
+  list-style: none;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.c1 .slick-dots li {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.c1 .slick-dots li button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 0;
+  line-height: 0;
+  background: 0;
+  border: none;
+  outline: 0;
+}
+
+.c1 .slick-dots li button::before {
+  content: '';
+  border-radius: 100%;
+  width: 5px;
+  height: 5px;
+  background-color: #ffffff;
+  -webkit-transition: background-color 0.5s,-webkit-transform 0.5s cubic-bezier(0.4,0.2,0,1);
+  -webkit-transition: background-color 0.5s,transform 0.5s cubic-bezier(0.4,0.2,0,1);
+  transition: background-color 0.5s,transform 0.5s cubic-bezier(0.4,0.2,0,1);
+}
+
+.c1 .slick-dots li.slick-active button::before {
+  background-color: #ff2b7f;
+  -webkit-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  transform: scale(1.5);
+}
+
+.c1 .c12::before,
+.c1 .c12::after {
+  content: initial;
+}
+
 .c1 img {
   box-sizing: border-box;
   object-fit: cover;
   width: 100%;
-  height: 140px;
+  height: 164px;
 }
 
 .c4 {
@@ -110,6 +241,27 @@ exports[`<ListingCard/> should render component 1`] = `
 }
 
 .c8 {
+  z-index: 3;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.c9 {
+  -webkit-font-smoothing: antialiased;
+  font-family: Rubik;
+  color: #3c4858;
+  font-size: 18px;
+  margin: 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.c10 {
   outline: none;
   cursor: pointer;
   padding: 0 20px 0 20px;
@@ -146,21 +298,46 @@ exports[`<ListingCard/> should render component 1`] = `
   position: absolute;
   cursor: pointer;
   right: 14px;
-  top: 90px;
+  top: 114px;
 }
 
-.c8 svg {
-  width: 25px;
-  text-shadow: 2px 2px 3px #f00;
+.c10 svg {
+  width: 21px;
+  height: 19px;
   text-shadow: 2px 2px 3px #f00;
 }
 
-.c8 svg path {
+.c10 svg path {
   text-shadow: 2px 2px 3px #f00;
   fill: #ffffff;
   stroke: #3c4858;
   fill-opacity: 0;
-  stroke-width: 60;
+  stroke-width: 40;
+}
+
+@media screen and (max-width:779px) {
+  .c1 > button {
+    top: 4px;
+    right: 0;
+  }
+}
+
+@media screen and (max-width:779px) and (orientation:landscape) {
+  .c1 .images-slider {
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width:779px) and (orientation:landscape) {
+  .c1 .slider-image {
+    object-fit: cover;
+  }
+}
+
+@media screen and (min-width:780px) {
+  .c1 .slider-image {
+    object-fit: cover;
+  }
 }
 
 <article
@@ -172,11 +349,33 @@ exports[`<ListingCard/> should render component 1`] = `
     href="/imoveis/rj/rio-de-janeiro/bairro/rua-tal/id-undefined"
     onClick={[Function]}
   >
-    <img
-      alt="Imagem do imóvel ID-undefined na Rua tal, Bairro, Rio de Janeiro - RJ"
-      decoding="async"
-      src="https://res.cloudinary.com/emcasa/image/upload/f_auto,c_fit,h_600,w_600/v1513818385/"
-    />
+    <div
+      className="slick-slider images-slider slick-initialized"
+    >
+      
+      <div
+        className="slick-list"
+      >
+        <div
+          className="slick-track"
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          onMouseOver={[Function]}
+          style={
+            Object {
+              "WebkitTransform": "translate3d(0px, 0px, 0px)",
+              "WebkitTransition": "",
+              "msTransform": "translateX(0px)",
+              "opacity": 1,
+              "transform": "translate3d(0px, 0px, 0px)",
+              "transition": "",
+            }
+          }
+        />
+      </div>
+      
+      
+    </div>
     <div
       className="c2"
     >
@@ -218,31 +417,45 @@ exports[`<ListingCard/> should render component 1`] = `
       >
         
       </span>
+      <div
+        className="c8"
+      >
+        <p
+          className="c9"
+          color="dark"
+          fontSize="default"
+        >
+          1
+          /
+          0
+        </p>
+      </div>
     </div>
   </a>
   <button
     aria-label="Favoritar imóvel"
-    className="c8"
+    className="c10"
     fontSize="default"
     height="medium"
     onClick={[Function]}
   >
-    <svg
-      aria-hidden="true"
-      className="svg-inline--fa fa-heart fa-w-16 fa-1x "
-      data-icon="heart"
-      data-prefix="fas"
-      role="img"
-      style={Object {}}
-      viewBox="0 0 512 512"
-      xmlns="http://www.w3.org/2000/svg"
+    <div
+      className="c11"
     >
-      <path
-        d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"
-        fill="currentColor"
-        style={Object {}}
-      />
-    </svg>
+      <svg
+        height={20}
+        version="1.1"
+        viewBox="0 0 512 512"
+        x={0}
+        y={0}
+      >
+        <path
+          d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"
+          name="heart"
+          type="default"
+        />
+      </svg>
+    </div>
   </button>
 </article>
 `;
