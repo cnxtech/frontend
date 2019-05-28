@@ -49,6 +49,16 @@ export const Container = styled.a`
 
   ${ListingSliderElementsStyles}
 
+  .slick-slider,
+  img {
+    height: ${LISTING_CARD_IMAGE_HEIGHT}px;
+  }
+
+  .slick-slider,
+  ${CarouselItem} {
+    background-color: ${theme.colors.smoke};
+  }
+
   ${CarouselItem}::before, ${CarouselItem}::after {
     content: initial;
   }
@@ -57,7 +67,6 @@ export const Container = styled.a`
     box-sizing: border-box;
     object-fit: cover;
     width: 100%;
-    height: ${LISTING_CARD_IMAGE_HEIGHT}px;
   }
 `
 
