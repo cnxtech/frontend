@@ -215,17 +215,17 @@ const getFiltersByPath = (rest = '') => {
 }
 
 const mapUrlToParams = (params) => {
-  const {stateSlug, citySlug, rest} = params
+  const {state, city, rest} = params
   const filters = getFiltersByPath(rest)
   const newParams = {}
-  if (citySlug) {
-    filters.citySlug = citySlug
-    newParams.citySlug = citySlug
+  if (city) {
+    filters.citySlug = city
+    newParams.citySlug = city
   }
 
-  if (stateSlug) {
-    filters.stateSlug = stateSlug
-    newParams.stateSlug = stateSlug
+  if (state) {
+    filters.stateSlug = state
+    newParams.stateSlug = state
   }
 
   if (Object.keys(filters).length > 0) {
