@@ -24,6 +24,10 @@ const DEFAULT_LOCATION = 'sao-paulo'
 
 const LOCATION_OPTIONS = {
   ['sao-paulo']: {
+    filters: {
+      citySlug: 'sao-paulo',
+      stateSlug: 'sp'
+    },
     restriction: {
       latLngBounds: {
         north: -23.35664512143721,
@@ -34,6 +38,10 @@ const LOCATION_OPTIONS = {
     }
   },
   ['rio-de-janeiro']: {
+    filters: {
+      citySlug: 'rio-de-janeiro',
+      stateSlug: 'rj'
+    },
     restriction: {
       latLngBounds: {
         north: -22.85672650624514,
@@ -73,14 +81,12 @@ class ListingMapSearch extends Component {
 
   static getDerivedStateFromProps({params, userLocation}, state) {
     const citySlug =
-      userLocation.citySlug || params.citySlug || DEFAULT_LOCATION
+      params.citySlug || userLocation.citySlug || DEFAULT_LOCATION
     if (citySlug !== state.citySlug) {
+      const location = LOCATION_OPTIONS[citySlug] || {}
       return {
         citySlug,
-        filters: {
-          citySlug,
-          ...state.filters
-        }
+        filters: Object.assign({}, state.filters, location.filters)
       }
     }
     return null
@@ -108,6 +114,13 @@ class ListingMapSearch extends Component {
     window.addEventListener('resize', this.onResize)
     this.onResize()
     Router.events.on('routeChangeStart', this.onChangeRoute)
+    if (!this.props.params.citySlug) {
+      // Redirect to resolved city url when location params are empty
+      const newPath = ParamsMapper.mapParamsToUrl(this.state.filters)
+      Router.push('/listings/map', `/imoveis/mapa${newPath}`, {
+        shallow: true
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -154,7 +167,6 @@ class ListingMapSearch extends Component {
     const {user} = this.props
     const {filters, filterHeight} = this.state
     const location = this.location
-    if (!location) return <div />
     if (error) return <p>ERROR</p>
     const listings = (data && data.listings && data.listings.listings) || []
     return (
