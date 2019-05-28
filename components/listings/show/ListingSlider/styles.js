@@ -195,17 +195,24 @@ export const CarouselItem = styled.div`
     }
   }
 
-  &::before {
+  &::before,
+  &:after {
     z-index: 3;
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    width: 1px;
     height: 100%;
-    border-left: 1px solid ${theme.colors.white};
-    border-right: 1px solid ${theme.colors.white};
     content: '';
     box-sizing: border-box;
+    background-color: ${theme.colors.white};
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
   }
 `
 
