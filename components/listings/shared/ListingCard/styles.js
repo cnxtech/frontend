@@ -1,8 +1,9 @@
-import styled, {createGlobalStyle} from 'styled-components'
+import styled from 'styled-components'
 import theme from '@emcasa/ui'
-
+import Text from '@emcasa/ui-dom/components/Text'
+import {ListingSliderElementsStyles} from 'components/listings/show/ListingSlider/styles'
 export const MIN_CARD_WIDTH = 280
-export const LISTING_CARD_IMAGE_HEIGHT = 140
+export const LISTING_CARD_IMAGE_HEIGHT = 164
 
 export const Wrapper = styled.article`
   position: relative;
@@ -12,7 +13,7 @@ export const Wrapper = styled.article`
     z-index: 2;
 
     svg {
-      transition: transform .45s cubic-bezier(.4, .2, 0, 1);
+      transition: transform 0.45s cubic-bezier(0.4, 0.2, 0, 1);
     }
 
     &:hover {
@@ -42,6 +43,8 @@ export const Container = styled.a`
     box-shadow: 0 0 2px ${theme.colors.pink};
   }
 
+  ${ListingSliderElementsStyles}
+
   img {
     box-sizing: border-box;
     object-fit: cover;
@@ -56,4 +59,21 @@ export const Title = styled.h5`
   left: 0;
   color: white;
   z-index: -1;
+`
+
+export const PaginationTextWrapper = styled.div`
+  z-index: 3;
+  position: absolute;
+  top: ${theme.space[2]}px;
+  left: ${theme.space[2]}px;
+  padding: ${theme.space[1]}px ${theme.space[2]}px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.4);
+`
+
+export const PaginationText = styled(Text)`
+  color: ${theme.colors.white};
+  font-size: ${theme.fontSizes[1]}px;
+  font-weight: ${theme.fontWeights[2]};
+  margin: 0;
 `
