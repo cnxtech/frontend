@@ -1,6 +1,7 @@
-import get from 'lodash/get'
+import get from 'lodash/fp/get'
 import {Component} from 'react'
 import Router from 'next/router'
+import styled from 'styled-components'
 import {
   getListingFiltersFromState,
   getLocationFromPath
@@ -45,9 +46,21 @@ const LOCATION_OPTIONS = {
   }
 }
 
+const MapContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  .gm-fullscreen-control,
+  .gm-bundled-control {
+    transform: translateY(
+      ${(props) => props.filterHeight + props.theme.space[4]}px
+    );
+  }
+`
+
 class ListingMapSearch extends Component {
   state = {
     location: undefined,
+    filterHeight: 0,
     height: `calc(100vh - ${HEADER_HEIGHT})`
   }
 
@@ -84,29 +97,42 @@ class ListingMapSearch extends Component {
     })
   }
 
+  onResizeFilter = ({isRowExpanded, bodyHeight, rowHeight}) => {
+    console.log({isRowExpanded, bodyHeight, rowHeight})
+    this.setState({filterHeight: isRowExpanded ? bodyHeight : rowHeight})
+  }
+
   renderMap = ({data, loading, error}) => {
     const {user} = this.props
+    const {filterHeight} = this.state
     const location = this.location
     if (!location || loading) return <div />
     if (error) return <p>ERROR</p>
-    const listings = get(data || {}, 'listings.listings', [])
+    const listings = (data && data.listings && data.listings.listings) || []
     return (
-      <Map
-        user={user}
-        data={listings}
-        getInitialFrame={({markers}) => markers}
-        defaultZoom={10}
-        defaultCenter={location.center}
-        getInitialFrame={({markers}) => markers}
-        options={location}
-      >
-        <MapControl m={0} position="top">
-          <View width="100vw">eyyy lmao</View>
-        </MapControl>
-        <MapControl position="top-right">
-          <View width="40px" height="40px" />
-        </MapControl>
-      </Map>
+      <MapContainer filterHeight={filterHeight}>
+        <Map
+          user={user}
+          data={listings}
+          getInitialFrame={({markers}) => markers}
+          defaultZoom={10}
+          defaultCenter={location.center}
+          getInitialFrame={({markers}) => markers}
+          options={location}
+        >
+          <MapControl m={0} width="100vw" bg="white" position="top">
+            <View pr={2} pl={2}>
+              <ListingFilter
+                onLayout={this.onResizeFilter}
+                onExpandRow={this.onResizeFilter}
+                onCollapseRow={this.onResizeFilter}
+                onSubmit={this.onChangeFilter}
+                values={{}}
+              />
+            </View>
+          </MapControl>
+        </Map>
+      </MapContainer>
     )
   }
 

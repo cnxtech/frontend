@@ -1694,10 +1694,10 @@
   dependencies:
     lodash.once "^4.1.1"
 
-"@emcasa/ui-dom@2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@emcasa/ui-dom/-/ui-dom-2.1.3.tgz#8e6dbb73166a56d02f63ba29e727aa20ee761109"
-  integrity sha512-6p0eSy7XdzuLyQNnQ/i8366FRKwsb633dHiEJUrCCrxFRSkhOaw/NdgtrZwCxrhRGo/176eUtMaaJ0MA1qxF5A==
+"@emcasa/ui-dom@2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@emcasa/ui-dom/-/ui-dom-2.1.4.tgz#0e6059771a64bdc0f172e72111c978ff4a08f480"
+  integrity sha512-Is2X7QqgUhbpH4AFRmpjeeM9swV0A3znIP+XDGZGPKWsiuUHSi+fRRvB+w+GzZPWk/criWUNEPd9xtnmXc3Fbg==
   dependencies:
     "@emcasa/ui" "^2.1.3"
     "@rebass/grid" "6.0.0-4"
