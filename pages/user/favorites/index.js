@@ -18,7 +18,6 @@ import Map from 'components/listings/shared/ListingsMap'
 import ContactSuccess from 'components/listings/show/ContactSuccess'
 import {
   log,
-  PROFILE_FAVORITES_EXPLORE_LISTINGS,
   PROFILE_FAVORITES_VIEW_LISTING,
   PROFILE_FAVORITES_VIEW_MAP,
   PROFILE_FAVORITES_SCHEDULE_VISIT
@@ -214,17 +213,6 @@ class UserFavorites extends Component {
                   </Row>
                   <Text textAlign="center">Navegue pelos imóveis e salve os seus preferidos clicando no ícone do coração.</Text>
                   <Text textAlign="center">Eles ajudam os especialistas de vendas a entenderem melhor o que você procura.</Text>
-                  <View margin="auto" mt={4}>
-                    <Link href="/imoveis">
-                      <Button
-                        active
-                        height="tall"
-                        onClick={() => {log(PROFILE_FAVORITES_EXPLORE_LISTINGS)}}
-                      >
-                        Explorar
-                      </Button>
-                    </Link>
-                  </View>
                 </NoListingsContainer>
               )
             }
