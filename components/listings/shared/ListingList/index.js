@@ -241,8 +241,8 @@ class ListingList extends Component {
 
     return (
       <Query query={GET_LISTINGS_COORDINATES} variables={{filters}} ssr={false}>
-        {({data: {listings: mapListings}}) => {
-          if (!mapListings) {
+        {({data}) => {
+          if (!data || !data.listings || !data.listings.mapListings) {
             return <MapContainer />
           }
           return (
