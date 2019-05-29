@@ -5,7 +5,7 @@ import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
 import Icon from '@emcasa/ui-dom/components/Icon'
 import Button from '@emcasa/ui-dom/components/Button'
-import Container, {Main} from './styles'
+import {Main} from './styles'
 import {
   log,
   PROFILE_FAVORITES_GO_TO_HOME
@@ -14,7 +14,7 @@ import {
 export default React.forwardRef(function UserFavoritesHeader(props, ref) {
   const {favorites, viewIcon, viewLabel, onInterestCreate, onClickView, loading} = props
   return (
-    <Container ref={ref}>
+    <div ref={ref}>
       <Main>
         <Row
           width="100%"
@@ -67,7 +67,6 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
         </Text>
         <Row width={['100%', null, null, 'auto']} mt={[2, null, null, 0]}>
           <Button
-            className="desktop-only"
             mr={2}
             fontSize="small"
             onClick={() => {
@@ -75,7 +74,7 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
               Router.push('/')
             }}
           >
-            Voltar para home
+            Voltar
           </Button>
             <Button
               active
@@ -89,6 +88,6 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
             </Button>
         </Row>
       </Row>
-    </Container>
+    </div>
   )
 })
