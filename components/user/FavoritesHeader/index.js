@@ -8,7 +8,7 @@ import Button from '@emcasa/ui-dom/components/Button'
 import {Main} from './styles'
 import {
   log,
-  PROFILE_FAVORITES_GO_TO_HOME
+  PROFILE_FAVORITES_BACK
 } from 'lib/logging'
 
 export default React.forwardRef(function UserFavoritesHeader(props, ref) {
@@ -68,8 +68,8 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
             mr={2}
             fontSize="small"
             onClick={() => {
-              log(PROFILE_FAVORITES_GO_TO_HOME)
-              Router.push('/')
+              log(PROFILE_FAVORITES_BACK)
+              Router.back()
             }}
           >
             Voltar
