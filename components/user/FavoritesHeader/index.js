@@ -5,7 +5,6 @@ import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
 import Icon from '@emcasa/ui-dom/components/Icon'
 import Button from '@emcasa/ui-dom/components/Button'
-import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import Container, {Main} from './styles'
 import {
   log,
@@ -18,10 +17,9 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
     <Container ref={ref}>
       <Main>
         <Row
-          maxWidth={LISTING_MAX_WIDTH}
           width="100%"
           m="auto"
-          p={2}
+          p={4}
           justifyContent="space-between"
           style={{boxSizing: 'border-box'}}
         >
@@ -50,7 +48,6 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
       </Main>
 
       <Row
-        maxWidth={LISTING_MAX_WIDTH}
         width="100%"
         m="auto"
         p={2}
