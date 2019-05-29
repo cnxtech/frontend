@@ -6,7 +6,11 @@ router.get('/', (req, res) => {
 })
 
 router.get('/favoritos/mapa', (req, res) => {
-  return res.locals.app.render(req, res, '/user/favorites/map', req.query)
+  return res.locals.app.render(req, res, '/user/favorites', {initialView: 'map'})
+})
+
+router.get('/favoritos', (req, res) => {
+  return res.locals.app.render(req, res, '/user/favorites', req.query)
 })
 
 module.exports = router

@@ -1,9 +1,6 @@
 import React, {Component} from 'react'
 import Router from 'next/router'
-import {
-  GET_USER_INFO,
-  GET_FAVORITE_LISTINGS
-} from 'graphql/user/queries'
+import {GET_USER_INFO} from 'graphql/user/queries'
 import {
   EDIT_PROFILE,
   EDIT_EMAIL
@@ -21,38 +18,24 @@ import pickBy from 'lodash/pickBy'
 import Head from 'next/head'
 import Link from 'next/link'
 import Form from 'components/shared/Common/Form/styles'
-import ListingCard from 'components/listings/shared/ListingCard'
-import Col from '@emcasa/ui-dom/components/Col'
 import Row from '@emcasa/ui-dom/components/Row'
-import Tab from '@emcasa/ui-dom/components/Tab'
 import Input from '@emcasa/ui-dom/components/Input'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
-import { getPhoneParts, getPhoneDisplay } from 'lib/user'
+import {getPhoneParts, getPhoneDisplay} from 'lib/user'
 import {
   log,
   PROFILE_OPEN,
-  PROFILE_MY_PROFILE,
-  PROFILE_FAVORITES,
   PROFILE_LOGOUT,
   PROFILE_EDIT,
   PROFILE_EDIT_CANCEL,
   PROFILE_EDIT_SAVE,
-  PROFILE_FAVORITES_EXPLORE_LISTINGS
+  PROFILE_OPEN_FAVORITES
 } from 'lib/logging'
 import {
-  TabWrapper,
   InitialView,
-  ProfileAvatar,
-  ProfileList,
-  Icon
+  ProfileAvatar
 } from './styles'
-
-const MY_PROFILE_LABEL = 'Meu Perfil'
-const FAVORITES_LABEL = 'Favoritos'
-
-export const MY_PROFILE_TAB = 'profile'
-export const FAVORITES_TAB = 'favorites'
 
 class UserProfile extends Component {
   constructor(props) {
@@ -66,8 +49,7 @@ class UserProfile extends Component {
     hasChanged: false,
     errors: {},
     nameFieldValue: '',
-    emailFieldValue: '',
-    initialTabApplied: false
+    emailFieldValue: ''
   }
 
   static async getInitialProps(context) {
@@ -77,11 +59,9 @@ class UserProfile extends Component {
     }
 
     const currentUser = {id: userId}
-    const initialTab = context && context.req && context.req.query && context.req.query.tab ? context.req.query.tab : MY_PROFILE_TAB
 
     try {
       return {
-        initialTab,
         currentUser
       }
     } catch (e) {
@@ -203,7 +183,7 @@ class UserProfile extends Component {
         {({loading, error, data}) => {
           if (loading) return <div />
           const userProfile = data ? data.userProfile : null
-          const { name, email, phone } = userProfile
+          const {name, email, phone} = userProfile
           const phoneParts = getPhoneParts(phone)
           const phoneDisplay = getPhoneDisplay(phoneParts)
           if (error) return `Error!: ${error}`
@@ -247,9 +227,19 @@ class UserProfile extends Component {
                   >
                     Editar
                   </Button>
+                  <Link href="/profile/favorites" as="/meu-perfil/favoritos">
+                    <Button
+                      fluid
+                      height="tall"
+                      onClick={() => {log(PROFILE_OPEN_FAVORITES)}}
+                    >
+                      Ver meus favoritos
+                    </Button>
+                  </Link>
                   <Link href="/auth/logout">
                     <Button
                       fluid
+                      link
                       height="tall"
                       onClick={() => {log(PROFILE_LOGOUT)}}
                     >
@@ -275,7 +265,7 @@ class UserProfile extends Component {
                 {({loading, data}) => {
                   if (loading) return <div />
                   const userProfile = data ? data.userProfile : null
-                  const { name, email } = userProfile
+                  const {name, email} = userProfile
                   this.checkFieldsChange(name, email)
 
                   return (
@@ -364,118 +354,21 @@ class UserProfile extends Component {
     )
   }
 
-  getUserFavorites = () => {
-    const {user} = this.props
-    return (
-      <Query query={GET_FAVORITE_LISTINGS}>
-        {({loading, error, data}) => {
-          if (loading) return <div />
-          if (error) return `Error!: ${error}`
-          const userProfile = data ? data.userProfile : null
-          if (userProfile.favorites.length > 0) {
-            return (
-              <ProfileList
-                width="100%"
-                flexWrap="wrap"
-                justifyContent="space-between"
-              >
-                {userProfile.favorites.map((listing) => {
-                  return (
-                    <ListingCard
-                      key={listing.id}
-                      listing={listing}
-                      currentUser={user}
-                      loading={loading}
-                      favorited={userProfile.favorites || []}
-                    />
-                  )
-                })}
-              </ProfileList>
-            )
-          } else {
-            return (
-              <InitialView maxWidth="440px">
-                <Col
-                  width="100%"
-                  alignItems="center"
-                >
-                  <Text
-                    textAlign="center"
-                    fontSize="large"
-                    fontWeight="bold"
-                  >Você não cadastrou nenhum imóvel</Text>
-                  <Row
-                    justifyContent="center"
-                    py={5}
-                  >
-                    <Icon icon="/static/svg-icons/happy-face-favorite.svg"/>
-                  </Row>
-                  <Text
-                    textAlign="center"
-                    color="gray"
-                  >Navegue pelos nosso imóveis e dê um coração para os que você mais gostar. Esses imóveis ficarão salvos aqui nessa lista para você ver e rever quando quiser.</Text>
-                  <Link href="/imoveis">
-                    <Button
-                      active
-                      fluid
-                      height="tall"
-                      onClick={() => {log(PROFILE_FAVORITES_EXPLORE_LISTINGS)}}
-                    >Explorar</Button>
-                  </Link>
-                </Col>
-              </InitialView>
-            )
-          }
-        }}
-      </Query>
-    )
-  }
-
   render() {
     const seoTitle = 'EmCasa | Meu Perfil'
-    const { initialTab, currentUser } = this.props
-    const { initialTabApplied } = this.state
+    const {currentUser} = this.props
     if (!currentUser) {
       return null
     }
-
-    let profileLabelProps = {}
-    let favoritesLabelProps = {}
-    if (!initialTabApplied) {
-      profileLabelProps = {selected: initialTabApplied ? null : initialTab === MY_PROFILE_TAB}
-      favoritesLabelProps = {selected: initialTabApplied ? null : initialTab === FAVORITES_TAB}
-    }
-
     return (
       <>
         <Head>
           <title>{seoTitle}</title>
           <meta name="twitter:title" content={seoTitle} />
         </Head>
-        <TabWrapper>
-          <Tab.Group onClick={(e) => {
-            this.setState({
-              initialTabApplied: true
-            })
-            if (e.target) {
-              const { target } = e
-              if (target.tagName.toLowerCase() === 'button') {
-                if (target.innerText === MY_PROFILE_LABEL) {
-                  log(PROFILE_MY_PROFILE)
-                } else if (target.innerText === FAVORITES_LABEL) {
-                  log(PROFILE_FAVORITES)
-                }
-              }
-            }
-          }}>
-            <Tab label={MY_PROFILE_LABEL} {...profileLabelProps}>
-              {this.state.editingProfile ? this.getProfileForm() : this.getInitialView()}
-            </Tab>
-            <Tab label={FAVORITES_LABEL} {...favoritesLabelProps}>
-              {this.getUserFavorites()}
-            </Tab>
-          </Tab.Group>
-        </TabWrapper>
+        <Row m={4}>
+          {this.state.editingProfile ? this.getProfileForm() : this.getInitialView()}
+        </Row>
       </>
     )
   }
