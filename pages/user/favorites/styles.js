@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import theme from 'config/theme'
 import View from '@emcasa/ui-dom/components/View'
+import Icon from '@emcasa/ui-dom/components/Icon'
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
@@ -8,23 +9,21 @@ import {Container} from 'components/listings/shared/ListingCard/styles'
 import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import breakpoint from '@emcasa/ui/lib/styles/breakpoint'
 import {MIN_CARD_WIDTH} from 'components/listings/shared/ListingCard/styles'
+import {
+  CircleStyle,
+  BUTTON_LIKE_CIRCLE_ICON_HEART_WIDTH,
+  BUTTON_LIKE_CIRCLE_ICON_HEART_HEIGHT
+} from 'components/shared/Common/Buttons/Like/styles'
 
 const CARD_GRID_MEDIA_QUERY = `only screen and (max-width: ${LISTING_MAX_WIDTH + (theme.space[4] * 2)}px)`
-export const PROFILE_TABWRAPPER_MAX_WIDTH = 710
-export const PROFILE_INITIALVIEW_MAX_WIDTH = 414
-
-export const Icon = styled.div`
-  background-image: url(${props => props.icon});
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 70px;
-  height: 70px;
-`
+const BUTTON_LIKE_CIRCLE_HEIGHT = 60
+const PROFILE_TABWRAPPER_MAX_WIDTH = 710
 
 export const InitialView = styled(Row)`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   margin: ${theme.space[6]}px auto ${theme.space[4]}px;
-  max-width: ${({maxWidth}) => maxWidth ? maxWidth : `${PROFILE_INITIALVIEW_MAX_WIDTH}px`};
 
   ${Text} {
     display: block;
@@ -61,4 +60,17 @@ export const ProfileList = styled.div`
     margin: 0;
     width: 100%;
   }
+`
+
+export const HeartContainer = styled.div`
+  ${CircleStyle}
+  position: relative;
+  height: ${BUTTON_LIKE_CIRCLE_HEIGHT}px;
+  width: ${BUTTON_LIKE_CIRCLE_HEIGHT}px;
+`
+
+export const HeartIcon = styled(Icon)`
+  position: absolute;
+  top: 20px;
+  left: 20px;
 `
