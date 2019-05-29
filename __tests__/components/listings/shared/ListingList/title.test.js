@@ -9,7 +9,6 @@ import {
 } from 'constants/listing-locations'
 
 import {
-  getTitleTextByFilters,
   getTitleTextByParams
 } from 'components/listings/shared/ListingList/title'
 
@@ -52,19 +51,6 @@ describe('Listing page title', () => {
   it('returns the base title', () => {
     const params = []
     const title = getTitleTextByParams(params, DISTRICTS)
-    expect(title).toBe(`${BUY_TITLE_BASE} ${BUY_TITLE_DEFAULT_END}`)
-  })
-
-  it('returns the base title when filter has one neighborhood', () => {
-    const neighborhoods = ['copacabana']
-    const title = getTitleTextByFilters(neighborhoods, DISTRICTS)
-    const {state, city, name} = DISTRICTS.find(value => value.nameSlug === neighborhoods[0])
-    expect(title).toBe(`${BUY_TITLE_BASE} ${BUY_TITLE_NEIGHBORHOOD_PREPOSITION} ${name}, ${city} - ${state}`)
-  })
-
-  it('returns the base title when filter has more than one neighborhood', () => {
-    const neighborhoods = ['copacabana', 'perdizes']
-    const title = getTitleTextByFilters(neighborhoods, DISTRICTS)
     expect(title).toBe(`${BUY_TITLE_BASE} ${BUY_TITLE_DEFAULT_END}`)
   })
 
