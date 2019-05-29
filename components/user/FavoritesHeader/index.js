@@ -50,8 +50,7 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
       <Row
         width="100%"
         m="auto"
-        px={4}
-        pt={4}
+        p={4}
         flexDirection={['column', null, null, 'row']}
         alignItems="center"
         justifyContent="space-between"

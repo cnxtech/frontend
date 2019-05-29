@@ -51,8 +51,7 @@ export const ProfileList = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(${MIN_CARD_WIDTH}px, 1fr));
   grid-gap: ${theme.space[4]}px;
 
-
-  margin: ${theme.space[5]}px auto;
+  margin: 0 auto ${theme.space[5]}px auto;
 
   @media screen and ${breakpoint.down('tablet')} {
     grid-template-columns: repeat(auto-fill, minmax(${Math.round((PROFILE_TABWRAPPER_MAX_WIDTH / 3) - (theme.space[2] * 2))}px, 1fr));
