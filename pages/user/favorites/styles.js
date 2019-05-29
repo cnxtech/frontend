@@ -7,6 +7,7 @@ import Button from '@emcasa/ui-dom/components/Button'
 import {Container} from 'components/listings/shared/ListingCard/styles'
 import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import breakpoint from '@emcasa/ui/lib/styles/breakpoint'
+import {MIN_CARD_WIDTH} from 'components/listings/shared/ListingCard/styles'
 
 const CARD_GRID_MEDIA_QUERY = `only screen and (max-width: ${LISTING_MAX_WIDTH + (theme.space[4] * 2)}px)`
 export const PROFILE_TABWRAPPER_MAX_WIDTH = 710
@@ -47,9 +48,10 @@ export const CardContainer = styled(View)`
 export const ProfileList = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 33% 33% 33%;
-  grid-column-gap: ${theme.space[2]}px;
-  grid-row-gap: ${theme.space[2]}px;
+  grid-template-columns: repeat(auto-fill, minmax(${MIN_CARD_WIDTH}px, 1fr));
+  grid-gap: ${theme.space[4]}px;
+
+
   margin: ${theme.space[5]}px auto;
 
   @media screen and ${breakpoint.down('tablet')} {
