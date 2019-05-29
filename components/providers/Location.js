@@ -95,7 +95,7 @@ export default class LocationProvider extends PureComponent {
 export const withUserLocation = (Target) => (props) => (
   <LocationProvider>
     {({location, city}) => (
-      <Target userLocation={location} userCity={city} {...props} />
+      <Target {...props} userLocation={location} userCity={city} />
     )}
   </LocationProvider>
 )

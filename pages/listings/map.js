@@ -10,8 +10,8 @@ import {
 import {hoistStatics} from 'recompose'
 import View from '@emcasa/ui-dom/components/View'
 import MapControl from '@emcasa/ui-dom/components/Map/Control'
-import {withUserLocation} from 'components/providers/Location'
-import ListingFilter from 'components/listings/shared/ListingFilter'
+import LocationProvider, {withUserLocation} from 'components/providers/Location'
+import ActionsBar from 'components/shared/ActionsBar'
 import ParamsMapper from 'utils/params-mapper'
 import {Query} from 'react-apollo'
 import {HEADER_HEIGHT} from 'constants/dimensions'
@@ -20,7 +20,6 @@ import {GET_DISTRICTS} from 'graphql/listings/queries'
 import ListingHead from './components/head'
 import LdJson from './components/ld-json'
 import Map from 'components/listings/shared/ListingsMap'
-import {NEIGHBORHOOD_SELECTION_CHANGE} from '../../components/shared/NeighborhoodPicker/events'
 
 const DEFAULT_LOCATION = 'sao-paulo'
 
@@ -64,9 +63,9 @@ const MapContainer = styled.div`
   height: 100%;
   .gm-fullscreen-control,
   .gm-bundled-control {
-    margin-right: ${themeGet('space.4')}px;
+    margin-right: ${themeGet('space.4')}px !important;
     transform: translateY(
-      ${(props) => props.filterHeight + props.theme.space[4]}px
+      ${({theme}) => theme.buttonHeight[1] + theme.space[5]}px
     );
   }
 `
@@ -101,14 +100,16 @@ class ListingMapSearch extends Component {
     }
     return {
       params: params || {},
-      renderFooter: false,
-      headerSearch: true
+      renderFooter: false
     }
   }
 
   get citySlug() {
     const {citySlug} = this.state.filters
-    return Object.keys(LOCATION_OPTIONS).find((city) => city === citySlug) || DEFAULT_LOCATION
+    return (
+      Object.keys(LOCATION_OPTIONS).find((city) => city === citySlug) ||
+      DEFAULT_LOCATION
+    )
   }
 
   get location() {
@@ -117,10 +118,6 @@ class ListingMapSearch extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.onResize)
-    window.addEventListener(
-      NEIGHBORHOOD_SELECTION_CHANGE,
-      this.onChangeNeighborhoods
-    )
     this.onResize()
     Router.events.on('routeChangeStart', this.onChangeRoute)
     if (!this.props.params.citySlug) {
@@ -134,34 +131,21 @@ class ListingMapSearch extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize)
-    window.removeEventListener(
-      NEIGHBORHOOD_SELECTION_CHANGE,
-      this.onChangeNeighborhoods
-    )
     Router.events.off('routeChangeStart', this.onChangeRoute)
+  }
+
+  updateMapOptions = () => {
+    this.state.map.setOptions(this.location.options)
   }
 
   onMapLoaded = ({map}) => {
     this.setState({map})
-    const interval = setInterval(() => {
-      const filter = this.filterRef.current
-      const body = filter && filter.bodyRef.current
-      const bodyHeight = body ? body.offsetHeight || body.clientHeight : 0
-      if (filter && bodyHeight) {
-        this.filterRef.current.measureBody()
-        clearInterval(interval)
-      }
-    }, 500)
   }
 
   onResize = () => {
     this.setState({
       height: window.innerHeight - HEADER_HEIGHT
     })
-  }
-
-  onResizeFilter = ({height}) => {
-    this.setState({filterHeight: height})
   }
 
   onChangeRoute = (path) => {
@@ -179,23 +163,27 @@ class ListingMapSearch extends Component {
   }
 
   onChangeFilter = (filters) => {
+    const prevCitySlug = this.state.filters.citySlug
     const newPath = ParamsMapper.mapParamsToUrl(filters)
     Router.push('/listings/map', `/imoveis/mapa${newPath}`, {
       shallow: true
     })
-    this.setState({filters})
+    this.setState(
+      {filters},
+      filters.citySlug !== prevCitySlug ? this.updateMapOptions : undefined
+    )
   }
 
   renderMap = ({data, error}) => {
-    const {user} = this.props
-    const {filters, filterHeight} = this.state
+    const {user, userCity} = this.props
+    const {filters} = this.state
+    const {citySlug} = filters
     const location = this.location
     if (error) return <p>ERROR</p>
     const listings = (data && data.listings && data.listings.listings) || []
     return (
-      <MapContainer filterHeight={filterHeight}>
+      <MapContainer>
         <Map
-          key={this.citySlug}
           ref={this.mapRef}
           user={user}
           data={listings}
@@ -206,14 +194,14 @@ class ListingMapSearch extends Component {
           onMapLoaded={this.onMapLoaded}
         >
           <MapControl m={0} width="100vw" bg="white" position="top-center">
-            <View pr={4} pl={4}>
-              <ListingFilter
-                innerRef={this.filterRef}
-                onLayout={this.onResizeFilter}
-                onSubmit={this.onChangeFilter}
-                values={filters}
-              />
-            </View>
+            <ActionsBar
+              user={user}
+              currentCity={LocationProvider.getCity({citySlug}) || userCity}
+              innerRef={this.filterRef}
+              onLayout={this.onResizeFilter}
+              onSubmit={this.onChangeFilter}
+              values={filters}
+            />
           </MapControl>
         </Map>
       </MapContainer>
