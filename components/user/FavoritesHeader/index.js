@@ -5,19 +5,21 @@ import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
 import Icon from '@emcasa/ui-dom/components/Icon'
 import Button from '@emcasa/ui-dom/components/Button'
-import {LISTING_MAX_WIDTH} from 'constants/dimensions'
-import Container, {Main} from './styles'
+import {Main} from './styles'
+import {
+  log,
+  PROFILE_FAVORITES_BACK
+} from 'lib/logging'
 
 export default React.forwardRef(function UserFavoritesHeader(props, ref) {
-  const {favorites, viewIcon, viewLabel, onInterestCreate, onClickView} = props
+  const {favorites, viewIcon, viewLabel, onInterestCreate, onClickView, loading} = props
   return (
-    <Container ref={ref}>
+    <div ref={ref}>
       <Main>
         <Row
-          maxWidth={LISTING_MAX_WIDTH}
           width="100%"
           m="auto"
-          p={2}
+          p={4}
           justifyContent="space-between"
           style={{boxSizing: 'border-box'}}
         >
@@ -46,12 +48,9 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
       </Main>
 
       <Row
-        maxWidth={LISTING_MAX_WIDTH}
         width="100%"
         m="auto"
-        p={2}
-        pt={4}
-        pb={4}
+        p={4}
         flexDirection={['column', null, null, 'row']}
         alignItems="center"
         justifyContent="space-between"
@@ -62,28 +61,31 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
           <Text inline color="pink" fontSize="small">
             {favorites.length}
           </Text>{' '}
-          imóveis selecionados
+          imóveis salvos
         </Text>
         <Row width={['100%', null, null, 'auto']} mt={[2, null, null, 0]}>
           <Button
-            className="desktop-only"
             mr={2}
             fontSize="small"
-            onClick={() => Router.push('/')}
+            onClick={() => {
+              log(PROFILE_FAVORITES_BACK)
+              Router.back()
+            }}
           >
-            Voltar para home
+            Voltar
           </Button>
-          <Button
-            active
-            flex={1}
-            fontSize="small"
-            fontWeight="bold"
-            onClick={onInterestCreate}
-          >
-            Falar com Especialista
-          </Button>
+            <Button
+              active
+              flex={1}
+              fontSize="small"
+              fontWeight="bold"
+              disabled={!favorites || favorites.length === 0 || loading}
+              onClick={onInterestCreate}
+            >
+              Falar com especialista
+            </Button>
         </Row>
       </Row>
-    </Container>
+    </div>
   )
 })
