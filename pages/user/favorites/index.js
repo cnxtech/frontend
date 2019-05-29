@@ -25,7 +25,7 @@ import {
 } from 'lib/logging'
 import {
   CardContainer,
-  InitialView,
+  NoListingsContainer,
   ProfileList,
   HeartContainer,
   HeartIcon
@@ -201,11 +201,12 @@ class UserFavorites extends Component {
               }
             } else {
               return (
-                <InitialView>
+                <NoListingsContainer>
                   <Row
                     justifyContent="center"
                     alignItems="center"
                     py={5}
+                    mx={4}
                   >
                     <HeartContainer>
                       <HeartIcon name="heart" />
@@ -224,7 +225,7 @@ class UserFavorites extends Component {
                       </Button>
                     </Link>
                   </View>
-                </InitialView>
+                </NoListingsContainer>
               )
             }
           }}

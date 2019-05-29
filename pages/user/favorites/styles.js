@@ -9,21 +9,16 @@ import {Container} from 'components/listings/shared/ListingCard/styles'
 import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import breakpoint from '@emcasa/ui/lib/styles/breakpoint'
 import {MIN_CARD_WIDTH} from 'components/listings/shared/ListingCard/styles'
-import {
-  CircleStyle,
-  BUTTON_LIKE_CIRCLE_ICON_HEART_WIDTH,
-  BUTTON_LIKE_CIRCLE_ICON_HEART_HEIGHT
-} from 'components/shared/Common/Buttons/Like/styles'
+import {CircleStyle} from 'components/shared/Common/Buttons/Like/styles'
 
 const CARD_GRID_MEDIA_QUERY = `only screen and (max-width: ${LISTING_MAX_WIDTH + (theme.space[4] * 2)}px)`
 const BUTTON_LIKE_CIRCLE_HEIGHT = 60
 const PROFILE_TABWRAPPER_MAX_WIDTH = 710
 
-export const InitialView = styled(Row)`
+export const NoListingsContainer = styled(Row)`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin: ${theme.space[6]}px auto ${theme.space[4]}px;
+  margin: 0 ${theme.space[4]}px;
 
   ${Text} {
     display: block;
