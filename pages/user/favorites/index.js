@@ -11,7 +11,6 @@ import ListingCard from 'components/listings/shared/ListingCard'
 import {GET_USER_INFO, GET_FAVORITE_LISTINGS} from 'graphql/user/queries'
 import {createInterest} from 'services/interest-api'
 import {getUserInfo} from 'lib/user'
-import Col from '@emcasa/ui-dom/components/Col'
 import Row from '@emcasa/ui-dom/components/Row'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
@@ -26,9 +25,10 @@ import {
 } from 'lib/logging'
 import {
   CardContainer,
-  InitialView,
+  NoListingsContainer,
   ProfileList,
-  Icon
+  HeartContainer,
+  HeartIcon
 } from './styles'
 
 const VIEW_LIST = 'list'
@@ -201,38 +201,31 @@ class UserFavorites extends Component {
               }
             } else {
               return (
-                <InitialView maxWidth="440px">
-                  <Col
-                    width="100%"
+                <NoListingsContainer>
+                  <Row
+                    justifyContent="center"
                     alignItems="center"
+                    py={5}
+                    mx={4}
                   >
-                    <Text
-                      textAlign="center"
-                      fontSize="large"
-                      fontWeight="bold"
-                    >Você não cadastrou nenhum imóvel</Text>
-                    <Row
-                      justifyContent="center"
-                      py={5}
-                    >
-                      <Icon icon="/static/svg-icons/happy-face-favorite.svg"/>
-                    </Row>
-                    <Text
-                      textAlign="center"
-                      color="gray"
-                    >Navegue pelos nosso imóveis e dê um coração para os que você mais gostar. Esses imóveis ficarão salvos aqui nessa lista para você ver e rever quando quiser.</Text>
+                    <HeartContainer>
+                      <HeartIcon name="heart" />
+                    </HeartContainer>
+                  </Row>
+                  <Text textAlign="center">Navegue pelos imóveis e salve os seus preferidos clicando no ícone do coração.</Text>
+                  <Text textAlign="center">Eles ajudam os especialistas de vendas a entenderem melhor o que você procura.</Text>
+                  <View margin="auto" mt={4}>
                     <Link href="/imoveis">
                       <Button
                         active
-                        fluid
                         height="tall"
                         onClick={() => {log(PROFILE_FAVORITES_EXPLORE_LISTINGS)}}
                       >
                         Explorar
                       </Button>
                     </Link>
-                  </Col>
-                </InitialView>
+                  </View>
+                </NoListingsContainer>
               )
             }
           }}

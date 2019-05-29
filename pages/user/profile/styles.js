@@ -4,7 +4,7 @@ import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
 
-export const PROFILE_INITIALVIEW_MAX_WIDTH = 414
+const PROFILE_INITIALVIEW_MAX_WIDTH = 414
 
 export const ProfileAvatar = styled(Row)`
   width: 100px;
