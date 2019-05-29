@@ -3,19 +3,38 @@ import {PureComponent} from 'react'
 import * as Sentry from '@sentry/browser'
 import slugify from 'slug'
 import {getCookie, setCookie} from 'lib/session'
+import {cities} from 'constants/cities'
 
 const pickLocation = pick(['citySlug', 'city', 'region', 'country', 'll'])
 
 const LOCATION_COOKIE = 'userLocation'
 
 export default class LocationProvider extends PureComponent {
+  static defaultProps = {
+    defaultCitySlug: 'sao-paulo'
+  }
+
   state = {}
 
   constructor(props) {
     super(props)
     if (process.browser) {
+      const {defaultCitySlug} = props
       // Populate initial state with previous location from cookie
-      this.state = this.constructor.getLocation()
+      const location = this.constructor.getLocation()
+      const city = this.constructor.getCity(
+        Object.assign({citySlug: defaultCitySlug}, location)
+      )
+      this.state = {location, city}
+    }
+  }
+
+  static getCity(location) {
+    if (location && location.citySlug) {
+      const cityFound = cities.find(
+        (city) => city.citySlug === location.citySlug
+      )
+      return cityFound ? cityFound : undefined
     }
   }
 
@@ -58,8 +77,11 @@ export default class LocationProvider extends PureComponent {
   async componentDidMount() {
     try {
       // Attempt to update location on the client-side
-      const location = await this.constructor.fetch()
-      this.setState(location)
+      const {defaultCitySlug} = this.props
+      const {fetch: fetchLocation, getCity} = this.constructor
+      const location = await fetchLocation()
+      const city = getCity(Object.assign({citySlug: defaultCitySlug}, location))
+      this.setState({location, city})
     } catch (e) {
       Sentry.captureException(e)
     }
@@ -72,6 +94,8 @@ export default class LocationProvider extends PureComponent {
 
 export const withUserLocation = (Target) => (props) => (
   <LocationProvider>
-    {(location) => <Target userLocation={location} {...props} />}
+    {({location, city}) => (
+      <Target userLocation={location} userCity={city} {...props} />
+    )}
   </LocationProvider>
 )
