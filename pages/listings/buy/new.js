@@ -176,7 +176,6 @@ class HomePage extends Component {
             userFeed.feed.map((item, index) => {
               return (
                 <ListingFeed
-                  client
                   key={index}
                   highlight={item.highlight}
                   title={item.title}
