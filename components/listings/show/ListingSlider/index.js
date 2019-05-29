@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import {Component} from 'react'
 import Carousel from 'react-slick'
 import theme from '@emcasa/ui'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -9,7 +9,6 @@ import CloseButton from 'components/shared/Common/Buttons/CloseButton'
 import ButtonIcon from 'components/shared/Common/Buttons'
 import {thumbnailUrl} from 'utils/image_url'
 import {downloadBlob} from 'utils/file-utils'
-import {mobileMedia} from 'constants/media'
 import {
   log,
   LISTING_DETAIL_PHOTOS_LEFT,
@@ -192,13 +191,13 @@ class ListingGallery extends Component {
 
     return (
       <Container isFullScreen={isFullScreen}>
-        {listing.images.length > 0 &&
+        {imagesLength > 0 &&
           isFullScreen && <CloseButton onClick={this.exitFullScreen} />}
         <Header isFullScreen={isFullScreen}>
           <TitleWrapper isFullScreen={isFullScreen}>
             <Title fontWeight="bold">Fotos</Title>
           </TitleWrapper>
-          {listing.images.length > 0 &&
+          {imagesLength > 0 &&
             isFullScreen &&
             matterportCode && (
             <OpenMatterportButtonWrapper isFullScreen={isFullScreen}>
@@ -238,7 +237,7 @@ class ListingGallery extends Component {
           ))}
         </Carousel>
         <PaginationTextWrapper isFullScreen={isFullScreen}>
-          <PaginationText color="dark" fontSize="small">{`${currentImage + 1} / ${listing.images.length}`}</PaginationText>
+          <PaginationText color="dark" fontSize="small">{`${currentImage + 1} / ${imagesLength}`}</PaginationText>
         </PaginationTextWrapper>
         <Background onClick={this.exitFullScreen} />
       </Container>
