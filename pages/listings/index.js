@@ -20,7 +20,6 @@ import ListingHead from './components/head'
 import ActionsBar from 'components/shared/ActionsBar'
 import {cities} from 'constants/cities'
 import LocationUtils from '../../utils/location-utils'
-import FavMessageBar from 'components/listings/shared/FavMessageBar'
 
 class ListingSearch extends Component {
   constructor(props) {
@@ -30,8 +29,7 @@ class ListingSearch extends Component {
       mapOpened: false,
       filters: clone(params.filters || {}),
       neighborhood: null,
-      currentCity: params.currentCity,
-      showFavMessageBar: false
+      currentCity: params.currentCity
     }
   }
 
@@ -72,9 +70,7 @@ class ListingSearch extends Component {
 
   componentDidMount() {
     log(LISTING_SEARCH_OPEN)
-    if (!localStorage.getItem('hideFavMessageBar')) {
-      this.setState({showFavMessageBar: true})
-    }
+
     if (!this.state.currentCity) {
       LocationUtils.getUserLocationByIp().then(this.updateCurrentCity)
     }
@@ -121,7 +117,7 @@ class ListingSearch extends Component {
 
   render() {
     const {asPath, query, params, user, client, url} = this.props
-    const {filters, currentCity, showFavMessageBar} = this.state
+    const {filters, currentCity} = this.state
     const listingFilters = getListingFiltersFromState(filters)
     const isRoot = asPath === '/'
     return (
@@ -159,14 +155,6 @@ class ListingSearch extends Component {
                           currentCity={currentCity}
                           onSubmit={this.onChangeFilter}
                           favorites={favorites}
-                        />
-                      )}
-                      {showFavMessageBar && (
-                        <FavMessageBar
-                          onClickCloseButton={() =>{
-                            localStorage.setItem('hideFavMessageBar', true)
-                            this.setState({showFavMessageBar: false})
-                          }}
                         />
                       )}
                       <ListingList
