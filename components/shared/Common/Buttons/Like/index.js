@@ -1,13 +1,12 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { captureException } from '@sentry/browser'
+import {captureException} from '@sentry/browser'
 import get from 'lodash/get'
 import {Mutation} from 'react-apollo'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faHeart from '@fortawesome/fontawesome-free-solid/faHeart'
+import Icon from '@emcasa/ui-dom/components/Icon'
 import AccountKit from 'components/shared/Auth/AccountKit'
 import {FAVORITE_LISTING, UNFAVORITE_LISTING} from 'graphql/listings/mutations'
-import { EDIT_PROFILE } from 'graphql/user/mutations'
+import {EDIT_PROFILE} from 'graphql/user/mutations'
 import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
 import FavoriteLogin from './FavoriteLogin'
 import FavoriteLoginSuccess from './FavoriteLoginSuccess'
@@ -58,7 +57,7 @@ class LikeButton extends Component {
 
       log(LISTING_SAVE_LOGIN_SUCCESS)
       favoriteListing({refetchQueries: [{query: GET_USER_LISTINGS_ACTIONS}], variables: {id: this.props.listing.id}})
-      this.setState({ showSuccess: true })
+      this.setState({showSuccess: true})
     } catch (e) {
       captureException(e)
       log(LISTING_SAVE_LOGIN_FAILED)
@@ -66,7 +65,7 @@ class LikeButton extends Component {
   }
 
   render() {
-    const { favorite, top, user, listing, textButton } = this.props
+    const {favorite, top, user, listing, textButton} = this.props
     const ButtonContainer = textButton ? TextButton : Circle
     return (
       <Mutation mutation={!favorite ? FAVORITE_LISTING : UNFAVORITE_LISTING}>
@@ -82,7 +81,7 @@ class LikeButton extends Component {
                 <FavoriteLogin
                   onClose={() => {
                     log(LISTING_SAVE_LOGIN_CLOSE)
-                    this.setState({ showLogin: false })
+                    this.setState({showLogin: false})
                   }}
                   onSignIn={(name) => {
                     this.setState({
@@ -102,7 +101,7 @@ class LikeButton extends Component {
             {this.state.showSuccess &&
               <FavoriteLoginSuccess
                 onClose={() => {
-                  this.setState({ showSuccess: false })
+                  this.setState({showSuccess: false})
                   log(LISTING_SAVE_LOGIN_DONE)
                 }}
               />
@@ -159,12 +158,12 @@ class LikeButton extends Component {
                     }
                   })
                 } else {
-                  this.setState({ showLogin: true })
+                  this.setState({showLogin: true})
                 }
               }}
               {...this.props}
             >
-              <FontAwesomeIcon icon={faHeart} size="1x" />
+              <Icon name="heart" />
             </ButtonContainer>
           </>
         }
