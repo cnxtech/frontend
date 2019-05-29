@@ -56,13 +56,17 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
         justifyContent="space-between"
         style={{boxSizing: 'border-box'}}
       >
-        <Text inline fontSize="small">
-          Você tem{' '}
-          <Text inline color="pink" fontSize="small">
-            {favorites.length}
-          </Text>{' '}
-          imóveis salvos
-        </Text>
+        {favorites.length === 0 ?
+          <Text inline fontSize="small">Você ainda não tem nenhum imóvel em Favoritos.</Text>
+        :
+          <Text inline fontSize="small">
+            Você tem{' '}
+            <Text inline color="pink" fontSize="small">
+              {favorites.length}
+            </Text>{' '}
+            {favorites.length === 1 ? 'imóvel salvo.' : 'imóveis salvos.'}
+          </Text>
+        }
         <Row width={['100%', null, null, 'auto']} mt={[2, null, null, 0]}>
           <Button
             mr={2}
