@@ -72,7 +72,8 @@ export default compose(
     })
   }),
   graphql(GET_FAVORITE_LISTINGS_IDS, {
-    skip: ({favorite}) => typeof favorite === 'boolean',
+    skip: ({user, favorite}) =>
+      !user.authenticated || typeof favorite === 'boolean',
     props: ({ownProps, data}) => ({
       favorite: Boolean(
         data && (data.favoritedListings || []).find((id) => id === ownProps.id)
