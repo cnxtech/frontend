@@ -30,6 +30,7 @@ import {
 } from 'lib/logging'
 
 const DEFAULT_LOCATION = 'sao-paulo'
+const DEFAULT_ZOOM = 10
 
 const getPositionFromHash = (hash) => {
   if (hash[0] !== '@') return {}
@@ -95,6 +96,7 @@ class ListingMapSearch extends Component {
       {
         filters,
         filterHeight: 0,
+        zoom: DEFAULT_ZOOM,
         height: `calc(100vh - ${HEADER_HEIGHT}px)`
       },
       process.browser
@@ -157,7 +159,7 @@ class ListingMapSearch extends Component {
   resetMap = () => {
     this.state.map.setOptions(this.location.options)
     this.state.map.setCenter(this.location.center)
-    this.state.map.setZoom(10)
+    this.state.map.setZoom(DEFAULT_ZOOM)
   }
 
   getInitialFrame = ({markers}) => {
@@ -213,8 +215,8 @@ class ListingMapSearch extends Component {
           ref={this.mapRef}
           user={user}
           data={listings}
-          minZoom={10}
-          defaultZoom={zoom || 10}
+          minZoom={DEFAULT_ZOOM}
+          defaultZoom={zoom}
           defaultCenter={center || location.center}
           options={Object.assign({rotateControl: true}, location.options)}
           getInitialFrame={this.getInitialFrame}
