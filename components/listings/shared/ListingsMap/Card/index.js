@@ -35,7 +35,7 @@ function ListingCard({listing, loading, onClick, favorite, user}) {
             favorite={favorite}
             listing={listing}
             user={user}
-            secondary
+            search={true}
           />
         </ButtonContainer>
 

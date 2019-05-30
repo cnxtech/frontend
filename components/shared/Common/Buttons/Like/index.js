@@ -17,6 +17,8 @@ import {
 import {
   log,
   LISTING_SEARCH_FAVORITE_LISTING,
+  LISTING_DETAIL_FAVORITE_LISTING,
+  LISTING_DETAIL_FAVORITE_RELATED_LISTING,
   LISTING_SAVE_LOGIN_OPEN,
   LISTING_SAVE_LOGIN_ACCOUNT_KIT,
   LISTING_SAVE_LOGIN_SUCCESS,
@@ -65,7 +67,7 @@ class LikeButton extends Component {
   }
 
   render() {
-    const {favorite, top, user, listing, textButton} = this.props
+    const {favorite, top, user, listing, textButton, search, related} = this.props
     const ButtonContainer = textButton ? TextButton : Circle
     return (
       <Mutation mutation={!favorite ? FAVORITE_LISTING : UNFAVORITE_LISTING}>
@@ -112,7 +114,13 @@ class LikeButton extends Component {
               onClick={(e) => {
                 e.preventDefault()
                 if (user && user.authenticated) {
-                  log(LISTING_SEARCH_FAVORITE_LISTING, {
+                  let eventToLog = LISTING_DETAIL_FAVORITE_LISTING
+                  if (related) {
+                    eventToLog = LISTING_DETAIL_FAVORITE_RELATED_LISTING
+                  } else if (search) {
+                    eventToLog = LISTING_SEARCH_FAVORITE_LISTING
+                  }
+                  log(eventToLog, {
                     listingId: listing.id,
                     favorited: !favorite
                   })
@@ -177,7 +185,9 @@ LikeButton.propTypes = {
   top: PropTypes.number,
   user: PropTypes.object,
   listing: PropTypes.object,
-  textButton: PropTypes.bool
+  textButton: PropTypes.bool,
+  search: PropTypes.bool,
+  related: PropTypes.bool
 }
 
 export default LikeButton

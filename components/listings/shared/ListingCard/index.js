@@ -33,7 +33,7 @@ class ListingCard extends Component {
   }
 
   render() {
-    let {listing, currentUser, favorited: favoritedListings} = this.props
+    let {listing, currentUser, favorited: favoritedListings, related} = this.props
     const imagesLength = listing.images.length
     const {currentImage} = this.state
 
@@ -127,11 +127,12 @@ class ListingCard extends Component {
           favorite={favorited}
           listing={listing}
           user={currentUser}
-          secondary
           top={
             LISTING_CARD_IMAGE_HEIGHT -
             (BUTTON_LIKE_CIRCLE_HEIGHT + theme.space[2])
           }
+          search={true}
+          related={related}
         />
       </Wrapper>
     )
