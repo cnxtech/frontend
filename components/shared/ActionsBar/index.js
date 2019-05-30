@@ -16,7 +16,6 @@ class ActionsBar extends Component {
   static Button = ActionButton
 
   static defaultProps = {
-    filters: {},
     favorites: [],
     currentCity: DEFAULT_CITY
   }
@@ -89,7 +88,7 @@ class ActionsBar extends Component {
 
 export default compose(
   graphql(GET_USER_LISTINGS_ACTIONS, {
-    skip: ({user}) => !user.authenticated,
+    skip: ({user, favorites}) => !user.authenticated || favorites,
     props: ({data: {userProfile}}) => ({
       favorites: (userProfile && userProfile.favorites) || []
     })

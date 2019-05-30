@@ -235,8 +235,6 @@ class ListingMapSearch extends Component {
             <ActionsBar
               user={user}
               currentCity={LocationProvider.getCity({citySlug}) || userCity}
-              innerRef={this.filterRef}
-              onLayout={this.onResizeFilter}
               onSubmit={this.onChangeFilter}
               filters={filters}
               button={
