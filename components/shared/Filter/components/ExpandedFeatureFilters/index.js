@@ -1,7 +1,8 @@
 import React, {PureComponent, Fragment} from 'react'
 import {clone} from 'utils/clone'
 import Breakpoint from '@emcasa/ui-dom/components/Breakpoint'
-import Row from '@emcasa/ui-dom/components/Col'
+import Col from '@emcasa/ui-dom/components/Col'
+import Row from '@emcasa/ui-dom/components/Row'
 import {
   RoomsFilter,
   TypesFilter,
@@ -9,6 +10,7 @@ import {
   AreaFilter,
   GarageSpotsFilter
 } from './bootstrap'
+import{FiltersRow} from './styles'
 
 class ExpandedFilters extends PureComponent {
   onChange = (key, value) => {
@@ -20,15 +22,25 @@ class ExpandedFilters extends PureComponent {
   render() {
     const {filters} = this.props
     return (
-      <Breakpoint only="phone">
-        <Row px={4}>
-          <TypesFilter onChange={this.onChange} filters={filters} />
+      <Col px={4}>
+        <TypesFilter onChange={this.onChange} filters={filters} />
+        <Breakpoint up="tablet">
+          <FiltersRow>
+            <PriceFilter onChange={this.onChange} filters={filters} />
+            <AreaFilter onChange={this.onChange} filters={filters} />
+          </FiltersRow>
+          <FiltersRow>
+            <RoomsFilter onChange={this.onChange} filters={filters} />
+            <GarageSpotsFilter onChange={this.onChange} filters={filters} />
+          </FiltersRow>
+        </Breakpoint>
+        <Breakpoint only="phone">
           <PriceFilter onChange={this.onChange} filters={filters} />
           <AreaFilter onChange={this.onChange} filters={filters} />
           <RoomsFilter onChange={this.onChange} filters={filters} />
           <GarageSpotsFilter onChange={this.onChange} filters={filters} />
-        </Row>
-      </Breakpoint>
+        </Breakpoint>
+      </Col>
     )
   }
 }
