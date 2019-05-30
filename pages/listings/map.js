@@ -1,4 +1,3 @@
-import once from 'lodash/once'
 import React, {Component} from 'react'
 import Router from 'next/router'
 import styled from 'styled-components'
@@ -78,7 +77,7 @@ class ListingMapSearch extends Component {
   filterRef = React.createRef()
 
   get initialState() {
-    const {params, userLocation} = this.props
+    const {params = {}, userLocation = {}} = this.props
     const citySlug =
       params.citySlug || userLocation.citySlug || DEFAULT_LOCATION
     const location = LOCATION_OPTIONS[citySlug] || {}
@@ -190,7 +189,7 @@ class ListingMapSearch extends Component {
           getInitialFrame={({markers}) => markers}
           defaultZoom={10}
           defaultCenter={location.center}
-          options={location.options}
+          options={Object.assign({rotateControl: true}, location.options)}
           onMapLoaded={this.onMapLoaded}
         >
           <MapControl m={0} width="100vw" bg="white" position="top-center">
