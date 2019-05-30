@@ -5,7 +5,7 @@ import ListingsGrid from 'components/listings/shared/ListingsGrid'
 
 class ListingFeedGrid extends Component {
   render() {
-    const {children, currentUser, listings, favorites} = this.props
+    const {children, currentUser, listings, favorites, related} = this.props
     return (
       <Fragment>
         <ListingsGrid>
@@ -15,7 +15,7 @@ class ListingFeedGrid extends Component {
               listing={listing}
               currentUser={currentUser}
               favorited={favorites}
-              related
+              related={related}
             />
           ))}
         </ListingsGrid>
@@ -29,7 +29,8 @@ ListingFeedGrid.propTypes = {
   listings: PropTypes.array,
   currentUser: PropTypes.object,
   title: PropTypes.string,
-  favorites: PropTypes.array
+  favorites: PropTypes.array,
+  related: PropTypes.bool
 }
 
 export default ListingFeedGrid
