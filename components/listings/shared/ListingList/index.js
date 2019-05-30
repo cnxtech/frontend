@@ -3,23 +3,18 @@ import {Query} from 'react-apollo'
 import {FadeLoader} from 'react-spinners'
 import theme from '@emcasa/ui'
 import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
-import {
-  GET_LISTINGS,
-  GET_LISTING,
-  GET_LISTINGS_COORDINATES
-} from 'graphql/listings/queries'
+import {GET_LISTINGS, GET_LISTING} from 'graphql/listings/queries'
 import differenceBy from 'lodash/differenceBy'
 import map from 'lodash/map'
 import ListingInfiniteScroll from 'components/shared/ListingInfiniteScroll'
 import ListingCard from 'components/listings/shared/ListingCard'
-import Map from 'components/listings/shared/ListingMap'
 import ListingsNotFound from 'components/listings/shared/NotFound'
 import Neighborhood from 'components/listings/shared/Neighborhood'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import {getTitleTextByFilters, getTitleTextByParams} from './title'
 import {log, LISTING_SEARCH_MAP_PIN, LISTING_SEARCH_RESULTS} from 'lib/logging'
-import {Container, MapContainer, Title} from './styles'
+import {Container, Title} from './styles'
 import {buildSlug} from 'lib/listings'
 import {thumbnailUrl} from 'utils/image_url'
 
@@ -235,33 +230,6 @@ class ListingList extends Component {
     this.setState({filters})
   }
 
-  getMap = () => {
-    const {highlight} = this.state
-    const {filters} = this.props
-
-    return (
-      <Query query={GET_LISTINGS_COORDINATES} variables={{filters}} ssr={false}>
-        {({data}) => {
-          if (!data || !data.listings || !data.listings.mapListings) {
-            return <MapContainer />
-          }
-          return (
-            <MapContainer>
-              <Map
-                zoom={13}
-                onSelect={this.onSelectListing}
-                listings={mapListings.listings}
-                highlight={highlight}
-                onChange={this.onChangeMap}
-                updateAfterApiCall
-              />
-            </MapContainer>
-          )
-        }}
-      </Query>
-    )
-  }
-
   getItemList = (listings) => {
     if (process.browser) {
       log(LISTING_SEARCH_RESULTS, {listings})
@@ -272,7 +240,7 @@ class ListingList extends Component {
     listings.map((listing, index) => {
       const name = `${listing.type} à venda na ${listing.address.street} - ${
         listing.address.neighborhood
-      }, ${listing.address.city} - ID${listing.id}`
+        }, ${listing.address.city} - ID${listing.id}`
       const photos = []
 
       listing.images.map((img, imgIndex) => {
@@ -358,7 +326,6 @@ class ListingList extends Component {
                 </Title>
                 {this.getListings(listings, fetchMore, loading)}
               </Col>
-              {hasListings && this.getMap()}
             </Container>
           )
         }}
