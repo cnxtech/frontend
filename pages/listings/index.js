@@ -1,5 +1,6 @@
 import {Component, Fragment} from 'react'
 import Router from 'next/router'
+import Link from 'next/link'
 import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
 import {
   getListingFiltersFromState,
@@ -68,6 +69,10 @@ class ListingSearch extends Component {
       headerSearch: false,
       flagrFlags
     }
+  }
+
+  get mapUrl() {
+    return `/imoveis/mapa${ParamsMapper.mapParamsToUrl(this.state.filters)}`
   }
 
   componentDidMount() {
@@ -159,11 +164,20 @@ class ListingSearch extends Component {
                           currentCity={currentCity}
                           onSubmit={this.onChangeFilter}
                           favorites={favorites}
+                          button={
+                            <Link
+                              passHref
+                              href="/listings/map"
+                              as={this.mapUrl}
+                            >
+                              <ActionsBar.Button icon="map" label="Mapa" />
+                            </Link>
+                          }
                         />
                       )}
                       {showFavMessageBar && (
                         <FavMessageBar
-                          onClickCloseButton={() =>{
+                          onClickCloseButton={() => {
                             localStorage.setItem('hideFavMessageBar', true)
                             this.setState({showFavMessageBar: false})
                           }}
@@ -185,7 +199,8 @@ class ListingSearch extends Component {
                         }}
                       />
                     </Fragment>
-                  )}}
+                  )
+                }}
               </Query>
             )
           }}

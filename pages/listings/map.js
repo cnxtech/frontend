@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Router from 'next/router'
+import Link from 'next/link'
 import styled from 'styled-components'
 import {themeGet} from 'styled-system'
 import {
@@ -114,6 +115,10 @@ class ListingMapSearch extends Component {
       params: params || {},
       renderFooter: false
     }
+  }
+
+  get listUrl() {
+    return `/imoveis${ParamsMapper.mapParamsToUrl(this.state.filters)}`
   }
 
   get citySlug() {
@@ -234,6 +239,11 @@ class ListingMapSearch extends Component {
               onLayout={this.onResizeFilter}
               onSubmit={this.onChangeFilter}
               filters={filters}
+              button={
+                <Link passHref href="/listings" as={this.listUrl}>
+                  <ActionsBar.Button icon="th" label="Lista" />
+                </Link>
+              }
             />
           </MapControl>
         </Map>

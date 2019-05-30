@@ -113,7 +113,7 @@ class Filter extends Component {
       <Fragment>
         <Button fontSize="small" noBorder link onClick={this.toggleContent}>
           <Row alignItems="center">
-            <Icon mr={2} name="filter" type="emcasa" color="pink" size={14} />
+            <Icon mr={2} name="filter" type="emcasa" color="pink" size={16} />
             <Text inline fontSize="small">
               Filtros
             </Text>

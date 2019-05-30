@@ -3,13 +3,15 @@ import Link from 'next/link'
 import PropTypes from 'prop-types'
 import Text from '@emcasa/ui-dom/components/Text'
 import Row from '@emcasa/ui-dom/components/Row'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faHeart from '@fortawesome/fontawesome-free-solid/faHeart'
+import Icon from '@emcasa/ui-dom/components/Icon'
 import Filter from 'components/shared/Filter'
 import {Wrapper, Container, FavCount} from './styles'
 import {DEFAULT_CITY} from 'utils/location-utils'
+import ActionButton from './Button'
 
 class ActionsBar extends Component {
+  static Button = ActionButton
+
   getFavoritesCountDisplay() {
     const {user, favorites} = this.props
     if (user && user.authenticated) {
