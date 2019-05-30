@@ -7,7 +7,7 @@ import {MODAL_FOOTER_HEIGHT, MODAL_CONTENT_WIDTH} from 'constants/dimensions'
 import {zIndexFooterFilterModal} from 'constants/zIndex'
 
 const Container = styled(Row)`
-  background: ${themeGet('colors.lightGrey')};
+  background: ${themeGet('colors.snow')};
   @media screen and ${breakpoint.only('phone')} {
     min-height: 100vh;
   }
