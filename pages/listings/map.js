@@ -178,7 +178,13 @@ class ListingMapSearch extends Component {
           options={Object.assign({rotateControl: true}, location.options)}
           onMapLoaded={this.onMapLoaded}
         >
-          <MapControl m={0} width="100vw" bg="white" position="top-center">
+          <MapControl
+            m={0}
+            zIndex={10}
+            width="100vw"
+            bg="white"
+            position="top-center"
+          >
             <ActionsBar
               user={user}
               currentCity={LocationProvider.getCity({citySlug}) || userCity}
