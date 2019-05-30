@@ -2,11 +2,11 @@ import React, {Component, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
+import Row from '@emcasa/ui-dom/components/Row'
+import Icon from '@emcasa/ui-dom/components/Icon'
 import {clone} from 'utils/clone'
 import Content from './components/Content'
 import {ChangeTypeEnum} from './components/Content/changeTypes'
-import theme from '@emcasa/ui'
-import {Icon} from './styles'
 import {DEFAULT_CITY} from 'utils/location-utils'
 
 class Filter extends Component {
@@ -111,17 +111,13 @@ class Filter extends Component {
   render() {
     return (
       <Fragment>
-        <Button
-          heigth="small"
-          noBorder
-          link
-          iconColor={theme.colors.pink}
-          onClick={this.toggleContent}
-        >
-          <Icon />
-          <Text inline fontSize="small">
-            Filtros
-          </Text>
+        <Button fontSize="small" noBorder link onClick={this.toggleContent}>
+          <Row alignItems="center">
+            <Icon mr={2} name="filter" type="emcasa" color="pink" size={16} />
+            <Text inline fontSize="small">
+              Filtros
+            </Text>
+          </Row>
         </Button>
         {this.state.showContent && (
           <Content
