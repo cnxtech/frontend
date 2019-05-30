@@ -10,7 +10,7 @@ router.get('/:id(\\d+)', (req, res) => {
 })
 
 router.get(
-  '/:state/:city/:neighborhood/:street/:listingId(id-\d+)',
+  '/:state/:city/:neighborhood/:street/:listingId(id-\\d+)',
   (req, res) => {
     const actualPage = '/listings/show'
     res.locals.app.render(req, res, actualPage, req.query)
@@ -25,23 +25,41 @@ router.get(
   }
 )
 
-router.get('/:state/:city/:rest([0-9a-z-]*)', (req, res) => {
-  const actualPage = '/listings'
-  const params = ParamsMapper.mapUrlToParams(req.params)
-  req.params = params
-  res.locals.app.render(req, res, actualPage, req.query)
-})
-
 router.get('/:id(\\d+)/editar', (req, res) => {
   const actualPage = '/listings/edit'
   const queryParams = {id: req.params.id}
   res.locals.app.render(req, res, actualPage, queryParams)
 })
 
-router.get(['/', '/:state', '/:state/:city'], (req, res) => {
-  const actualPage = '/listings'
-  req.params = ParamsMapper.mapUrlToParams(req.params)
-  res.locals.app.render(req, res, actualPage, req.query)
+const SEARCH_ROUTES = [
+  ['/mapa', '/listings/map'],
+  ['', '/listings'],
+]
+
+SEARCH_ROUTES.map(([route, actualPage]) => {
+  router.get(`${route}/:state/:city/:rest([0-9a-z-]*)`, (req, res) => {
+    const params = ParamsMapper.mapUrlToParams(req.params)
+    req.params = params
+    res.locals.app.render(req, res, actualPage, req.query)
+  })
+
+  router.get(`${route}/:state/:city/:neighborhood/`, (req, res) => {
+    const neighborhood = req.params.neighborhood
+    const queryParams = {
+      neighborhoodSlug: neighborhood,
+      state: req.params.state,
+      city: req.params.city
+    }
+    res.locals.app.render(req, res, actualPage, queryParams)
+  })
+
+  router.get(
+    ['/', '/:state', '/:state/:city'].map((path) => route + path),
+    (req, res) => {
+      req.params = ParamsMapper.mapUrlToParams(req.params)
+      res.locals.app.render(req, res, actualPage, req.query)
+    }
+  )
 })
 
 module.exports = router
