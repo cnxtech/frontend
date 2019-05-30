@@ -1,6 +1,5 @@
 import {Fragment} from 'react'
 import PropTypes from 'prop-types'
-import Filters from '@emcasa/ui-dom/components/Filters'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import {
@@ -10,39 +9,42 @@ import {
   RoomsFilter,
   GarageSpotsFilter
 } from '@emcasa/ui-dom/components/Filters/ListingFilters'
-
+import Breakpoint from '@emcasa/ui-dom/components/Breakpoint'
 import {zIndexFilter} from 'constants/zIndex'
 import Text from '@emcasa/ui-dom/components/Text'
+import FilterForm from './components/FilterForm'
 
 const ListingFilter = (props) => {
   return (
-    <Row flexDirection="column" px={4}>
-      <Col>
-        <Row flexDirection="row" alignItems="center">
-          <Fragment>
-            <Text fontSize="small" fontWeight="bold">
-              Características do imóvel
-            </Text>
-          </Fragment>
-        </Row>
-      </Col>
-      <Col>
-        <Filters
-          onSubmit={props.onChange}
-          zIndex={zIndexFilter}
-          initialValues={props.initialValues}
-          values={props.values}
-          width="100%"
-          startExpanded
-        >
-          <TypesFilter />
-          <PriceFilter />
-          <AreaFilter />
-          <RoomsFilter />
-          <GarageSpotsFilter />
-        </Filters>
-      </Col>
-    </Row>
+    <Breakpoint up="tablet">
+      <Row flexDirection="column" px={4}>
+        <Col>
+          <Row flexDirection="row" alignItems="center">
+            <Fragment>
+              <Text fontSize="small" fontWeight="bold">
+                Características do imóvel
+              </Text>
+            </Fragment>
+          </Row>
+        </Col>
+        <Col>
+          <FilterForm
+            onSubmit={props.onChange}
+            zIndex={zIndexFilter}
+            initialValues={props.initialValues}
+            values={props.values}
+            width="100%"
+            startExpanded
+          >
+            <TypesFilter />
+            <PriceFilter />
+            <AreaFilter />
+            <RoomsFilter />
+            <GarageSpotsFilter />
+          </FilterForm>
+        </Col>
+      </Row>
+    </Breakpoint>
   )
 }
 

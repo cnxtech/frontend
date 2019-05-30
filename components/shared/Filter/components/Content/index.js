@@ -2,12 +2,13 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Button from '@emcasa/ui-dom/components/Button'
 import Col from '@emcasa/ui-dom/components/Col'
-import {Separator, Container, Footer} from './styles'
+import {Separator, Container, Footer, ApplyButton} from './styles'
 import NeighborhoodFilter from '../NeighborhoodFilter'
-import FeatureFilter from '../FeatureFilter'
+import ExpandedFeatureFilters from '../ExpandedFeatureFilters'
 import TagsFilter from '../TagsFilter'
 import Modal from '../Modal'
-import {infraestrutura, beneficios} from '../TagsFilter/constansts'
+import {infraestrutura} from '../TagsFilter/constansts'
+import {zIndexFooterFilterModal} from 'constants/zIndex'
 import {ChangeTypeEnum} from './changeTypes'
 
 class Content extends Component {
@@ -37,7 +38,10 @@ class Content extends Component {
             currentCity={currentCity}
             neighborhoods={filters.neighborhoods}
           />
-          <FeatureFilter onChange={this.changeFeature} values={filters} />
+          <ExpandedFeatureFilters
+            onChange={this.changeFeature}
+            filters={filters}
+          />
           <TagsFilter
             onChange={this.changeTags}
             tags={infraestrutura}
@@ -46,13 +50,17 @@ class Content extends Component {
           />
           <Col mt={4}>
             <Separator px={4} />
-            <Footer p={4} justifyContent="flex-end">
+            <Footer
+              zIndex={zIndexFooterFilterModal}
+              p={4}
+              justifyContent="flex-end"
+            >
               <Button mr={2} onClick={this.props.onCleanup}>
                 Limpar
               </Button>
-              <Button active onClick={this.props.onSubmit}>
-                Aplicar
-              </Button>
+              <ApplyButton active onClick={this.props.onSubmit}>
+                Mostrar resultados
+              </ApplyButton>
             </Footer>
           </Col>
         </Container>

@@ -7,7 +7,6 @@ import {themeGet} from 'styled-system'
 const CitiesWrapper = styled(Row)`
   flex-direction: column;
   width: 100%;
-  background-color: ${themeGet('colors.white')};
   box-sizing: border-box;
   padding: 0 ${themeGet('space.4')}px 0 ${themeGet('space.4')}px;
 
@@ -18,8 +17,7 @@ const CitiesWrapper = styled(Row)`
 const SecondaryButton = styled(Button)`
   border-color: ${({active, selected, disabled, theme: {colors}}) =>
     (active || selected) && !disabled ? colors.blue : colors.lightGrey};
-  background-color: ${({active, selected, disabled, theme: {colors}}) =>
-    (active || selected) && !disabled ? colors.blue : colors.white};
+ 
   color: ${({active, selected, disabled, link, theme: {colors}}) => {
     if (disabled) return colors.disabled
     else if (link) return colors.blue
