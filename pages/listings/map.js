@@ -22,6 +22,22 @@ import Map from 'components/listings/shared/ListingsMap'
 
 const DEFAULT_LOCATION = 'sao-paulo'
 
+const getPositionFromHash = (hash) => {
+  if (hash[0] !== '@') return {}
+  const [lat, lng, zoom] = hash.slice(1).split(',')
+  if (isNaN(lat) || isNaN(lng) || isNaN(zoom)) return {}
+  return {
+    center: {
+      lat: parseFloat(lat),
+      lng: parseFloat(lng)
+    },
+    zoom: parseInt(zoom)
+  }
+}
+
+const getHashFromPosition = ({center: {lat, lng}, zoom}) =>
+  `@${lat},${lng},${zoom}`
+
 const LOCATION_OPTIONS = {
   ['sao-paulo']: {
     filters: {
@@ -66,11 +82,16 @@ class ListingMapSearch extends Component {
       params.citySlug || userLocation.citySlug || DEFAULT_LOCATION
     const location = LOCATION_OPTIONS[citySlug] || {}
     const filters = Object.assign({}, params.filters, location.filters)
-    return {
-      filters,
-      filterHeight: 0,
-      height: `calc(100vh - ${HEADER_HEIGHT}px)`
-    }
+    return Object.assign(
+      {
+        filters,
+        filterHeight: 0,
+        height: `calc(100vh - ${HEADER_HEIGHT}px)`
+      },
+      process.browser
+        ? getPositionFromHash((window.location.hash || '').slice(1))
+        : undefined
+    )
   }
 
   static async getInitialProps(context) {
@@ -79,7 +100,7 @@ class ListingMapSearch extends Component {
       params = context.req.params
     } else {
       const {asPath} = context
-      params = getLocationFromPath(asPath)
+      params = getLocationFromPath(asPath.split('#')[0])
     }
     return {
       params: params || {},
@@ -99,10 +120,13 @@ class ListingMapSearch extends Component {
     return LOCATION_OPTIONS[this.citySlug]
   }
 
+  get positionHash() {
+    return getHashFromPosition(this.state)
+  }
+
   componentDidMount() {
     window.addEventListener('resize', this.onResize)
     this.onResize()
-    Router.events.on('routeChangeStart', this.onChangeRoute)
     if (!this.props.params.citySlug) {
       // Redirect to resolved city url when location params are empty
       const newPath = ParamsMapper.mapParamsToUrl(this.state.filters)
@@ -114,16 +138,34 @@ class ListingMapSearch extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize)
-    Router.events.off('routeChangeStart', this.onChangeRoute)
   }
 
   resetMap = () => {
     this.state.map.setOptions(this.location.options)
     this.state.map.setCenter(this.location.center)
+    this.state.map.setZoom(10)
+  }
+
+  getInitialFrame = ({markers}) => {
+    const {center} = this.state
+    if (center) return [center]
+    else return markers
   }
 
   onMapLoaded = ({map}) => {
     this.setState({map})
+  }
+
+  onChangeBounds = ({center, zoom}) => {
+    if (!this.state.map) return
+    requestAnimationFrame(() => {
+      this.setState({center, zoom}, () => {
+        Router.replace(
+          '/listings/map',
+          `${window.location.pathname}#${this.positionHash}`
+        )
+      })
+    })
   }
 
   onResize = () => {
@@ -132,35 +174,21 @@ class ListingMapSearch extends Component {
     })
   }
 
-  onChangeRoute = (path) => {
-    const {filters} = getLocationFromPath(path) || {}
-    if (filters) this.setState({filters})
-  }
-
-  onChangeNeighborhoods = ({detail: {city, neighborhoods}}) => {
-    this.onChangeFilter({
-      ...this.state.filters,
-      citySlug: city.citySlug,
-      stateSlug: city.stateSlug,
-      neighborhoods
-    })
-  }
-
-  onChangeFilter = (filters) => {
+  onChangeFilter = (_filters) => {
     const prevCitySlug = this.state.filters.citySlug
+    const filters = Object.assign({}, this.location.filters, _filters)
+    const changedCity = filters.citySlug !== prevCitySlug
     const newPath = ParamsMapper.mapParamsToUrl(filters)
-    Router.push('/listings/map', `/imoveis/mapa${newPath}`, {
+    const hash = changedCity ? '' : `#${this.positionHash}`
+    Router.push('/listings/map', `/imoveis/mapa${newPath}${hash}`, {
       shallow: true
     })
-    this.setState(
-      {filters},
-      filters.citySlug !== prevCitySlug ? this.resetMap : undefined
-    )
+    this.setState({filters}, changedCity ? this.resetMap : undefined)
   }
 
   renderMap = ({data, error}) => {
     const {user, userCity} = this.props
-    const {filters} = this.state
+    const {filters, center, zoom} = this.state
     const {citySlug} = filters
     const location = this.location
     if (error) return <p>ERROR</p>
@@ -171,12 +199,13 @@ class ListingMapSearch extends Component {
           ref={this.mapRef}
           user={user}
           data={listings}
-          getInitialFrame={({markers}) => markers}
-          defaultZoom={10}
           minZoom={10}
-          defaultCenter={location.center}
+          defaultZoom={zoom || 10}
+          defaultCenter={center || location.center}
           options={Object.assign({rotateControl: true}, location.options)}
+          getInitialFrame={this.getInitialFrame}
           onMapLoaded={this.onMapLoaded}
+          onChange={this.onChangeBounds}
         >
           <MapControl
             m={0}
@@ -191,7 +220,7 @@ class ListingMapSearch extends Component {
               innerRef={this.filterRef}
               onLayout={this.onResizeFilter}
               onSubmit={this.onChangeFilter}
-              values={filters}
+              filters={filters}
             />
           </MapControl>
         </Map>
