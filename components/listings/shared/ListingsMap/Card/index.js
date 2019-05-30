@@ -5,7 +5,7 @@ import Col from '@emcasa/ui-dom/components/Col'
 import {graphql} from 'react-apollo'
 import {compose} from 'recompose'
 import {GET_LISTING} from 'graphql/listings/queries'
-import {GET_FAVORITE_LISTINGS_IDS} from 'graphql/user/queries'
+import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
 import {thumbnailUrl} from 'utils/image_url'
 import {buildSlug} from 'lib/listings'
 import {getListingPrice, getListingSummary} from 'lib/listings'
@@ -71,12 +71,15 @@ export default compose(
       listing: data && data.listing
     })
   }),
-  graphql(GET_FAVORITE_LISTINGS_IDS, {
+  graphql(GET_USER_LISTINGS_ACTIONS, {
     skip: ({user, favorite}) =>
       !user.authenticated || typeof favorite === 'boolean',
-    props: ({ownProps, data}) => ({
+    options: () => ({
+      fetchPolicy: 'cache-and-network'
+    }),
+    props: ({ownProps, data: {userProfile}}) => ({
       favorite: Boolean(
-        data && (data.favoritedListings || []).find((id) => id === ownProps.id)
+        userProfile && userProfile.favorites.find(({id}) => id === ownProps.id)
       )
     })
   })
