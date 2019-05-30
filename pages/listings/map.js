@@ -19,6 +19,14 @@ import {GET_DISTRICTS} from 'graphql/listings/queries'
 import ListingHead from './components/head'
 import LdJson from './components/ld-json'
 import Map from 'components/listings/shared/ListingsMap'
+import {
+  log,
+  LISTING_SEARCH_MAP_OPEN,
+  LISTING_SEARCH_MAP_ZOOM,
+  LISTING_SEARCH_MAP_PAN,
+  LISTING_SEARCH_MAP_PIN,
+  LISTING_SEARCH_MAP_CLUSTER
+} from 'lib/logging'
 
 const DEFAULT_LOCATION = 'sao-paulo'
 
@@ -125,6 +133,7 @@ class ListingMapSearch extends Component {
   }
 
   componentDidMount() {
+    log(LISTING_SEARCH_MAP_OPEN)
     window.addEventListener('resize', this.onResize)
     this.onResize()
     if (!this.props.params.citySlug) {
@@ -206,6 +215,10 @@ class ListingMapSearch extends Component {
           getInitialFrame={this.getInitialFrame}
           onMapLoaded={this.onMapLoaded}
           onChange={this.onChangeBounds}
+          onZoomChange={() => log(LISTING_SEARCH_MAP_ZOOM)}
+          onDragEnd={() => log(LISTING_SEARCH_MAP_PAN)}
+          onClickCluster={() => log(LISTING_SEARCH_MAP_CLUSTER)}
+          onSelect={({id}) => log(LISTING_SEARCH_MAP_PIN, {listingId: id})}
         >
           <MapControl
             m={0}

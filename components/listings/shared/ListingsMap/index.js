@@ -16,9 +16,10 @@ class ListingsMap extends PureComponent {
     highlight: undefined
   }
 
-  selectListing = ({id}) => this.setState({highlight: id})
-
-  setHighlight = ({id}) => this.setState({highlight: id})
+  setHighlight = (listing) =>
+    this.setState({highlight: listing.id}, () => {
+      if (this.props.onSelect) this.props.onSelect(listing)
+    })
 
   isHighlight = ({id}) => this.state.highlight === id
 
@@ -67,7 +68,14 @@ class ListingsMap extends PureComponent {
   }
 
   render() {
-    const {children, data, options, mapRef, ...props} = this.props
+    const {
+      children,
+      data,
+      options,
+      mapRef,
+      onClickCluster,
+      ...props
+    } = this.props
     return (
       <Map
         cluster
@@ -89,11 +97,15 @@ class ListingsMap extends PureComponent {
         )}
         MultiMarker={MultiMarker}
         getClusterProps={(props) => ({
-          currentIndex: props.points
-            .filter(Boolean)
-            .findIndex(this.isHighlight),
-          onChangePage: this.setHighlight,
-          ...props
+          ...props,
+          currentIndex: props.points.findIndex(
+            ({id}) => id == this.state.highlight
+          ),
+          onChangePage: props.isMultiMarker ? this.setHighlight : undefined,
+          onClick: (...args) => {
+            if (!props.isMultiMarker && onClickCluster) onClickCluster(...args)
+            props.onClick(...args)
+          }
         })}
         onChange={this.onChange}
         onMapLoaded={this.onMapLoaded}
