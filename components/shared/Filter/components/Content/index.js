@@ -50,10 +50,10 @@ class Content extends Component {
           <Col mt={4}>
             <Separator px={4} />
             <Footer p={4} justifyContent="flex-end">
-              <Button mr={2} onClick={this.props.onCleanup}>
+              <Button mr={2} onClick={this.props.onCleanup} fontSize="14px">
                 Limpar
               </Button>
-              <ApplyButton active onClick={this.props.onSubmit}>
+              <ApplyButton active onClick={this.props.onSubmit} fontSize="14px">
                 Mostrar resultados
               </ApplyButton>
             </Footer>
