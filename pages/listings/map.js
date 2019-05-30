@@ -28,32 +28,16 @@ const LOCATION_OPTIONS = {
       citySlug: 'sao-paulo',
       stateSlug: 'sp'
     },
-    options: {
-      restriction: {
-        latLngBounds: {
-          north: -23.35664512143721,
-          south: -23.770154312876727,
-          east: -46.363957057162565,
-          west: -46.90915359036569
-        }
-      }
-    }
+    // Consolação
+    center: {lat: -23.554009999478296, lng: -46.65491316171875}
   },
   ['rio-de-janeiro']: {
     filters: {
       citySlug: 'rio-de-janeiro',
       stateSlug: 'rj'
     },
-    options: {
-      restriction: {
-        latLngBounds: {
-          north: -22.85672650624514,
-          south: -23.064418832793493,
-          east: -42.96657081718752,
-          west: -43.46095558281252
-        }
-      }
-    }
+    // Lagoa
+    center: {lat: -22.972123, lng: -43.2332571}
   }
 }
 
@@ -133,8 +117,9 @@ class ListingMapSearch extends Component {
     Router.events.off('routeChangeStart', this.onChangeRoute)
   }
 
-  updateMapOptions = () => {
+  resetMap = () => {
     this.state.map.setOptions(this.location.options)
+    this.state.map.setCenter(this.location.center)
   }
 
   onMapLoaded = ({map}) => {
@@ -169,7 +154,7 @@ class ListingMapSearch extends Component {
     })
     this.setState(
       {filters},
-      filters.citySlug !== prevCitySlug ? this.updateMapOptions : undefined
+      filters.citySlug !== prevCitySlug ? this.resetMap : undefined
     )
   }
 
@@ -188,6 +173,7 @@ class ListingMapSearch extends Component {
           data={listings}
           getInitialFrame={({markers}) => markers}
           defaultZoom={10}
+          minZoom={10}
           defaultCenter={location.center}
           options={Object.assign({rotateControl: true}, location.options)}
           onMapLoaded={this.onMapLoaded}
