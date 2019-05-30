@@ -16,10 +16,10 @@ const Icon = styled((props) => (
     </g>
   </svg>
 ))`
-  margin-right: 10px;
+  margin-right: 14px;
   display: inline-block;
-  width: 1.5em;
-  height: 1.2em;
+  width: 1em;
+  height: 0.9em;
   vertical-align: -0.125em;
   font-size: inherit;
   overflow: visible;
