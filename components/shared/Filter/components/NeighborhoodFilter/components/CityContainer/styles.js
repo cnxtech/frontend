@@ -17,10 +17,15 @@ const CitiesWrapper = styled(Row)`
 const SecondaryButton = styled(Button)`
   border-color: ${({active, selected, disabled, theme: {colors}}) =>
     (active || selected) && !disabled ? colors.blue : colors.lightGrey};
- 
+  background-color: ${({active, selected, disabled, link, theme: {colors}}) =>
+    (active || selected) && !disabled
+      ? colors.blue
+      : link
+        ? 'transparent'
+        :colors.white};
   color: ${({active, selected, disabled, link, theme: {colors}}) => {
     if (disabled) return colors.disabled
-    else if (link) return colors.blue
+    else if (link) return colors.disabled
     else if (active || selected) return colors.white
     else return colors.dark
   }};
@@ -32,7 +37,9 @@ const NeighborhoodButton = styled(SecondaryButton)`
   }
 `
 
-const LinkButton = styled(SecondaryButton)`
+const LinkButton = styled(Button)`
+  background-color: transparent;
+  color: ${({theme: {colors}}) => colors.disabled};
   @media ${breakpoint.only('phone')} {
     display: none;
   }

@@ -8,7 +8,6 @@ import ExpandedFeatureFilters from '../ExpandedFeatureFilters'
 import TagsFilter from '../TagsFilter'
 import Modal from '../Modal'
 import {infraestrutura} from '../TagsFilter/constansts'
-import {zIndexFooterFilterModal} from 'constants/zIndex'
 import {ChangeTypeEnum} from './changeTypes'
 
 class Content extends Component {
@@ -50,15 +49,11 @@ class Content extends Component {
           />
           <Col mt={4}>
             <Separator px={4} />
-            <Footer
-              zIndex={zIndexFooterFilterModal}
-              p={4}
-              justifyContent="flex-end"
-            >
-              <Button mr={2} onClick={this.props.onCleanup}>
+            <Footer p={4} justifyContent="flex-end">
+              <Button mr={2} onClick={this.props.onCleanup} fontSize="14px">
                 Limpar
               </Button>
-              <ApplyButton active onClick={this.props.onSubmit}>
+              <ApplyButton active onClick={this.props.onSubmit} fontSize="14px">
                 Mostrar resultados
               </ApplyButton>
             </Footer>

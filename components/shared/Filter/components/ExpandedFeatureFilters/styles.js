@@ -4,6 +4,7 @@ import {themeGet} from 'styled-system'
 
 const FiltersRow = styled(Row)`
   align-items: stretch;
+  max-width: 820px;
 
   > :first-child {
     margin-right: ${themeGet('space.2')}px;

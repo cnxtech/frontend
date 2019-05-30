@@ -1,4 +1,5 @@
 export const HEADER_SEARCH_HEIGHT = 76
+export const MODAL_CONTENT_WIDTH = 475
 export const MODAL_FOOTER_HEIGHT = 80
 export const HEADER_HEIGHT = 60
 export const HEADER_LOGO_WIDTH = 30

@@ -51,7 +51,7 @@ export default class SliderRange extends PureComponent {
                   onChange(name, undefined)
                 else onChange(name, value)
               }}
-              trackProps={{bg: 'lightGrey'}}
+              trackProps={{bg: 'disabled'}}
             >
               <Slider.Marker name="min" bg="blue" />
               <Slider.Marker name="max" trackProps={{bg: 'blue'}} bg="blue" />

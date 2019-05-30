@@ -112,14 +112,14 @@ class Filter extends Component {
     return (
       <Fragment>
         <Button
-          fontSize="small"
+          heigth="small"
           noBorder
           link
           iconColor={theme.colors.pink}
           onClick={this.toggleContent}
         >
           <Icon />
-          <Text inline>
+          <Text inline fontSize="small">
             Filtros
           </Text>
         </Button>
