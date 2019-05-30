@@ -2,6 +2,7 @@ import {Component, Fragment} from 'react'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import Text from '@emcasa/ui-dom/components/Text'
+import Row from '@emcasa/ui-dom/components/Row'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faHeart from '@fortawesome/fontawesome-free-solid/faHeart'
 import Filter from 'components/shared/Filter'
@@ -13,7 +14,7 @@ class ActionsBar extends Component {
     const {user, favorites} = this.props
     if (user && user.authenticated) {
       return (
-        <Link href={`/meu-perfil/favoritos`}>
+        <Link href={'/meu-perfil/favoritos'}>
           {this.favoritesCount(user, favorites)}
         </Link>
       )
@@ -23,7 +24,7 @@ class ActionsBar extends Component {
 
   favoritesCount = (user, favorites) => (
     <FavCount authenticated={user && user.authenticated}>
-      <FontAwesomeIcon icon={faHeart} size="1x" />
+      <Icon name="heart" size={16} />
       <Text fontSize={1}>
         Favoritos<Text fontSize={1} inline color="pink">
           {user && user.authenticated && favorites ? favorites.length : 0}
@@ -33,16 +34,21 @@ class ActionsBar extends Component {
   )
 
   render() {
-    const {user, onSubmit, filters, currentCity, favorites} = this.props
+    const {button, onSubmit, filters, currentCity} = this.props
     return (
       <Wrapper>
         <Container>
           {this.getFavoritesCountDisplay()}
-          <Filter
-            onSubmit={onSubmit}
-            filters={filters}
-            currentCity={currentCity}
-          />
+          <Row alignItems="center">
+            {button}
+            {Boolean(filters) && (
+              <Filter
+                onSubmit={onSubmit}
+                filters={filters}
+                currentCity={currentCity}
+              />
+            )}
+          </Row>
         </Container>
       </Wrapper>
     )
