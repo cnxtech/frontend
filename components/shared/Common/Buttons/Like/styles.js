@@ -3,7 +3,8 @@ import theme from '@emcasa/ui'
 import Button from '@emcasa/ui-dom/components/Button'
 
 export const BUTTON_LIKE_CIRCLE_HEIGHT = 40
-export const BUTTON_LIKE_CIRCLE_ICON_HEIGHT = 25
+export const BUTTON_LIKE_CIRCLE_ICON_HEART_WIDTH = 21
+export const BUTTON_LIKE_CIRCLE_ICON_HEART_HEIGHT = 19
 
 export const TextButton = styled(Button)`
   svg {
@@ -28,8 +29,8 @@ export const CircleStyle = css`
   box-shadow: 0 6px 16px 0 rgba(38, 38, 38, 0.15);
 
   svg {
-    width: ${BUTTON_LIKE_CIRCLE_ICON_HEIGHT}px;
-    text-shadow: 2px 2px 3px #f00;
+    width: ${BUTTON_LIKE_CIRCLE_ICON_HEART_WIDTH}px;
+    height: ${BUTTON_LIKE_CIRCLE_ICON_HEART_HEIGHT}px;
     text-shadow: 2px 2px 3px #f00;
 
     path {
@@ -37,7 +38,7 @@ export const CircleStyle = css`
       fill: ${({favorite}) => (favorite ? theme.colors.pink : theme.colors.white)};
       stroke: ${({favorite}) => (favorite ? theme.colors.pink : theme.colors.dark)};
       fill-opacity: ${({favorite}) => (favorite ? 1 : 0)};
-      stroke-width: 60;
+      stroke-width: 40;
     }
   }
 `

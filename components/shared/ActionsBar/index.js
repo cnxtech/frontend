@@ -7,14 +7,13 @@ import faHeart from '@fortawesome/fontawesome-free-solid/faHeart'
 import Filter from 'components/shared/Filter'
 import {Wrapper, Container, FavCount} from './styles'
 import {DEFAULT_CITY} from 'utils/location-utils'
-import {FAVORITES_TAB} from 'pages/user/profile'
 
 class ActionsBar extends Component {
   getFavoritesCountDisplay() {
     const {user, favorites} = this.props
     if (user && user.authenticated) {
       return (
-        <Link href={`/meu-perfil?tab=${FAVORITES_TAB}`}>
+        <Link href={`/meu-perfil/favoritos`}>
           {this.favoritesCount(user, favorites)}
         </Link>
       )

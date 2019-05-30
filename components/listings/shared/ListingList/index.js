@@ -240,7 +240,7 @@ class ListingList extends Component {
     listings.map((listing, index) => {
       const name = `${listing.type} à venda na ${listing.address.street} - ${
         listing.address.neighborhood
-      }, ${listing.address.city} - ID${listing.id}`
+        }, ${listing.address.city} - ID${listing.id}`
       const photos = []
 
       listing.images.map((img, imgIndex) => {
