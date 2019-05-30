@@ -1694,12 +1694,12 @@
   dependencies:
     lodash.once "^4.1.1"
 
-"@emcasa/ui-dom@2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@emcasa/ui-dom/-/ui-dom-2.1.3.tgz#8e6dbb73166a56d02f63ba29e727aa20ee761109"
-  integrity sha512-6p0eSy7XdzuLyQNnQ/i8366FRKwsb633dHiEJUrCCrxFRSkhOaw/NdgtrZwCxrhRGo/176eUtMaaJ0MA1qxF5A==
+"@emcasa/ui-dom@2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@emcasa/ui-dom/-/ui-dom-2.1.5.tgz#1fce14163ed1f25a1c70e7183df901fe8b36f700"
+  integrity sha512-u5/eSMK8fYk1+zfeY7n8uHfQyb1HYDkfCYYqby3QZbND0JlomDepx1UpNhG7GpD0m2ws+sT9x/4s9X/Un/i6mA==
   dependencies:
-    "@emcasa/ui" "^2.1.3"
+    "@emcasa/ui" "^2.1.5"
     "@rebass/grid" "6.0.0-4"
     "@turf/helpers" "^6.1.4"
     classnames "^2.2.6"
@@ -1716,10 +1716,10 @@
     supercluster "^6.0.1"
     tinycolor2 "^1.4.1"
 
-"@emcasa/ui@2.1.3", "@emcasa/ui@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@emcasa/ui/-/ui-2.1.3.tgz#f6e5e42d41c9e72f508e4f33145b863bbfb61600"
-  integrity sha512-RureBqr0y9N+9m2gjJ7hjxc1S16SwvcjqsdouHQRgvPT+P95i2F579rA1XZYxRFscsHxPeDPFdBa66ywJCN9HA==
+"@emcasa/ui@2.1.5", "@emcasa/ui@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@emcasa/ui/-/ui-2.1.5.tgz#9ce12088f87262aaf968c2f604f8e160fd9411e2"
+  integrity sha512-/w0nAi/SKiYOgaXWYjzk1F+1Z4xq6G3aJQ1yPcx1Na5DLOoNuBRC93jviI5Rpp8fmGHRwmwnLUEOTJSYodGfgw==
   dependencies:
     "@fortawesome/free-solid-svg-icons" "^5.4.1"
     everpolate "^0.0.3"

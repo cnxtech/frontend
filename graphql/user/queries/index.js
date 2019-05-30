@@ -9,7 +9,7 @@ export const GET_FAVORITE_LISTINGS_IDS = gql`
 `
 
 export const GET_USER_LISTINGS_ACTIONS = gql`
-  {
+  query userFavorites {
     userProfile {
       favorites(pagination: {pageSize: 400}, filters: {}) {
         id
