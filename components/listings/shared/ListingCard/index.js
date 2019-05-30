@@ -33,7 +33,7 @@ class ListingCard extends Component {
   }
 
   render() {
-    let {listing, currentUser, favorited: favoritedListings} = this.props
+    let {listing, currentUser, favorited: favoritedListings, related} = this.props
     const imagesLength = listing.images.length
     const {currentImage} = this.state
 
