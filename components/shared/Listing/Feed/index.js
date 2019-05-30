@@ -90,6 +90,7 @@ class ListingFeed extends Component {
         </Query>
       )
     }
+    return null
   }
 
   loadListings = async (client) => {

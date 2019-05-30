@@ -25,7 +25,7 @@ export const Container = styled(Row)`
 `
 
 export const FavCount = styled(Row)`
-  cursor: pointer;
+  cursor: ${({authenticated}) => authenticated ? `pointer` : `default`};
   align-items: center;
 
   svg {
