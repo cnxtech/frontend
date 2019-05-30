@@ -10,25 +10,35 @@ import {DEFAULT_CITY} from 'utils/location-utils'
 import {FAVORITES_TAB} from 'pages/user/profile'
 
 class ActionsBar extends Component {
+  getFavoritesCountDisplay() {
+    const {user, favorites} = this.props
+    if (user && user.authenticated) {
+      return (
+        <Link href={`/meu-perfil?tab=${FAVORITES_TAB}`}>
+          {this.favoritesCount(user, favorites)}
+        </Link>
+      )
+    }
+    return this.favoritesCount(user, favorites)
+  }
+
+  favoritesCount = (user, favorites) => (
+    <FavCount authenticated={user && user.authenticated}>
+      <FontAwesomeIcon icon={faHeart} size="1x" />
+      <Text fontSize={1}>
+        Favoritos<Text fontSize={1} inline color="pink">
+          {user && user.authenticated && favorites ? favorites.length : 0}
+        </Text>
+      </Text>
+    </FavCount>
+  )
+
   render() {
     const {user, onSubmit, filters, currentCity, favorites} = this.props
     return (
       <Wrapper>
         <Container>
-          <Link href={`/meu-perfil?tab=${FAVORITES_TAB}`}>
-            <FavCount>
-              {user.authenticated && (
-                <Fragment>
-                  <FontAwesomeIcon icon={faHeart} size="1x" />
-                  <Text fontSize={1}>
-                    Favoritos<Text fontSize={1} inline color="pink">
-                      {favorites ? favorites.length : 0}
-                    </Text>
-                  </Text>
-                </Fragment>
-              )}
-            </FavCount>
-          </Link>
+          {this.getFavoritesCountDisplay()}
           <Filter
             onSubmit={onSubmit}
             filters={filters}
