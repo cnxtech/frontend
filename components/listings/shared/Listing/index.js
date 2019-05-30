@@ -103,7 +103,7 @@ class Listing extends React.Component {
             favorite={favorited}
             listing={listing}
             user={currentUser}
-            secondary
+            search={true}
           />
         </LikeButtonContainer>
 

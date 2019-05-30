@@ -69,25 +69,15 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
         }
         <Row width={['100%', null, null, 'auto']} mt={[2, null, null, 0]}>
           <Button
-            mr={2}
+            active
+            flex={1}
             fontSize="small"
-            onClick={() => {
-              log(PROFILE_FAVORITES_BACK)
-              Router.back()
-            }}
+            fontWeight="bold"
+            disabled={!favorites || favorites.length === 0 || loading}
+            onClick={onInterestCreate}
           >
-            Voltar
+            Falar com especialista
           </Button>
-            <Button
-              active
-              flex={1}
-              fontSize="small"
-              fontWeight="bold"
-              disabled={!favorites || favorites.length === 0 || loading}
-              onClick={onInterestCreate}
-            >
-              Falar com especialista
-            </Button>
         </Row>
       </Row>
     </div>

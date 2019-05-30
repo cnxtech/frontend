@@ -37,7 +37,7 @@ export default function ListingCard({
             favorite={favorite}
             listing={listing}
             user={user}
-            secondary
+            search={true}
           />
         </ButtonContainer>
 

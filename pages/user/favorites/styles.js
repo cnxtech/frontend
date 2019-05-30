@@ -6,12 +6,12 @@ import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
 import {Container} from 'components/listings/shared/ListingCard/styles'
-import {LISTING_MAX_WIDTH} from 'constants/dimensions'
 import breakpoint from '@emcasa/ui/lib/styles/breakpoint'
 import {MIN_CARD_WIDTH} from 'components/listings/shared/ListingCard/styles'
 import {CircleStyle} from 'components/shared/Common/Buttons/Like/styles'
 
-const CARD_GRID_MEDIA_QUERY = `only screen and (max-width: ${LISTING_MAX_WIDTH + (theme.space[4] * 2)}px)`
+const MAX_WIDTH = 1920
+const CARD_GRID_MEDIA_QUERY = `only screen and (min-width: ${MAX_WIDTH + (theme.space[4] * 2)}px)`
 const BUTTON_LIKE_CIRCLE_HEIGHT = 60
 const PROFILE_TABWRAPPER_MAX_WIDTH = 710
 
@@ -31,11 +31,11 @@ export const NoListingsContainer = styled(Row)`
 `
 
 export const CardContainer = styled(View)`
-  max-width: ${LISTING_MAX_WIDTH}px;
-  margin: auto;
+  max-width: ${MAX_WIDTH}px;
+  margin: 0 ${theme.space[4]}px;
 
   @media ${CARD_GRID_MEDIA_QUERY} {
-    margin: 0 ${theme.space[4]}px;
+    margin: auto;
   }
 `
 
