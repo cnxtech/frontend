@@ -242,7 +242,7 @@ class ListingList extends Component {
     return (
       <Query query={GET_LISTINGS_COORDINATES} variables={{filters}} ssr={false}>
         {({data}) => {
-          if (!data || !data.listings || !data.listings.mapListings) {
+          if (!data || !data.listings || !data.listings.listings) {
             return <MapContainer />
           }
           return (
@@ -250,7 +250,7 @@ class ListingList extends Component {
               <Map
                 zoom={13}
                 onSelect={this.onSelectListing}
-                listings={mapListings.listings}
+                listings={data.listings.listings}
                 highlight={highlight}
                 onChange={this.onChangeMap}
                 updateAfterApiCall
