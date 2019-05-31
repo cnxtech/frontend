@@ -1,6 +1,7 @@
 import merge from 'lodash/merge'
-import React, {PureComponent} from 'react'
+import React, {PureComponent, Fragment} from 'react'
 import Map from '@emcasa/ui-dom/components/Map'
+import View from '@emcasa/ui-dom/components/View'
 import Card from './Card'
 import Marker from './Marker'
 import MultiMarker from './MultiMarker'
@@ -15,6 +16,8 @@ class ListingsMap extends PureComponent {
   state = {
     highlight: undefined
   }
+
+  modalRef = React.createRef()
 
   setHighlight = (listing) =>
     this.setState({highlight: listing.id}, () => {
@@ -61,6 +64,7 @@ class ListingsMap extends PureComponent {
             user={user}
             listing={getListingData(listing)}
             favorite={isFavorite(listing)}
+            loginContainer={this.modalRef.current}
           />
         )}
       </Marker>
@@ -77,42 +81,46 @@ class ListingsMap extends PureComponent {
       ...props
     } = this.props
     return (
-      <Map
-        cluster
-        ref={mapRef}
-        apiKey={process.env.GOOGLE_MAPS_KEY}
-        highlight={this.isHighlight}
-        {...props}
-        options={merge(
-          {
-            styles: [
-              {
-                featureType: 'poi',
-                elementType: 'labels',
-                stylers: [{visibility: 'on'}]
-              }
-            ]
-          },
-          options
-        )}
-        MultiMarker={MultiMarker}
-        getClusterProps={(props) => ({
-          ...props,
-          currentIndex: props.points.findIndex(
-            ({id}) => id == this.state.highlight
-          ),
-          onChangePage: props.isMultiMarker ? this.setHighlight : undefined,
-          onClick: (...args) => {
-            if (!props.isMultiMarker && onClickCluster) onClickCluster(...args)
-            props.onClick(...args)
-          }
-        })}
-        onChange={this.onChange}
-        onMapLoaded={this.onMapLoaded}
-      >
-        {children}
-        {data.map(this.renderListing)}
-      </Map>
+      <Fragment>
+        <View ref={this.modalRef} />
+        <Map
+          cluster
+          ref={mapRef}
+          apiKey={process.env.GOOGLE_MAPS_KEY}
+          highlight={this.isHighlight}
+          {...props}
+          options={merge(
+            {
+              styles: [
+                {
+                  featureType: 'poi',
+                  elementType: 'labels',
+                  stylers: [{visibility: 'on'}]
+                }
+              ]
+            },
+            options
+          )}
+          MultiMarker={MultiMarker}
+          getClusterProps={(props) => ({
+            ...props,
+            currentIndex: props.points.findIndex(
+              ({id}) => id == this.state.highlight
+            ),
+            onChangePage: props.isMultiMarker ? this.setHighlight : undefined,
+            onClick: (...args) => {
+              if (!props.isMultiMarker && onClickCluster)
+                onClickCluster(...args)
+              props.onClick(...args)
+            }
+          })}
+          onChange={this.onChange}
+          onMapLoaded={this.onMapLoaded}
+        >
+          {children}
+          {data.map(this.renderListing)}
+        </Map>
+      </Fragment>
     )
   }
 }
