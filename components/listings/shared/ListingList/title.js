@@ -3,6 +3,8 @@ import {
   BUY_TITLE_DEFAULT_END,
   BUY_TITLE_NEIGHBORHOOD_PREPOSITION,
   BUY_TITLE_CITY_PREPOSITION,
+  BUY_TITLE_BY_TYPE,
+  TYPES_PLURAL,
   CUSTOM_BUY_TITLE
 } from 'constants/listing-locations'
 import * as tags from 'components/shared/Filter/components/TagsFilter/constansts'
@@ -46,8 +48,15 @@ function getRangeTitle(min, max, formatter = (a => a)) {
   return title
 }
 
+function getTypeTitle(types) {
+  if (types.length === 1) {
+    return BUY_TITLE_BY_TYPE[types[0]]
+  }
+
+  return types.map(t => TYPES_PLURAL[t]).join(', ')
+}
+
 function getTitleTextByFilters(filters, districts, format = false) {
-  const title = [{text: BUY_TITLE_BASE}]
   const {
     tagsSlug,
     neighborhoodSlugs,
@@ -59,8 +68,11 @@ function getTitleTextByFilters(filters, districts, format = false) {
     minGarageSpots,
     maxGarageSpots,
     minArea,
-    maxArea
+    maxArea,
+    types
   } = filters || {}
+
+  const title = [{text: types ? getTypeTitle(types) : BUY_TITLE_BASE}]
 
   if (minArea || maxArea) {
     title.push({
