@@ -11,6 +11,10 @@ import {hoistStatics} from 'recompose'
 import View from '@emcasa/ui-dom/components/View'
 import MapControl from '@emcasa/ui-dom/components/Map/Control'
 import LocationProvider, {withUserLocation} from 'components/providers/Location'
+import {fetchFlag, DEVICE_ID_COOKIE} from 'components/shared/Flagr'
+import {TEST_SAVE_LISTING_TEXT} from 'components/shared/Flagr/tests'
+import {getCookie} from 'lib/session'
+import FlagrProvider from 'components/shared/Flagr/Context'
 import ActionsBar from 'components/shared/ActionsBar'
 import ParamsMapper from 'utils/params-mapper'
 import {Query} from 'react-apollo'
@@ -73,9 +77,6 @@ const MapContainer = styled.div`
   .gm-fullscreen-control,
   .gm-bundled-control {
     margin-right: ${themeGet('space.4')}px !important;
-    transform: translateY(
-      ${({theme}) => theme.buttonHeight[1] + theme.space[5]}px
-    );
   }
 `
 
@@ -83,8 +84,6 @@ class ListingMapSearch extends Component {
   state = this.initialState
 
   mapRef = React.createRef()
-
-  filterRef = React.createRef()
 
   get initialState() {
     const {params = {}, userLocation = {}} = this.props
@@ -113,7 +112,18 @@ class ListingMapSearch extends Component {
       const {asPath} = context
       params = getLocationFromPath(asPath.split('#')[0])
     }
+
+    // Flagr
+    const deviceId = getCookie(DEVICE_ID_COOKIE, context.req)
+    const flagrFlags = {
+      [TEST_SAVE_LISTING_TEXT]: await fetchFlag(
+        TEST_SAVE_LISTING_TEXT,
+        deviceId
+      )
+    }
+
     return {
+      flagrFlags,
       params: params || {},
       renderFooter: false
     }
@@ -232,7 +242,7 @@ class ListingMapSearch extends Component {
             zIndex={10}
             width="100vw"
             bg="white"
-            position="top-center"
+            position="top-right"
           >
             <ActionsBar
               user={user}
@@ -252,28 +262,30 @@ class ListingMapSearch extends Component {
   }
 
   render() {
-    const {url, params} = this.props
+    const {url, params, flagrFlags} = this.props
     const {filters, height} = this.state
     return (
-      <View height={height}>
-        <Query query={GET_DISTRICTS}>
-          {({data}) => (
-            <ListingHead
-              districts={data ? data.districts : []}
-              filters={filters}
-              params={params}
-              url={url}
-            />
-          )}
-        </Query>
-        <LdJson />
-        <Query
-          query={GET_LISTINGS_COORDINATES}
-          variables={{filters: getListingFiltersFromState(filters)}}
-        >
-          {this.renderMap}
-        </Query>
-      </View>
+      <FlagrProvider flagrFlags={flagrFlags}>
+        <View height={height}>
+          <Query query={GET_DISTRICTS}>
+            {({data}) => (
+              <ListingHead
+                districts={data ? data.districts : []}
+                filters={filters}
+                params={params}
+                url={url}
+              />
+            )}
+          </Query>
+          <LdJson />
+          <Query
+            query={GET_LISTINGS_COORDINATES}
+            variables={{filters: getListingFiltersFromState(filters)}}
+          >
+            {this.renderMap}
+          </Query>
+        </View>
+      </FlagrProvider>
     )
   }
 }
