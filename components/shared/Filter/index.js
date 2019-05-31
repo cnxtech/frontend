@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
 import Row from '@emcasa/ui-dom/components/Row'
-import Icon from '@emcasa/ui-dom/components/Icon'
+import {Icon} from './styles'
 import {clone} from 'utils/clone'
 import Content from './components/Content'
 import {ChangeTypeEnum} from './components/Content/changeTypes'
@@ -128,7 +128,7 @@ class Filter extends Component {
       <Fragment>
         <Button fontSize="small" noBorder link onClick={this.toggleContent}>
           <Row alignItems="center">
-            <Icon mr={2} name="filter" type="emcasa" color="pink" size={16} />
+            <Icon mr={2} />
             <Text inline fontSize="small">
               Filtros
             </Text>
