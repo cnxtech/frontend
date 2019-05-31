@@ -104,9 +104,9 @@ class ListingsMap extends PureComponent {
           MultiMarker={MultiMarker}
           getClusterProps={(props) => ({
             ...props,
-            currentIndex: props.points.findIndex(
-              ({id}) => id == this.state.highlight
-            ),
+            currentIndex: props.points
+              .filter(Boolean)
+              .findIndex(({id}) => id == this.state.highlight),
             onChangePage: props.isMultiMarker ? this.setHighlight : undefined,
             onClick: (...args) => {
               if (!props.isMultiMarker && onClickCluster)
