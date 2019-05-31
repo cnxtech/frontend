@@ -22,29 +22,32 @@ class ListingsMap extends Component {
 
   selectListing = ({id}) => this.setState({highlight: id})
 
-  setHighlight = ({id}) => this.setState({highlight: id})
+  setHighlight = ({id, lat, lng}) => {
+    if (this.props.clickMarkerEvent) {
+      log(this.props.clickMarkerEvent)
+    }
+    if (this.map) {
+      this.map.setCenter(new google.maps.LatLng(lat, lng))
+    }
+    this.setState({highlight: id})
+  }
 
   isHighlight = ({id}) => this.state.highlight === id
 
   onMapLoaded = ({map}) => {
     if (map) {
       this.map = map
-      this.map.addListener('click', this.onClickMarker)
+      this.map.addListener('click', this.onMapClick)
       this.map.addListener('dragend', this.onMapDragEnd)
       this.map.addListener('zoom_changed', this.onMapZoomChanged)
     }
   }
 
-  onClickMarker = (e) => {
+  onMapClick = (e) => {
     if (e.placeId) {
       // Prevent place info popup from showing.
       e.stop()
     }
-
-    if (this.props.clickMarkerEvent) {
-      log(this.props.clickMarkerEvent)
-    }
-    this.map.setCenter(new google.maps.LatLng(e.latLng.lat(), e.latLng.lng()))
   }
 
   onMapDragEnd = () => {
@@ -74,7 +77,7 @@ class ListingsMap extends Component {
         lat={lat}
         lng={lng}
         highlight={isHighlight}
-        onClick={() => this.setHighlight({id})}
+        onClick={() => this.setHighlight({id, lat, lng})}
       >
         {!isHighlight ? (
           getListingPrice(listing)
