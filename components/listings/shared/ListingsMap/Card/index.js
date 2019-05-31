@@ -2,20 +2,18 @@ import Link from 'next/link'
 import Text from '@emcasa/ui-dom/components/Text'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
+import {graphql} from 'react-apollo'
+import {compose} from 'recompose'
+import {GET_LISTING} from 'graphql/listings/queries'
+import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
 import {thumbnailUrl} from 'utils/image_url'
 import {buildSlug} from 'lib/listings'
 import {getListingPrice, getListingSummary} from 'lib/listings'
 import LikeButton from 'components/shared/Common/Buttons/Like'
-import Container, {ButtonContainer, Spinner} from './styles'
+import Container, {Body, ButtonContainer, Spinner} from './styles'
 
-export default function ListingCard({
-  listing,
-  loading,
-  onClick,
-  favorite,
-  user
-}) {
-  if (loading)
+function ListingCard({listing, loading, onClick, favorite, user}) {
+  if (loading || !listing)
     return (
       <Container>
         <Spinner />
@@ -37,12 +35,12 @@ export default function ListingCard({
             favorite={favorite}
             listing={listing}
             user={user}
-            secondary
+            search={true}
           />
         </ButtonContainer>
 
         <img decoding="async" src={thumbUrl} />
-        <Col p={2}>
+        <Body>
           <Row mb={1} justifyContent="space-between">
             <Text inline fontSize="small" fontWeight="bold">
               {listing.address.neighborhood}
@@ -56,8 +54,33 @@ export default function ListingCard({
               {summary}
             </Text>
           </Row>
-        </Col>
+        </Body>
       </Container>
     </Link>
   )
 }
+
+export default compose(
+  graphql(GET_LISTING, {
+    skip: ({listing}) => Boolean(listing),
+    options: ({id}) => ({
+      variables: {id}
+    }),
+    props: ({data, loading}) => ({
+      loading: loading,
+      listing: data && data.listing
+    })
+  }),
+  graphql(GET_USER_LISTINGS_ACTIONS, {
+    skip: ({user, favorite}) =>
+      !user.authenticated || typeof favorite === 'boolean',
+    options: () => ({
+      fetchPolicy: 'cache-and-network'
+    }),
+    props: ({ownProps, data: {userProfile}}) => ({
+      favorite: Boolean(
+        userProfile && userProfile.favorites.find(({id}) => id === ownProps.id)
+      )
+    })
+  })
+)(ListingCard)

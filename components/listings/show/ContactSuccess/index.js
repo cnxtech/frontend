@@ -20,7 +20,8 @@ import {
   LISTING_DETAIL_VISIT_FORM_SAVE_LISTING_LOGIN_CANCEL,
   LISTING_DETAIL_VISIT_FORM_SAVE_LISTING_LOGIN_SUCCESS,
   LISTING_DETAIL_VISIT_FORM_SAVE_LISTING_SUCCESS,
-  LISTING_DETAIL_VISIT_FORM_VIEW_LISTINGS
+  LISTING_DETAIL_VISIT_FORM_VIEW_LISTINGS,
+  PROFILE_FAVORITES_VIEW_LISTINGS
 } from 'lib/logging'
 import {
   GreenBox,
@@ -52,7 +53,10 @@ class ContactSuccess extends Component {
   }
 
   render() {
-    const neighborhoodSlug = this.props.listing.address.neighborhoodSlug
+    const {listing} = this.props
+    const neighborhoodSlug = listing ? listing.address.neighborhoodSlug : null
+    const viewListingsHref = neighborhoodSlug ? `/listings?bairros=${neighborhoodSlug}` : '/listings'
+    const viewListingsAs = neighborhoodSlug ? `/imoveis?bairros=${neighborhoodSlug}` : '/imoveis'
     return (
       <Modal
         onClose={this.props.onClose}
@@ -64,14 +68,14 @@ class ContactSuccess extends Component {
             <FontAwesomeIcon icon={faCheck} />
           </CheckContainer>
           <View mt={4} px={4}>
-            <Text color="white" fontWeight="bold" textAlign="center">Sucesso! Em breve um especialista entrará em contato com você</Text>
+            <Text color="white" fontWeight="bold" textAlign="center">Sucesso! Em breve um especialista entrará em contato com você.</Text>
           </View>
         </GreenBox>
         <Row flexDirection="column" p={4}>
           <Col>
             <Text textAlign="center" fontSize="small">Enquanto isso, salve alguns imóveis. Isso nos ajuda a montar a lista de imóveis perfeita para você.</Text>
           </Col>
-          <Col m="auto" mt={2}>
+          {listing && <Col m="auto" mt={2}>
             <Mutation mutation={FAVORITE_LISTING}>
               {(favoriteListing) =>
                 <AccountKit
@@ -93,11 +97,15 @@ class ContactSuccess extends Component {
                 </AccountKit>
               }
             </Mutation>
-          </Col>
+          </Col>}
           <Col m="auto" mt={2}>
-            <Link href={`/listings?bairros=${neighborhoodSlug}`} as={`/imoveis?bairros=${neighborhoodSlug}`}>
+            <Link href={viewListingsHref} as={viewListingsAs}>
               <Button onClick={() => {
-                log(LISTING_DETAIL_VISIT_FORM_VIEW_LISTINGS, {listingId: this.props.listing.id})
+                if (listing) {
+                  log(LISTING_DETAIL_VISIT_FORM_VIEW_LISTINGS, {listingId: this.props.listing.id})
+                } else {
+                  log(PROFILE_FAVORITES_VIEW_LISTINGS)
+                }
                 this.props.onClose()
               }}>Ver outros imóveis</Button>
             </Link>
@@ -110,8 +118,8 @@ class ContactSuccess extends Component {
 
 ContactSuccess.propTypes = {
   onClose: PropTypes.func.isRequired,
-  userPhone: PropTypes.string.isRequired,
-  listing: PropTypes.object.isRequired,
+  userPhone: PropTypes.string,
+  listing: PropTypes.object,
   currentUser: PropTypes.object
 }
 

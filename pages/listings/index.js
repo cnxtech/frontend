@@ -1,6 +1,6 @@
 import {Component, Fragment} from 'react'
 import Router from 'next/router'
-import {GET_USER_LISTINGS_ACTIONS} from 'graphql/user/queries'
+import Link from 'next/link'
 import {
   getListingFiltersFromState,
   getLocationFromPath
@@ -70,6 +70,10 @@ class ListingSearch extends Component {
     }
   }
 
+  get mapUrl() {
+    return `/imoveis/mapa${ParamsMapper.mapParamsToUrl(this.state.filters)}`
+  }
+
   componentDidMount() {
     log(LISTING_SEARCH_OPEN)
     if (!localStorage.getItem('hideFavMessageBar')) {
@@ -132,61 +136,51 @@ class ListingSearch extends Component {
             if (error) return <p>ERROR</p>
             const districts = data ? data.districts : []
             return (
-              <Query
-                query={GET_USER_LISTINGS_ACTIONS}
-                ssr={true}
-                skip={!user.authenticated}
-              >
-                {({data, loading}) => {
-                  if (loading) {
-                    return <div />
-                  }
-                  const userProfile = data ? data.userProfile : null
-                  const favorites = userProfile ? userProfile.favorites : []
-                  return (
-                    <Fragment>
-                      <ListingHead
-                        districts={districts}
-                        filters={filters}
-                        params={params || {}}
-                        url={url}
-                      />
-                      <LdJson />
-                      {currentCity && (
-                        <ActionsBar
-                          user={user}
-                          filters={filters}
-                          currentCity={currentCity}
-                          onSubmit={this.onChangeFilter}
-                          favorites={favorites}
-                        />
-                      )}
-                      {showFavMessageBar && (
-                        <FavMessageBar
-                          onClickCloseButton={() =>{
-                            localStorage.setItem('hideFavMessageBar', true)
-                            this.setState({showFavMessageBar: false})
-                          }}
-                        />
-                      )}
-                      <ListingList
-                        isRoot={isRoot}
-                        query={query}
-                        params={params || {}}
-                        user={user}
-                        resetFilters={this.onResetFilter}
-                        filters={listingFilters}
-                        apolloClient={client}
-                        districts={districts}
-                        neighborhoodListener={(neighborhood) => {
-                          if (!this.state.neighborhood) {
-                            this.setState({neighborhood: neighborhood})
-                          }
-                        }}
-                      />
-                    </Fragment>
-                  )}}
-              </Query>
+              <Fragment>
+                <ListingHead
+                  districts={districts}
+                  filters={filters}
+                  params={params || {}}
+                  url={url}
+                />
+                <LdJson />
+                {currentCity && (
+                  <ActionsBar
+                    user={user}
+                    filters={filters}
+                    currentCity={currentCity}
+                    onSubmit={this.onChangeFilter}
+                    button={
+                      <Link passHref href="/listings/map" as={this.mapUrl}>
+                        <ActionsBar.Button icon="map" label="Mapa" />
+                      </Link>
+                    }
+                  />
+                )}
+                {showFavMessageBar && (
+                  <FavMessageBar
+                    onClickCloseButton={() => {
+                      localStorage.setItem('hideFavMessageBar', true)
+                      this.setState({showFavMessageBar: false})
+                    }}
+                  />
+                )}
+                <ListingList
+                  isRoot={isRoot}
+                  query={query}
+                  params={params || {}}
+                  user={user}
+                  resetFilters={this.onResetFilter}
+                  filters={listingFilters}
+                  apolloClient={client}
+                  districts={districts}
+                  neighborhoodListener={(neighborhood) => {
+                    if (!this.state.neighborhood) {
+                      this.setState({neighborhood: neighborhood})
+                    }
+                  }}
+                />
+              </Fragment>
             )
           }}
         </Query>

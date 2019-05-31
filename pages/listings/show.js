@@ -216,6 +216,7 @@ class Listing extends Component {
           favorite={likeButton.favorite}
           listing={likeButton.listing}
           user={likeButton.user}
+          search={false}
         />}
         <ButtonIcon onClick={onClick} icon={icon.fa} iconColor={icon.color}>{label}</ButtonIcon>
       </Fragment>

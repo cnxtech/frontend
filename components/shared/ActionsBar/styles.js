@@ -20,28 +20,7 @@ export const Container = styled(Row)`
   margin: auto;
   box-sizing: border-box;
 `
-
 export const FavCount = styled(Row)`
   cursor: ${({authenticated}) => authenticated ? `pointer` : `default`};
   align-items: center;
-
-  svg {
-    width: 15px;
-
-    path {
-      fill: ${theme.colors.white};
-      stroke: ${theme.colors.pink};
-      stroke-width: 40;
-    }
-  }
-
-  p {
-    display: flex;
-    align-items: center;
-    margin: 0 0 0 ${theme.space[3]}px;
-  }
-
-  span {
-    margin-left: ${theme.space[1]}px;
-  }
 `

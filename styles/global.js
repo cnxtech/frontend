@@ -130,6 +130,6 @@ export default createGlobalStyle`
   }
   
   .js-no-scroll header {
-    display: none;
+    display: none !important;
   }
 `

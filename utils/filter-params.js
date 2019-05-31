@@ -265,7 +265,7 @@ export const getListingFiltersFromState = (filterState) => {
  * @param asPath url
  */
 export const getLocationFromPath = (asPath) => {
-  const locationString = asPath.split('/imoveis/')[1]
+  const locationString = asPath.split(/\/imoveis\/(mapa\/)?/)[2]
   if (locationString) {
     const urlParts = locationString.split('/')
     const state = urlParts[0]

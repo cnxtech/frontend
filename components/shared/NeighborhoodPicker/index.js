@@ -94,8 +94,8 @@ class NeighborhoodPicker extends Component {
 
   applyUserCityFromGeoIp = (userCity) => {
     const {pathname} = location
-    if (pathname !== '/imoveis') {
-      const location = pathname.split('/imoveis/')[1]
+    if (!/^\/imoveis(\/mapa)?$/.test(pathname)) {
+      const location = pathname.split(/^\/imoveis(\/mapa)?\//)[2]
       if (location) {
         const citySlug = location.split('/')[1]
         const urlCity = cities.find((city) => city.citySlug === citySlug)
