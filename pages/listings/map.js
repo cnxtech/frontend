@@ -9,6 +9,7 @@ import {
 } from 'utils/filter-params.js'
 import {hoistStatics} from 'recompose'
 import View from '@emcasa/ui-dom/components/View'
+import Text from '@emcasa/ui-dom/components/Text'
 import MapControl from '@emcasa/ui-dom/components/Map/Control'
 import LocationProvider, {withUserLocation} from 'components/providers/Location'
 import {fetchFlag, DEVICE_ID_COOKIE} from 'components/shared/Flagr'
@@ -17,13 +18,14 @@ import {getCookie} from 'lib/session'
 import FlagrProvider from 'components/shared/Flagr/Context'
 import ActionsBar from 'components/shared/ActionsBar'
 import ParamsMapper from 'utils/params-mapper'
-import {Query} from 'react-apollo'
+import {Query, graphql} from 'react-apollo'
 import {HEADER_HEIGHT} from 'constants/dimensions'
 import {GET_LISTINGS_COORDINATES} from 'graphql/listings/queries'
 import {GET_DISTRICTS} from 'graphql/listings/queries'
 import ListingHead from './components/head'
 import LdJson from './components/ld-json'
 import Map from 'components/listings/shared/ListingsMap'
+import {getTitleTextByFilters} from 'components/listings/shared/ListingList/title'
 import {
   log,
   LISTING_SEARCH_MAP_OPEN,
@@ -81,6 +83,10 @@ const MapContainer = styled.div`
 `
 
 class ListingMapSearch extends Component {
+  static defaultProps = {
+    districts: []
+  }
+
   state = this.initialState
 
   mapRef = React.createRef()
@@ -213,7 +219,7 @@ class ListingMapSearch extends Component {
   }
 
   renderMap = ({data, error}) => {
-    const {user, userCity} = this.props
+    const {user, userCity, districts} = this.props
     const {filters, center, zoom} = this.state
     const {citySlug} = filters
     const location = this.location
@@ -255,6 +261,9 @@ class ListingMapSearch extends Component {
                 </Link>
               }
             />
+            <View p={4}>
+              <Text inline>{getTitleTextByFilters(filters, districts)}</Text>
+            </View>
           </MapControl>
         </Map>
       </MapContainer>
@@ -262,21 +271,17 @@ class ListingMapSearch extends Component {
   }
 
   render() {
-    const {url, params, flagrFlags} = this.props
+    const {url, params, districts, flagrFlags} = this.props
     const {filters, height} = this.state
     return (
       <FlagrProvider flagrFlags={flagrFlags}>
         <View height={height}>
-          <Query query={GET_DISTRICTS}>
-            {({data}) => (
-              <ListingHead
-                districts={data ? data.districts : []}
-                filters={filters}
-                params={params}
-                url={url}
-              />
-            )}
-          </Query>
+          <ListingHead
+            districts={districts}
+            filters={filters}
+            params={params}
+            url={url}
+          />
           <LdJson />
           <Query
             query={GET_LISTINGS_COORDINATES}
@@ -290,4 +295,11 @@ class ListingMapSearch extends Component {
   }
 }
 
-export default hoistStatics(withUserLocation)(ListingMapSearch)
+export default hoistStatics(
+  withUserLocation,
+  graphql(GET_DISTRICTS, {
+    props: ({data}) => ({
+      districts: (data && data.districts) || []
+    })
+  })
+)(ListingMapSearch)
