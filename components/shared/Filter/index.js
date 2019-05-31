@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react'
+import Router from 'next/router'
 import PropTypes from 'prop-types'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
@@ -8,6 +9,13 @@ import {clone} from 'utils/clone'
 import Content from './components/Content'
 import {ChangeTypeEnum} from './components/Content/changeTypes'
 import {DEFAULT_CITY} from 'utils/location-utils'
+import {
+  log,
+  LISTING_SEARCH_FILTER_OPEN,
+  LISTING_SEARCH_FILTER_CLOSE,
+  LISTING_SEARCH_FILTER_CLEAR,
+  LISTING_SEARCH_FILTER_APPLY
+} from 'lib/logging'
 
 class Filter extends Component {
   constructor(props) {
@@ -45,7 +53,9 @@ class Filter extends Component {
   toggleContent = () => {
     if (!this.state.showContent) {
       this.createBackup()
+      log(LISTING_SEARCH_FILTER_OPEN, {location: Router.router.route})
     } else {
+      log(LISTING_SEARCH_FILTER_CLOSE, {location: Router.router.route})
       this.applyBackup()
     }
     this.setState({showContent: !this.state.showContent})
@@ -96,11 +106,16 @@ class Filter extends Component {
 
   onSubmit = () => {
     this.cleanBackup()
+    log(LISTING_SEARCH_FILTER_APPLY, {
+      location: Router.router.route,
+      filters: this.state.filters
+    })
     this.props.onSubmit(clone(this.state.filters))
     this.toggleContent()
   }
 
   onCleanup = () => {
+    log(LISTING_SEARCH_FILTER_CLEAR, {location: Router.router.route})
     this.cleanBackup()
     const {citySlug, stateSlug} = this.state.filters
     this.props.onSubmit({citySlug, stateSlug})
