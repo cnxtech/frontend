@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import {captureException} from '@sentry/browser'
 import get from 'lodash/get'
@@ -66,48 +67,58 @@ class LikeButton extends Component {
     }
   }
 
+  renderLogin(favoriteListing) {
+    return (
+      <Fragment>
+        {this.state.showLogin && (
+          <AccountKit
+            appId={process.env.FACEBOOK_APP_ID}
+            appSecret={process.env.ACCOUNT_KIT_APP_SECRET}
+            version="v1.0"
+            onSuccess={(userInfo) => this.onLoginSuccess(userInfo, favoriteListing)}
+          >
+            {({signIn}) => (
+              <FavoriteLogin
+                onClose={() => {
+                  log(LISTING_SAVE_LOGIN_CLOSE)
+                  this.setState({showLogin: false})
+                }}
+                onSignIn={(name) => {
+                  this.setState({showLogin: false, name}, () => {
+                    log(LISTING_SAVE_LOGIN_ACCOUNT_KIT)
+                    signIn()
+                  })
+                }}
+                onMount={() => {
+                  log(LISTING_SAVE_LOGIN_OPEN)
+                }}
+              />
+            )}
+          </AccountKit>
+        )}
+        {this.state.showSuccess && (
+          <FavoriteLoginSuccess
+            onClose={() => {
+              this.setState({showSuccess: false})
+              log(LISTING_SAVE_LOGIN_DONE)
+            }}
+          />
+        )}
+      </Fragment>
+    )
+  }
+
   render() {
-    const {favorite, top, user, listing, textButton, search, related} = this.props
+    const {favorite, top, user, listing, textButton, search, related, loginContainer} = this.props
     const ButtonContainer = textButton ? TextButton : Circle
     return (
       <Mutation mutation={!favorite ? FAVORITE_LISTING : UNFAVORITE_LISTING}>
         {(favoriteListing) =>
-          <>
-            {this.state.showLogin && <AccountKit
-              appId={process.env.FACEBOOK_APP_ID}
-              appSecret={process.env.ACCOUNT_KIT_APP_SECRET}
-              version="v1.0"
-              onSuccess={(userInfo) => {this.onLoginSuccess(userInfo, favoriteListing)}}
-            >
-              {({signIn}) =>
-                <FavoriteLogin
-                  onClose={() => {
-                    log(LISTING_SAVE_LOGIN_CLOSE)
-                    this.setState({showLogin: false})
-                  }}
-                  onSignIn={(name) => {
-                    this.setState({
-                      showLogin: false,
-                      name
-                    }, () => {
-                      log(LISTING_SAVE_LOGIN_ACCOUNT_KIT)
-                      signIn()
-                    })
-                  }}
-                  onMount={() => {
-                    log(LISTING_SAVE_LOGIN_OPEN)
-                  }}
-                />
-              }
-            </AccountKit>}
-            {this.state.showSuccess &&
-              <FavoriteLoginSuccess
-                onClose={() => {
-                  this.setState({showSuccess: false})
-                  log(LISTING_SAVE_LOGIN_DONE)
-                }}
-              />
-            }
+          <Fragment>
+            {loginContainer ? ReactDOM.createPortal(
+              this.renderLogin(favoriteListing),
+              loginContainer
+            ) : this.renderLogin(favoriteListing)}
             <ButtonContainer
               aria-label="Favoritar imóvel"
               top={top}
@@ -173,7 +184,7 @@ class LikeButton extends Component {
             >
               <Icon name="heart" />
             </ButtonContainer>
-          </>
+          </Fragment>
         }
       </Mutation>
     )

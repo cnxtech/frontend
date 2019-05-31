@@ -12,7 +12,14 @@ import {getListingPrice, getListingSummary} from 'lib/listings'
 import LikeButton from 'components/shared/Common/Buttons/Like'
 import Container, {Body, ButtonContainer, Spinner} from './styles'
 
-function ListingCard({listing, loading, onClick, favorite, user}) {
+function ListingCard({
+  listing,
+  loading,
+  onClick,
+  favorite,
+  user,
+  loginContainer
+}) {
   if (loading || !listing)
     return (
       <Container>
@@ -36,6 +43,7 @@ function ListingCard({listing, loading, onClick, favorite, user}) {
             listing={listing}
             user={user}
             search={true}
+            loginContainer={loginContainer}
           />
         </ButtonContainer>
 
