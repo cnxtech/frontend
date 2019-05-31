@@ -139,7 +139,7 @@ class ListingSearch extends Component {
                   params={params || {}}
                   url={url}
                 />
-                <LdJson />
+                <LdJson path="/imoveis" />
                 {currentCity && (
                   <ActionsBar
                     user={user}

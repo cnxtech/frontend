@@ -282,7 +282,7 @@ class ListingMapSearch extends Component {
             params={params}
             url={url}
           />
-          <LdJson />
+          <LdJson path="/imoveis/mapa" />
           <Query
             query={GET_LISTINGS_COORDINATES}
             variables={{filters: getListingFiltersFromState(filters)}}
