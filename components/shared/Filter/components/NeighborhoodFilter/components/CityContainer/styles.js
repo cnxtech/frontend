@@ -25,7 +25,7 @@ const SecondaryButton = styled(Button)`
         :colors.white};
   color: ${({active, selected, disabled, link, theme: {colors}}) => {
     if (disabled) return colors.disabled
-    else if (link) return colors.disabled
+    else if (link) return colors.blue
     else if (active || selected) return colors.white
     else return colors.dark
   }};
@@ -39,7 +39,7 @@ const NeighborhoodButton = styled(SecondaryButton)`
 
 const LinkButton = styled(Button)`
   background-color: transparent;
-  color: ${({theme: {colors}}) => colors.disabled};
+  color: ${({theme: {colors}}) => colors.blue};
   @media ${breakpoint.only('phone')} {
     display: none;
   }

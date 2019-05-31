@@ -9,9 +9,7 @@ import {Query} from 'react-apollo/index'
 import {cities} from 'constants/cities'
 import {
   log,
-  LISTING_SEARCH_NEIGHBORHOOD_OPEN,
   LISTING_SEARCH_NEIGHBORHOOD_APPLY,
-  LISTING_SEARCH_NEIGHBORHOOD_CLEAR,
   LISTING_SEARCH_NEIGHBORHOOD_EXPAND,
   LISTING_SEARCH_NEIGHBORHOOD_CHANGE_CITY
 } from 'lib/logging'
