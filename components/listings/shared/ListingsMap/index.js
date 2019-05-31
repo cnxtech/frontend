@@ -35,7 +35,7 @@ class ListingsMap extends Component {
     }
   }
 
-  onClickMarker = (e, params) => {
+  onClickMarker = (e) => {
     if (e.placeId) {
       // Prevent place info popup from showing.
       e.stop()
