@@ -231,7 +231,7 @@ const startServer = () => {
 
       server.get('*', (req, res) => {
         const parsedUrl = parse(req.url, true)
-        const rootStaticFiles = ['/robots.txt', '/sitemap.xml']
+        const rootStaticFiles = ['/robots.txt', '/sitemap.xml', '/manifest.json']
         if (rootStaticFiles.indexOf(parsedUrl.pathname) > -1) {
           if (parsedUrl.pathname.indexOf('sitemap') > -1) {
             buildSitemap()
