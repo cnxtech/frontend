@@ -9,9 +9,6 @@ import BuyHeader from 'components/listings/buy/BuyHeader'
 import BuyBar from 'components/shared/BuyBar'
 import CityLists from 'components/listings/buy/CityLists'
 import ListingFeed from 'components/shared/Listing/Feed'
-import {fetchFlag, DEVICE_ID_COOKIE} from 'components/shared/Flagr'
-import FlagrProvider from 'components/shared/Flagr/Context'
-import {TEST_SAVE_LISTING_TEXT} from 'components/shared/Flagr/tests'
 import {DEFAULT_CITY_SLUG} from 'components/shared/NeighborhoodPicker'
 
 const BASE_TITLE = 'Imóveis, Casas e Apartamentos à Venda'
@@ -108,21 +105,6 @@ class HomePage extends Component {
     cityFeed: {}
   }
 
-  static async getInitialProps(context) {
-    // Flagr
-    const deviceId = getCookie(DEVICE_ID_COOKIE, context.req)
-    const flagrFlags = {
-      [TEST_SAVE_LISTING_TEXT]: await fetchFlag(
-        TEST_SAVE_LISTING_TEXT,
-        deviceId
-      )
-    }
-
-    return {
-      flagrFlags
-    }
-  }
-
   static getDerivedStateFromProps({userLocation, router}, state) {
     const city = (router.query || {}).city
     const userCity =
@@ -147,47 +129,45 @@ class HomePage extends Component {
     }
 
     return (
-      <FlagrProvider flagrFlags={this.props.flagrFlags}>
-        <Fragment>
-          <NextHead
-            title={headContent.seoTitle}
-            description={headContent.seoDescription}
-            imageSrc={headContent.seoImg}
-            imageWidth={'1476'}
-            imageHeight={'838'}
-            url={headContent.seoURL}
-          />
-          <BuyHeader />
-          <BuyBar user={user} />
-          {cityFeed.feed &&
-            cityFeed.feed.map((item, index) => {
-              return (
-                <ListingFeed
-                  key={index}
-                  highlight={item.highlight}
-                  title={item.title}
-                  button={item.button}
-                  currentUser={user}
-                  variables={item.variables}
-                />
-              )
-            })}
-          {userFeed.feed &&
-            userFeed.feed.map((item, index) => {
-              return (
-                <ListingFeed
-                  key={index}
-                  highlight={item.highlight}
-                  title={item.title}
-                  button={item.button}
-                  currentUser={user}
-                  variables={item.variables}
-                />
-              )
-            })}
-          {(city || userCity) && <CityLists city={city || userCity} />}
-        </Fragment>
-      </FlagrProvider>
+      <Fragment>
+        <NextHead
+          title={headContent.seoTitle}
+          description={headContent.seoDescription}
+          imageSrc={headContent.seoImg}
+          imageWidth={'1476'}
+          imageHeight={'838'}
+          url={headContent.seoURL}
+        />
+        <BuyHeader />
+        <BuyBar user={user} />
+        {cityFeed.feed &&
+          cityFeed.feed.map((item, index) => {
+            return (
+              <ListingFeed
+                key={index}
+                highlight={item.highlight}
+                title={item.title}
+                button={item.button}
+                currentUser={user}
+                variables={item.variables}
+              />
+            )
+          })}
+        {userFeed.feed &&
+          userFeed.feed.map((item, index) => {
+            return (
+              <ListingFeed
+                key={index}
+                highlight={item.highlight}
+                title={item.title}
+                button={item.button}
+                currentUser={user}
+                variables={item.variables}
+              />
+            )
+          })}
+        {(city || userCity) && <CityLists city={city || userCity} />}
+      </Fragment>
     )
   }
 }

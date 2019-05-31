@@ -11,10 +11,6 @@ import {clone} from 'utils/clone'
 import {log, LISTING_SEARCH_OPEN} from 'lib/logging'
 import {Query} from 'react-apollo'
 import {GET_DISTRICTS} from 'graphql/listings/queries'
-import {fetchFlag, DEVICE_ID_COOKIE} from 'components/shared/Flagr'
-import FlagrProvider from 'components/shared/Flagr/Context'
-import {TEST_SAVE_LISTING_TEXT} from 'components/shared/Flagr/tests'
-import {getCookie} from 'lib/session'
 import LdJson from './components/ld-json'
 import ListingHead from './components/head'
 import {NEIGHBORHOOD_SELECTION_CHANGE} from '../../components/shared/NeighborhoodPicker/events'
@@ -41,23 +37,13 @@ class ListingSearch extends Component {
       params = getLocationFromPath(asPath)
     }
 
-    // Flagr
-    const deviceId = getCookie(DEVICE_ID_COOKIE, context.req)
-    const flagrFlags = {
-      [TEST_SAVE_LISTING_TEXT]: await fetchFlag(
-        TEST_SAVE_LISTING_TEXT,
-        deviceId
-      )
-    }
-
     return {
       asPath: context.asPath,
       hideSeparator: true,
       transparentHeader: false,
       params,
       renderFooter: false,
-      headerSearch: true,
-      flagrFlags
+      headerSearch: true
     }
   }
 
@@ -146,53 +132,51 @@ class ListingSearch extends Component {
     const listingFilters = getListingFiltersFromState(filters)
     const isRoot = asPath === '/'
     return (
-      <FlagrProvider flagrFlags={this.props.flagrFlags}>
-        <Query query={GET_DISTRICTS}>
-          {({data, loading, error}) => {
-            if (loading) return <div />
-            if (error) return <p>ERROR</p>
-            const districts = data ? data.districts : []
-            return (
-              <Fragment>
-                <ListingHead
-                  districts={districts}
-                  filters={filters}
-                  params={params || {}}
-                  url={url}
-                />
-                <LdJson />
-                <ListingFilter
-                  onSubmit={this.onChangeFilter}
-                  values={filters}
-                />
-                {showFavMessageBar && (
-                  <FavMessageBar
-                    onClickCloseButton={() =>{
-                      localStorage.setItem('hideFavMessageBar', true)
-                      this.setState({showFavMessageBar: false})
-                    }}
-                  />
-                )}
-                <ListingList
-                  isRoot={isRoot}
-                  query={query}
-                  params={params || {}}
-                  user={user}
-                  resetFilters={this.onResetFilter}
-                  filters={listingFilters}
-                  apolloClient={client}
-                  districts={districts}
-                  neighborhoodListener={(neighborhood) => {
-                    if (!this.state.neighborhood) {
-                      this.setState({neighborhood: neighborhood})
-                    }
+      <Query query={GET_DISTRICTS}>
+        {({data, loading, error}) => {
+          if (loading) return <div />
+          if (error) return <p>ERROR</p>
+          const districts = data ? data.districts : []
+          return (
+            <Fragment>
+              <ListingHead
+                districts={districts}
+                filters={filters}
+                params={params || {}}
+                url={url}
+              />
+              <LdJson />
+              <ListingFilter
+                onSubmit={this.onChangeFilter}
+                values={filters}
+              />
+              {showFavMessageBar && (
+                <FavMessageBar
+                  onClickCloseButton={() =>{
+                    localStorage.setItem('hideFavMessageBar', true)
+                    this.setState({showFavMessageBar: false})
                   }}
                 />
-              </Fragment>
-            )
-          }}
-        </Query>
-      </FlagrProvider>
+              )}
+              <ListingList
+                isRoot={isRoot}
+                query={query}
+                params={params || {}}
+                user={user}
+                resetFilters={this.onResetFilter}
+                filters={listingFilters}
+                apolloClient={client}
+                districts={districts}
+                neighborhoodListener={(neighborhood) => {
+                  if (!this.state.neighborhood) {
+                    this.setState({neighborhood: neighborhood})
+                  }
+                }}
+              />
+            </Fragment>
+          )
+        }}
+      </Query>
     )
   }
 }
