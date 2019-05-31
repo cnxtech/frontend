@@ -7,10 +7,7 @@ import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import Modal from 'components/shared/Modal'
-import {TEST_SAVE_LISTING_TEXT} from 'components/shared/Flagr/tests'
-import Case from 'components/shared/Flagr/Case'
-import Flagr from 'components/shared/Flagr'
-import { HeartContainer } from './styles'
+import {HeartContainer} from './styles'
 
 class FavoriteLogin extends Component {
   constructor(props) {
@@ -61,14 +58,7 @@ class FavoriteLogin extends Component {
         <Row m={2} justifyContent="center">
           <Text inline fontWeight="bold" textAlign="center">Salvar imóvel</Text>
         </Row>
-        <Flagr flagKey={TEST_SAVE_LISTING_TEXT}>
-          <Case variant="default">
-            <Text inline textAlign="center">Este imóvel será salvo na sua aba de favoritos. Para isso, só precisamos do seu telefone.</Text>
-          </Case>
-          <Case variant="create_account_text">
-            <Text inline textAlign="center">Este imóvel será salvo na sua aba de favoritos. Para isso, crie uma conta informando seu telefone.</Text>
-          </Case>
-        </Flagr>
+        <Text inline textAlign="center">Este imóvel será salvo na sua aba de favoritos. Para isso, só precisamos do seu telefone.</Text>
         <Row justifyContent="center">
           <Col mt="40px">
             <Button
