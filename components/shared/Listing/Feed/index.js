@@ -29,6 +29,7 @@ class ListingFeed extends Component {
           listings={listings || theListings}
           favorites={favorites || []}
           currentUser={currentUser}
+          related={true}
         >
           <Row mt={5}>
             <Link passHref href={button.href} as={button.as} passHref>
@@ -90,6 +91,7 @@ class ListingFeed extends Component {
         </Query>
       )
     }
+    return null
   }
 
   loadListings = async (client) => {

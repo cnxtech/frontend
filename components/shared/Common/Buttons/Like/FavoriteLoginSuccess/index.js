@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Link from 'next/link'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faCheck from '@fortawesome/fontawesome-free-solid/faCheck'
-import { FAVORITES_TAB } from 'pages/user/profile'
 import Modal from 'components/shared/Modal'
 import Button from '@emcasa/ui-dom/components/Button'
 import Row from '@emcasa/ui-dom/components/Row'
@@ -44,7 +43,7 @@ class FavoriteLoginSuccess extends Component {
           </Col>
           <Row alignItems="center" flexDirection="column">
             <Col mt="40px">
-              <Link href={{pathname: '/meu-perfil', query: {tab: FAVORITES_TAB}}}><a>
+              <Link href={{pathname: '/meu-perfil/favoritos'}}><a>
                 <Button onClick={() => {log(LISTING_SAVE_LOGIN_VIEW_FAVORITES)}}>Ver Favoritos</Button>
               </a></Link>
             </Col>
