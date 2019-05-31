@@ -1,4 +1,4 @@
-import styled, {keyframes} from 'styled-components'
+import styled from 'styled-components'
 import theme from 'config/theme'
 import Col from '@emcasa/ui-dom/components/Col'
 import {breakpoint} from '@emcasa/ui/lib/styles'
@@ -12,7 +12,7 @@ import {
 
 export default styled.header`
   z-index: ${zIndexHeader};
-  position: fixed;
+  position: ${({fixed}) => (fixed ? 'fixed' : 'absolute')};
   top: 0;
   left: 0;
   display: flex;
@@ -22,7 +22,7 @@ export default styled.header`
   padding: 0 ${theme.space[4]}px;
   box-sizing: border-box;
   transition: background 0.25s;
-  background: ${(props) => (!props.transparent || props.sticky ? theme.colors.white : 'rgba(255,255,255,0)')};
+  background: ${(props) => !props.transparent ? theme.colors.white : 'rgba(255,255,255,0)'};
 
   @media screen and ${breakpoint.up('desktop')} {
     align-items: center;
@@ -30,7 +30,9 @@ export default styled.header`
 `
 
 export const LogoWrapper = styled.h1`
-  flex: 0 0 ${({hideText}) => hideText ? `${HEADER_LOGO_WIDTH}px` : `${HEADER_LOGO_WITH_TEXT_WIDTH}px`};
+  flex: 0 0
+    ${({hideText}) =>
+      hideText ? `${HEADER_LOGO_WIDTH}px` : `${HEADER_LOGO_WITH_TEXT_WIDTH}px`};
   margin: 0;
 `
 
@@ -56,7 +58,7 @@ export const NavButton = styled.button`
   font-weight: ${theme.fontWeights[2]};
   transform: scale(1.5, 1);
   padding: ${theme.space[1]}px;
-  
+
   @media ${breakpoint.down('tablet')} {
     display: ${(props) => (props.visible ? 'block' : 'none')};
     margin-left: auto;
@@ -71,7 +73,7 @@ export const SearchWrapper = styled(Col)`
 
 export const Nav = styled.nav`
   z-index: 2;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   transform: translateX(${({visible}) => (visible ? '0' : '100vw')});
@@ -164,7 +166,7 @@ export const MenuItem = styled.a`
 `
 
 export const Overlay = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;

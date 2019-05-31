@@ -20,8 +20,7 @@ import Container, {
   NavButton,
   MenuItem,
   LogoWrapper,
-  LabelLogo,
-  SearchWrapper
+  LabelLogo
 } from './styles'
 import Logo from 'components/shared/Logo'
 import CloseButton from 'components/shared/Common/Buttons/CloseButton'
@@ -109,11 +108,7 @@ class Header extends Component {
     const currentPath = router.asPath
 
     return (
-      <Container
-        transparent={transparent}
-        sticky={sticky && !search}
-        search={search}
-      >
+      <Container transparent={transparent && !sticky} fixed={!pageProps.asPath}>
         <Row alignItems="center" width={[1, null, null, 1 / 2]}>
           <LogoWrapper hideText={search}>
             <Link passHref href="/listings/buy" as="/">
