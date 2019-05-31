@@ -5,6 +5,10 @@ import Text from '@emcasa/ui-dom/components/Text'
 
 const Title = styled(Text)`
   margin: 0 ${theme.space[4]}px ${theme.space[3]}px;
+  color: ${theme.colors.grey};
+  strong {
+     font-weight: ${theme.fontWeights[2]};
+  }
 `
 
 const Container = styled(Row)`

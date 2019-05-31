@@ -10,9 +10,10 @@ import ListingInfiniteScroll from 'components/shared/ListingInfiniteScroll'
 import ListingCard from 'components/listings/shared/ListingCard'
 import ListingsNotFound from 'components/listings/shared/NotFound'
 import Neighborhood from 'components/listings/shared/Neighborhood'
+import FavMessageBar from 'components/listings/shared/FavMessageBar'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
-import {getTitleTextByFilters, getTitleTextByParams} from './title'
+import {getTitleTextByFilters} from './title'
 import {log, LISTING_SEARCH_MAP_PIN, LISTING_SEARCH_RESULTS} from 'lib/logging'
 import {Container, Title} from './styles'
 import {buildSlug} from 'lib/listings'
@@ -28,7 +29,8 @@ class ListingList extends Component {
   }
 
   state = {
-    isFirstLoad: true
+    isFirstLoad: true,
+    showFavMessageBar: false
   }
 
   componentWillReceiveProps(newProps) {
@@ -36,6 +38,12 @@ class ListingList extends Component {
     const newFilters = newProps.filters
     if (currentFilters !== newFilters) {
       this.pagination.excludedListingIds = []
+    }
+  }
+
+  componentDidMount() {
+    if (!localStorage.getItem('hideFavMessageBar')) {
+      this.setState({showFavMessageBar: true})
     }
   }
 
@@ -295,11 +303,9 @@ class ListingList extends Component {
   }
 
   render() {
-    const {isRoot, filters, params, districts} = this.props
-    const h1Content =
-      filters && filters.neighborhoodsSlugs
-        ? getTitleTextByFilters(filters.neighborhoodsSlugs, districts)
-        : getTitleTextByParams(params, districts)
+    const {isRoot, filters, districts} = this.props
+    const {showFavMessageBar} = this.state
+    const h1Content = getTitleTextByFilters(filters, districts, true)
 
     // If user is accessing '/imoveis', wait for location before querying
     if (this.waitForLocation()) {
@@ -324,6 +330,14 @@ class ListingList extends Component {
                 <Title as="h2" fontWeight="normal">
                   {h1Content}
                 </Title>
+                {showFavMessageBar && (
+                  <FavMessageBar
+                    onClickCloseButton={() => {
+                      localStorage.setItem('hideFavMessageBar', true)
+                      this.setState({showFavMessageBar: false})
+                    }}
+                  />
+                )}
                 {this.getListings(listings, fetchMore, loading)}
               </Col>
             </Container>

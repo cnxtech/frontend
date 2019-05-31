@@ -1,9 +1,6 @@
-import React, {Fragment, PureComponent} from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
-import {
-  getTitleTextByFilters,
-  getTitleTextByParams
-} from 'components/listings/shared/ListingList/title'
+import {getTitleTextByFilters} from 'components/listings/shared/ListingList/title'
 import NextHead from 'components/shared/NextHead'
 import {imageUrl} from 'utils/image_url'
 
@@ -27,13 +24,6 @@ class ListingsHead extends PureComponent {
         : `${ListingsHead.BASE_URL}`
     }
     return null
-  }
-
-  getTitleContent = () => {
-    const {filters, districts, params} = this.props
-    return filters && filters.neighborhoods
-      ? getTitleTextByFilters(filters.neighborhoods, districts)
-      : getTitleTextByParams(params, districts)
   }
 
   getURL = () => {
@@ -64,14 +54,14 @@ class ListingsHead extends PureComponent {
   }
 
   render() {
-    const titleContent = this.getTitleContent()
+    const titleContent = getTitleTextByFilters(this.props.filters, this.props.districts)
     const imageSrc = this.getImageSrc()
     const url = this.getURL()
     const canonical = this.getCanonical()
 
     return (
       <NextHead
-        title={`${titleContent} | Emcasa`}
+        title={`${titleContent} | EmCasa`}
         description={`Conheça e Compre Apartamentos e Casas à venda ${titleContent} com o sistema exclusivo de Tour Virtual 3D da Emcasa, a sua startup imobiliária.`}
         imageSrc={imageSrc}
         url={url}

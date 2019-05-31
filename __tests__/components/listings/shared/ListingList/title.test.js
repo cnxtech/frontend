@@ -9,8 +9,7 @@ import {
 } from 'constants/listing-locations'
 
 import {
-  getTitleTextByFilters,
-  getTitleTextByParams
+  getTitleTextByFilters
 } from 'components/listings/shared/ListingList/title'
 
 const DISTRICTS = [
@@ -50,70 +49,58 @@ const DISTRICTS = [
 
 describe('Listing page title', () => {
   it('returns the base title', () => {
-    const params = []
-    const title = getTitleTextByParams(params, DISTRICTS)
+    const filters = {}
+    const title = getTitleTextByFilters(filters, DISTRICTS)
     expect(title).toBe(`${BUY_TITLE_BASE} ${BUY_TITLE_DEFAULT_END}`)
   })
 
-  it('returns the base title when filter has one neighborhood', () => {
-    const neighborhoods = ['copacabana']
-    const title = getTitleTextByFilters(neighborhoods, DISTRICTS)
-    const {state, city, name} = DISTRICTS.find(value => value.nameSlug === neighborhoods[0])
-    expect(title).toBe(`${BUY_TITLE_BASE} ${BUY_TITLE_NEIGHBORHOOD_PREPOSITION} ${name}, ${city} - ${state}`)
-  })
-
-  it('returns the base title when filter has more than one neighborhood', () => {
-    const neighborhoods = ['copacabana', 'perdizes']
-    const title = getTitleTextByFilters(neighborhoods, DISTRICTS)
-    expect(title).toBe(`${BUY_TITLE_BASE} ${BUY_TITLE_DEFAULT_END}`)
-  })
-
-  it('returns the state title', () => {
-    const params = {
-      state: 'rj'
+  it('returns title containing city name', () => {
+    const filters = {
+      citiesSlug: ['rio-de-janeiro']
     }
-    const title = getTitleTextByParams(params, DISTRICTS)
-    const {state} = DISTRICTS.find(value => value.stateSlug === params.state)
-    expect(title).toBe(`${BUY_TITLE_BASE} ${BUY_TITLE_STATE_PREPOSITION} ${state}`)
+    const title = getTitleTextByFilters(filters, DISTRICTS)
+    expect(title).toBe(`${BUY_TITLE_BASE} ${CUSTOM_BUY_TITLE[0].value}`)
   })
 
-  it('returns the city title', () => {
-    const params = {
-      state: 'sp',
-      city: 'sao-paulo'
+  it('returns title containing tags', () => {
+    const filters = {
+      tagsSlug: ['academia', 'bicicletario']
     }
-    const title = getTitleTextByParams(params, DISTRICTS)
-    const {state, city} = DISTRICTS.find(value => value.citySlug === params.city)
-    expect(title).toBe(`${BUY_TITLE_BASE} ${BUY_TITLE_CITY_PREPOSITION} ${city} - ${state}`)
+    const title = getTitleTextByFilters(filters, DISTRICTS)
+    expect(title).toBe(`${BUY_TITLE_BASE} com Academia, Bicicletario ${BUY_TITLE_DEFAULT_END}`)
   })
 
-  it('returns the neighbourhood title', () => {
-    const params = {
-      state: "rj",
-      city: "rio-de-janeiro",
-      neighborhood: "copacabana"
+  it('returns title containing min price', () => {
+    const filters = {
+      minPrice: 300000
     }
-    const title = getTitleTextByParams(params, DISTRICTS)
-    const {state, city, name} = DISTRICTS.find(value => value.nameSlug === params.neighborhood)
-    expect(title).toBe(`${BUY_TITLE_BASE} ${BUY_TITLE_NEIGHBORHOOD_PREPOSITION} ${name}, ${city} - ${state}`)
+    const title = getTitleTextByFilters(filters, DISTRICTS)
+    expect(title).toBe(`${BUY_TITLE_BASE} a partir de R$300,000 ${BUY_TITLE_DEFAULT_END}`)
   })
 
-  it('returns the custom state title', () => {
-    const params = {
-      state: 'sp'
+  it('returns title containing max price', () => {
+    const filters = {
+      maxPrice: 300000
     }
-    const title = getTitleTextByParams(params, DISTRICTS)
-    const custom = CUSTOM_BUY_TITLE.find(a => a.stateSlug === params.state)
-    expect(title).toBe(`${BUY_TITLE_BASE} ${custom.value}`)
+    const title = getTitleTextByFilters(filters, DISTRICTS)
+    expect(title).toBe(`${BUY_TITLE_BASE} até R$300,000 ${BUY_TITLE_DEFAULT_END}`)
   })
 
-  it('returns the custom city title', () => {
-    const params = {
-      state: 'sp',
-      city: 'rio-de-janeiro'
+  it('returns title containing min and max price', () => {
+    const filters = {
+      minPrice: 100000,
+      maxPrice: 300000
     }
-    const title = getTitleTextByParams(params, DISTRICTS)
-    const custom = CUSTOM_BUY_TITLE.find(a => a.citySlug === params.city)
-    expect(title).toBe(`${BUY_TITLE_BASE} ${custom.value}`)
+    const title = getTitleTextByFilters(filters, DISTRICTS)
+    expect(title).toBe(`${BUY_TITLE_BASE} de R$100,000 a R$300,000 ${BUY_TITLE_DEFAULT_END}`)
+  })
+
+  it('returns title containing min price when max === min', () => {
+    const filters = {
+      minPrice: 100000,
+      maxPrice: 100000
+    }
+    const title = getTitleTextByFilters(filters, DISTRICTS)
+    expect(title).toBe(`${BUY_TITLE_BASE} R$100,000 ${BUY_TITLE_DEFAULT_END}`)
   })
 })
