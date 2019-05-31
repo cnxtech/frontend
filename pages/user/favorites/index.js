@@ -2,7 +2,6 @@ import uniqBy from 'lodash/uniqBy'
 import React, {Component} from 'react'
 import Router from 'next/router'
 import {Query, graphql} from 'react-apollo'
-import Link from 'next/link'
 import {compose, hoistStatics} from 'recompose'
 import {HEADER_HEIGHT} from 'constants/dimensions'
 import View from '@emcasa/ui-dom/components/View'
@@ -12,15 +11,18 @@ import {GET_USER_INFO, GET_FAVORITE_LISTINGS} from 'graphql/user/queries'
 import {createInterest} from 'services/interest-api'
 import {getUserInfo} from 'lib/user'
 import Row from '@emcasa/ui-dom/components/Row'
-import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
 import Map from 'components/listings/shared/ListingsMap'
 import ContactSuccess from 'components/listings/show/ContactSuccess'
 import {
   log,
+  PROFILE_FAVORITES_OPEN,
   PROFILE_FAVORITES_VIEW_LISTING,
   PROFILE_FAVORITES_VIEW_MAP,
-  PROFILE_FAVORITES_SCHEDULE_VISIT
+  PROFILE_FAVORITES_SCHEDULE_VISIT,
+  PROFILE_FAVORITES_MAP_DRAG,
+  PROFILE_FAVORITES_MAP_ZOOM,
+  PROFILE_FAVORITES_MAP_CLICK_MARKER,
 } from 'lib/logging'
 import {
   CardContainer,
@@ -72,6 +74,7 @@ class UserFavorites extends Component {
 
     const {initialView} = this.props
     this.setState({view: initialView})
+    log(PROFILE_FAVORITES_OPEN)
   }
 
   componentWillUnmount() {
@@ -195,6 +198,9 @@ class UserFavorites extends Component {
                     data={listings}
                     isFavorite={this.isFavorite}
                     getInitialFrame={({markers}) => markers}
+                    clickMarkerEvent={PROFILE_FAVORITES_MAP_CLICK_MARKER}
+                    dragendEvent={PROFILE_FAVORITES_MAP_DRAG}
+                    zoomchangedEvent={PROFILE_FAVORITES_MAP_ZOOM}
                   />
                 )
               }

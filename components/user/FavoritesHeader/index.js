@@ -57,14 +57,12 @@ export default React.forwardRef(function UserFavoritesHeader(props, ref) {
         style={{boxSizing: 'border-box'}}
       >
         {favorites.length === 0 ?
-          <Text inline fontSize="small">Você ainda não tem nenhum imóvel em Favoritos.</Text>
+          <Text inline fontSize="small">
+            Você ainda não salvou nenhum imóvel.
+          </Text>
         :
           <Text inline fontSize="small">
-            Você tem{' '}
-            <Text inline color="pink" fontSize="small">
-              {favorites.length}
-            </Text>{' '}
-            {favorites.length === 1 ? 'imóvel salvo.' : 'imóveis salvos.'}
+            Os imóveis salvos ajudam a entender qual o seu perfil. Quanto mais Favoritos, melhor.
           </Text>
         }
         <Row width={['100%', null, null, 'auto']} mt={[2, null, null, 0]}>

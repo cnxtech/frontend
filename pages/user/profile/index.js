@@ -30,7 +30,7 @@ import {
   PROFILE_EDIT,
   PROFILE_EDIT_CANCEL,
   PROFILE_EDIT_SAVE,
-  PROFILE_OPEN_FAVORITES
+  PROFILE_OPEN_FAVORITES_CLICK
 } from 'lib/logging'
 import {
   InitialView,
@@ -231,7 +231,7 @@ class UserProfile extends Component {
                     <Button
                       fluid
                       height="tall"
-                      onClick={() => {log(PROFILE_OPEN_FAVORITES)}}
+                      onClick={() => {log(PROFILE_OPEN_FAVORITES_CLICK)}}
                     >
                       Ver meus favoritos
                     </Button>
