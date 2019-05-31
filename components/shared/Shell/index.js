@@ -5,7 +5,7 @@ import Router from 'next/router'
 import NProgress from 'nprogress'
 import Footer from './Footer'
 import Header from './Header'
-import Container, {Main} from './styles'
+import {Main} from './styles'
 
 Router.onRouteChangeStart = () => {
   NProgress.start()

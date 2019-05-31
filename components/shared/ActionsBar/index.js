@@ -66,6 +66,7 @@ class ActionsBar extends Component {
 
   render() {
     const {button, onSubmit, filters, currentCity} = this.props
+
     return (
       <Wrapper>
         <Container>

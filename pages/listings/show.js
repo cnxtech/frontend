@@ -54,7 +54,7 @@ import {
   LISTING_DETAIL_STREETVIEW_CLOSE,
   LISTING_DETAIL_MORE_LISTINGS_BUTTON
 } from 'lib/logging'
-import {ShowContainer} from './styles'
+import {ShowContainer, BarsWrapper, BarsContainer} from './styles'
 import {buildNeighborhoodSlug} from 'lib/listings'
 
 class Listing extends Component {
@@ -381,7 +381,17 @@ class Listing extends Component {
                             )}
                           </Warning>
                         )}
-                        <PriceBar listing={listing} />
+                        <BarsWrapper>
+                          <BarsContainer>
+                            <PriceBar listing={listing} />
+                            <ButtonsBar
+                              handleOpenInterestPopup={this.openInterestPopup}
+                              favorite={favorite}
+                              listing={listing}
+                              user={currentUser}
+                            />
+                          </BarsContainer>
+                        </BarsWrapper>
                         <ListingMainContent
                           listing={listing}
                           user={currentUser}
@@ -446,12 +456,6 @@ class Listing extends Component {
                             />
                           }
                         </Popup>
-                        <ButtonsBar
-                          handleOpenInterestPopup={this.openInterestPopup}
-                          favorite={favorite}
-                          listing={listing}
-                          user={currentUser}
-                        />
                         <Col>
                           <ListingFeed
                             highlight
