@@ -34,7 +34,8 @@ class ActionsBar extends Component {
   )
 
   render() {
-    const {onSubmit, filters, currentCity} = this.props
+    const {button, onSubmit, filters, currentCity} = this.props
+
     return (
       <Wrapper>
         <Container>

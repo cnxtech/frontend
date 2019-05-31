@@ -14,10 +14,9 @@ class ButtonsBar extends Component {
           favorite={favorite}
           listing={listing}
           user={user}
+          search={false}
         />
-        <ContactButton
-          active
-          onClick={() => {
+        <ContactButton active onClick={() => {
             log(LISTING_DETAIL_CONTACT_BUTTON, {listingId: listing.id})
             handleOpenInterestPopup()
           }}
