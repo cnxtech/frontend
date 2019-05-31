@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
-import {getTitleTextByParams} from 'components/listings/shared/ListingList/title'
+import {getTitleTextByFilters} from 'components/listings/shared/ListingList/title'
 import NextHead from 'components/shared/NextHead'
 import {imageUrl} from 'utils/image_url'
 
@@ -54,7 +54,7 @@ class ListingsHead extends PureComponent {
   }
 
   render() {
-    const titleContent = getTitleTextByParams(this.props.params, this.props.districts)
+    const titleContent = getTitleTextByFilters(this.props.filters, this.props.districts)
     const imageSrc = this.getImageSrc()
     const url = this.getURL()
     const canonical = this.getCanonical()

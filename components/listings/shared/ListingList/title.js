@@ -5,7 +5,15 @@ import {
   BUY_TITLE_CITY_PREPOSITION,
   CUSTOM_BUY_TITLE
 } from 'constants/listing-locations'
+import * as tags from 'components/shared/Filter/components/TagsFilter/constansts'
 import {intToCurrency} from 'utils/text-utils'
+
+const tagsBySlug = Object.keys(tags).reduce((obj, key) => {
+  tags[key].forEach(tag => {
+    obj[tag.value] = tag.label
+  })
+  return obj
+}, {})
 
 function getCityTitle(citySlug, districts) {
   const custom = CUSTOM_BUY_TITLE.find(a => a.citySlug === citySlug)
@@ -20,60 +28,90 @@ function getNeighborhoodTitle(neighborhoodSlugs, districts) {
   return ` ${BUY_TITLE_NEIGHBORHOOD_PREPOSITION} ${info.join(', ')}`
 }
 
-function getRangeTitle(range, formatter = (a => a)) {
+function getRangeTitle(min, max, formatter = (a => a)) {
   let title = null
 
-  if (range.hasOwnProperty('max') && range.hasOwnProperty('min')) {
-    if (range.max === range.min) {
-      title = ` ${formatter(range.min)}`
+  if (min && max) {
+    if (max === min) {
+      title = ` ${formatter(min)}`
     } else {
-      title = ` de ${formatter(range.min)} a ${formatter(range.max)}`
+      title = ` de ${formatter(min)} a ${formatter(max)}`
     }
-  } else if (range.hasOwnProperty('max')) {
-    title = ` até ${formatter(range.max)}`
+  } else if (max) {
+    title = ` até ${formatter(max)}`
   } else {
-    title = ` a partir de ${formatter(range.min)}`
+    title = ` a partir de ${formatter(min)}`
   }
 
   return title
 }
 
-function getTitleTextByParams(params, districts, format = false) {
+function getTitleTextByFilters(filters, districts, format = false) {
   const title = [{text: BUY_TITLE_BASE}]
-  const {citySlug, filters} = params
-  const {tagsSlug, neighborhoods, rooms, price, garageSpots, area} = filters || {}
+  const {
+    tagsSlug,
+    neighborhoodSlugs,
+    citiesSlug,
+    minRooms,
+    maxRooms,
+    minPrice,
+    maxPrice,
+    minGarageSpots,
+    maxGarageSpots,
+    minArea,
+    maxArea
+  } = filters || {}
 
-  if (area) {
-    title.push({text: getRangeTitle(area, a => `${a}m²`), bold: true})
+  if (minArea || maxArea) {
+    title.push({
+      text: getRangeTitle(minArea, maxArea, a => `${a}m²`),
+      bold: true
+    })
   }
 
-  if (rooms) {
-    title.push({text: `${getRangeTitle(rooms)} quartos`, bold: true})
+  if (minRooms || maxRooms) {
+    title.push({
+      text: `${getRangeTitle(minRooms, maxRooms)} quartos`,
+      bold: true
+    })
   }
 
-  if (price) {
-    title.push({text: getRangeTitle(price, intToCurrency), bold: true})
+  if (minPrice || maxPrice) {
+    title.push({
+      text: getRangeTitle(minPrice, maxPrice, intToCurrency),
+      bold: true
+    })
   }
 
-  if (garageSpots) {
-    title.push({text: `${getRangeTitle(garageSpots)} vagas`, bold: true})
+  if (minGarageSpots || maxGarageSpots) {
+    title.push({
+      text: `${getRangeTitle(minGarageSpots, maxGarageSpots)} vagas`,
+      bold: true
+    })
   }
 
   if (tagsSlug) {
-    title.push({text: ` com ${tagsSlug.join(', ')}`, bold: true})
+    title.push({
+      text: ` com ${tagsSlug.map(slug => tagsBySlug[slug]).join(', ')}`,
+      bold: true
+    })
   }
 
-  if (neighborhoods) {
-    title.push({text: getNeighborhoodTitle(neighborhoods, districts)})
-  } else if (citySlug) {
-    title.push({text: getCityTitle(citySlug, districts)})
+  if (neighborhoodSlugs) {
+    title.push({text: getNeighborhoodTitle(neighborhoodSlugs, districts)})
+  } else if (citiesSlug) {
+    title.push({text: getCityTitle(citiesSlug[0], districts)})
   } else {
     title.push({text: ` ${BUY_TITLE_DEFAULT_END}`})
   }
 
-  return format ? <span>{title.map((t, i) => t.bold ? <strong key={i}>{t.text}, </strong> : t.text)}</span> : title.map(t => t.text).join('')
+  return format ? (
+    <span>
+      {title.map((t, i) => t.bold ? <strong key={i}>{t.text}, </strong> : t.text)}
+    </span>
+  ) : title.map(t => t.text).join('')
 }
 
 export {
-  getTitleTextByParams
+  getTitleTextByFilters
 }
