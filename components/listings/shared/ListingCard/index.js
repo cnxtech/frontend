@@ -24,11 +24,23 @@ import {
   PaginationText,
   LISTING_CARD_IMAGE_HEIGHT
 } from './styles'
+import {LISTING_DETAIL_PHOTOS_SWIPE_LEFT, LISTING_DETAIL_PHOTOS_SWIPE_RIGHT, LISTING_DETAIL_PHOTOS_SWIPE_EDGE} from 'lib/logging'
 
 class ListingCard extends Component {
   state = {currentImage: 0}
 
   afterChange = (index) => {
+    const {listing} = this.props
+    const {currentImage} = this.state
+
+    if (index > currentImage) {
+      log(LISTING_DETAIL_PHOTOS_SWIPE_RIGHT, {listingId: listing.id})
+    } else if (index < currentImage) {
+      log(LISTING_DETAIL_PHOTOS_SWIPE_LEFT, {listingId: listing.id})
+    } else {
+      log(LISTING_DETAIL_PHOTOS_SWIPE_EDGE, {listingId: listing.id})
+    }
+
     this.setState({currentImage: index})
   }
 
