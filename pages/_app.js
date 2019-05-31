@@ -19,11 +19,8 @@ import {DEVICE_ID_COOKIE} from 'components/shared/Flagr'
 import uuid from 'utils/uuid'
 import HTTPMessage from 'components/shared/Shell/HTTPMessage'
 import GlobalStyles from 'styles/global'
-import {
-  ALLOW_URLS,
-  IGNORE_URLS,
-  IGNORE_ERRORS
-} from 'lib/sentry'
+import {ALLOW_URLS, IGNORE_URLS, IGNORE_ERRORS} from 'lib/sentry'
+import {log, PWA_APP_INSTALLED} from 'lib/logging'
 
 class MyApp extends App {
   static async getInitialProps(ctx) {
@@ -80,6 +77,7 @@ class MyApp extends App {
     }
 
     if (process.browser) {
+      window.addEventListener('appinstalled', this.onAppInstalled)
       window.addEventListener('onLogin', this.updateSession)
     }
 
@@ -92,6 +90,7 @@ class MyApp extends App {
 
   componentWillUnmount() {
     if (process.browser) {
+      window.removeEventListener('appinstalled', this.onAppInstalled)
       window.removeEventListener('onLogin', this.updateSession)
     }
   }
@@ -121,6 +120,8 @@ class MyApp extends App {
       }
     })
   }
+
+  onAppInstalled = () => log(PWA_APP_INSTALLED)
 
   render() {
     let {
@@ -157,7 +158,7 @@ class MyApp extends App {
                 pageProps={pageProps}
                 router={router}
               >
-                <GlobalStyles/>
+                <GlobalStyles />
                 {error ? (
                   <HTTPMessage asPath={url.asPath} statusCode={error.code} />
                 ) : (
