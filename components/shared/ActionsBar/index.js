@@ -1,4 +1,4 @@
-import {Component, Fragment} from 'react'
+import {Component} from 'react'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import Text from '@emcasa/ui-dom/components/Text'
@@ -34,7 +34,7 @@ class ActionsBar extends Component {
   )
 
   render() {
-    const {user, onSubmit, filters, currentCity, favorites} = this.props
+    const {onSubmit, filters, currentCity} = this.props
     return (
       <Wrapper>
         <Container>
