@@ -1,17 +1,23 @@
-import {PureComponent} from 'react'
+import {Component} from 'react'
+import PropTypes from 'prop-types'
 import Map from '@emcasa/ui-dom/components/Map'
 import Card from './Card'
 import Marker from './Marker'
 import MultiMarker from './MultiMarker'
 import {getListingPrice} from 'lib/listings'
+import {log} from 'lib/logging'
 
-export default class ListingsMap extends PureComponent {
-  static defaultProps = {
-    isFavorite: () => false
+class ListingsMap extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      highlight: undefined
+    }
+    this.map = null
   }
 
-  state = {
-    highlight: undefined
+  static defaultProps = {
+    isFavorite: () => false
   }
 
   selectListing = ({id}) => this.setState({highlight: id})
@@ -21,13 +27,35 @@ export default class ListingsMap extends PureComponent {
   isHighlight = ({id}) => this.state.highlight === id
 
   onMapLoaded = ({map}) => {
-    if (map) map.addListener('click', this.onClickMarker)
+    if (map) {
+      this.map = map
+      this.map.addListener('click', this.onClickMarker)
+      this.map.addListener('dragend', this.onMapDragEnd)
+      this.map.addListener('zoom_changed', this.onMapZoomChanged)
+    }
   }
 
   onClickMarker = (e) => {
     if (e.placeId) {
       // Prevent place info popup from showing.
       e.stop()
+    }
+
+    if (this.props.clickMarkerEvent) {
+      log(this.props.clickMarkerEvent)
+    }
+    this.map.setCenter(new google.maps.LatLng(e.latLng.lat(), e.latLng.lng()))
+  }
+
+  onMapDragEnd = () => {
+    if (this.props.dragendEvent) {
+      log(this.props.dragendEvent)
+    }
+  }
+
+  onMapZoomChanged = () => {
+    if (this.props.zoomchangedEvent) {
+      log(this.props.zoomchangedEvent)
     }
   }
 
@@ -90,3 +118,12 @@ export default class ListingsMap extends PureComponent {
     )
   }
 }
+
+ListingsMap.propTypes = {
+  data: PropTypes.array,
+  clickMarkerEvent: PropTypes.string,
+  dragendEvent: PropTypes.string,
+  zoomchangedEvent: PropTypes.string
+}
+
+export default ListingsMap
