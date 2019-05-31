@@ -5,7 +5,7 @@ import {
   BUY_TITLE_CITY_PREPOSITION,
   CUSTOM_BUY_TITLE
 } from 'constants/listing-locations'
-
+import {intToCurrency} from 'utils/text-utils'
 
 function getCityTitle(citySlug, districts) {
   const custom = CUSTOM_BUY_TITLE.find(a => a.citySlug === citySlug)
@@ -20,26 +20,31 @@ function getNeighborhoodTitle(neighborhoodSlugs, districts) {
   return ` ${BUY_TITLE_NEIGHBORHOOD_PREPOSITION} ${info.join(', ')}`
 }
 
+function getRangeTitle(range, formatter = (a => a)) {
+  let title = null
 
-function getRangeTitle(range) {
   if (range.hasOwnProperty('max') && range.hasOwnProperty('min')) {
-    return ` de ${range.min} a ${range.max}`
+    if (range.max === range.min) {
+      title = ` ${formatter(range.min)}`
+    } else {
+      title = ` de ${formatter(range.min)} a ${formatter(range.max)}`
+    }
+  } else if (range.hasOwnProperty('max')) {
+    title = ` até ${formatter(range.max)}`
+  } else {
+    title = ` a partir de ${formatter(range.min)}`
   }
 
-  if (range.hasOwnProperty('max')) {
-    return ` até ${range.max}`
-  }
-
-  return ` a partir de ${range.min}`
+  return title
 }
 
 function getTitleTextByParams(params, districts, format = false) {
   const title = [{text: BUY_TITLE_BASE}]
   const {citySlug, filters} = params
-  const {tagsSlug, neighborhoods, rooms, price, garageSpots, area} = filters
+  const {tagsSlug, neighborhoods, rooms, price, garageSpots, area} = filters || {}
 
   if (area) {
-    title.push({text: getRangeTitle(area), bold: true})
+    title.push({text: getRangeTitle(area, a => `${a}m²`), bold: true})
   }
 
   if (rooms) {
@@ -47,9 +52,8 @@ function getTitleTextByParams(params, districts, format = false) {
   }
 
   if (price) {
-    title.push({text: getRangeTitle(price), bold: true})
+    title.push({text: getRangeTitle(price, intToCurrency), bold: true})
   }
-
 
   if (garageSpots) {
     title.push({text: `${getRangeTitle(garageSpots)} vagas`, bold: true})
@@ -67,7 +71,7 @@ function getTitleTextByParams(params, districts, format = false) {
     title.push({text: ` ${BUY_TITLE_DEFAULT_END}`})
   }
 
-  return format ? <span>{title.map(t => t.bold ? <strong>{t.text}</strong> : t.text)}</span> : title.map(t => t.text).join('')
+  return format ? <span>{title.map((t, i) => t.bold ? <strong key={i}>{t.text}, </strong> : t.text)}</span> : title.map(t => t.text).join('')
 }
 
 export {
