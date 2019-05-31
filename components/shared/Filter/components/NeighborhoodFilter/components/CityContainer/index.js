@@ -28,12 +28,8 @@ class CityContainer extends Component {
 
   selectAllNeighborhoodInCity = (cities, citySlug) => {
     log(LISTING_SEARCH_NEIGHBORHOOD_SELECT_ALL, {city: citySlug})
-    const newSelection = selectCity(
-      cities,
-      this.props.selectedNeighborhoods,
-      citySlug
-    )
-    this.props.selectNeighborhoods(newSelection)
+    const selectedCity = cities.find((city) => city.citySlug === citySlug)
+    this.props.selectCity(selectedCity)
   }
 
   getNeighborhoodButton = (key, isNewSelection, neighborhood) => {
@@ -79,13 +75,23 @@ class CityContainer extends Component {
           NUMBER_OF_INITIAL_NEIGHBORHOOD_TO_SHOW - 1
         )
 
-      neighborhoods.forEach((neighborhood, j) => {
-        const isSelected = isNeighborhoodSelected(
-          selectedNeighborhoods,
-          neighborhood.nameSlug
-        )
-        elems.push(this.getNeighborhoodButton(j, isSelected, neighborhood))
-      })
+      if (
+        !selectedNeighborhoods ||
+        selectedNeighborhoods.length === 0 ||
+        selectedNeighborhoods.length === selectedCity.neighborhoods.length
+      ) {
+        neighborhoods.forEach((neighborhood, j) => {
+          elems.push(this.getNeighborhoodButton(j, true, neighborhood))
+        })
+      } else {
+        neighborhoods.forEach((neighborhood, j) => {
+          const isSelected = isNeighborhoodSelected(
+            selectedNeighborhoods,
+            neighborhood.nameSlug
+          )
+          elems.push(this.getNeighborhoodButton(j, isSelected, neighborhood))
+        })
+      }
     }
     return elems
   }
