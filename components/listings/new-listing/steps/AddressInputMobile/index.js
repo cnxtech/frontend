@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Col from '@emcasa/ui-dom/components/Col'
 import AddressAutoComplete from '@emcasa/places-autocomplete/AddressAutoComplete'
-import { MobileTypeaheadContainer } from 'components/shared/AddressAutoComplete/styles'
+import MobileTypeaheadContainer from 'components/shared/MobileTypeahead'
 
 class AddressInputMobile extends Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class AddressInputMobile extends Component {
               }}
               inputProps={{p: 0}}
               defaultValue={this.state.address}
-              onSelectAddress={(_, addressData, addressFormatted) => {
+              onSelect={(_, addressData, addressFormatted) => {
                 this.setState({
                   address: addressFormatted
                 })

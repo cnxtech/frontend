@@ -168,7 +168,7 @@ class AddressInput extends Component {
                             height="tall"
                             placeholder="Endereço e número*"
                             icon={null}
-                            inputProps={{p:0}}
+                            inputProps={{p: 0}}
                             defaultValue={address}
                             onChangeText={this.onChangeAddressText}
                             onSelect={(_, addressData, address) => {
