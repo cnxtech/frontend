@@ -29,7 +29,7 @@ export default function Index({
   ...props
 }) {
   return (
-    <Row flexDirection="column">
+    <Row flexDirection="column" my={5}>
       <Col>
         <Row flexDirection="row" alignItems="center">
           <Text fontSize="small" fontWeight="bold">

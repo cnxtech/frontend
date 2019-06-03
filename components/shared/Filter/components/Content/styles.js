@@ -29,6 +29,7 @@ const Footer = styled(Row)`
   box-sizing: border-box;
   width: ${MODAL_CONTENT_WIDTH}px;
   z-index: ${zIndexFooterFilterModal};
+  border-top: 2px solid ${themeGet('colors.lightGrey')};
   @media screen and ${breakpoint.only('phone')} {
     width: 100%;
   }

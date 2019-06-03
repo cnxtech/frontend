@@ -24,7 +24,7 @@ export default class SliderRange extends PureComponent {
     if (isNaN(displayValue.max) || displayValue.max === null)
       displayValue.max = range[1]
     return (
-      <Row flexDirection="column">
+      <Row flexDirection="column" my={4}>
         <Col>
           <Row flexDirection="row" alignItems="center">
             <Text fontSize="small" fontWeight="bold">
@@ -35,7 +35,13 @@ export default class SliderRange extends PureComponent {
         <Col>
           <View pr={2} pl={2}>
             {formatLabel && (
-              <Text fontSize="small" textAlign="center">
+              <Text
+                fontSize="small"
+                textAlign="center"
+                style={{
+                  margin: 0
+                }}
+              >
                 {formatLabel(displayValue)}
               </Text>
             )}

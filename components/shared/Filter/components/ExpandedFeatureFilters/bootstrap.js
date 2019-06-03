@@ -6,7 +6,6 @@ import flow from 'lodash/fp/flow'
 import cond from 'lodash/fp/cond'
 import not from 'lodash/fp/negate'
 import stubTrue from 'lodash/fp/stubTrue'
-import abbrev from 'number-abbreviate'
 import curry from 'lodash/fp/curry'
 import {
   MIN_PRICE,
@@ -18,6 +17,7 @@ import {
 import SliderRangeFilter from './SliderRangeFilter'
 import ButtonRangeFilter from './ButtonRangeFilter'
 import TypesFilter from './TypesFilter'
+import NumberAbbreviate, {EXANDED_SUFIX} from 'utils/numbe-abbreviate'
 
 const hasValue = (value) => typeof value !== 'undefined'
 
@@ -76,9 +76,8 @@ export const formatNumRange = (noun) => {
 }
 
 export const formatPrice = (value) =>
-  `R$ ${abbrev(value, 2)
+  `R$ ${NumberAbbreviate.abbreviate(value, 2, EXANDED_SUFIX)
     .toString()
-    .toUpperCase()
     .replace('.', ',')}`
 
 const formatPriceRange = formatSliderRange(formatPrice)
