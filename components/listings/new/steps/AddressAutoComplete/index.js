@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import {Title, Field} from 'components/listings/shared/styles'
 import {SearchResults, FieldContainer, SearchResult} from './styles'
-import {filterComponent} from 'services/google-maps-api'
+import {filterComponent} from '@emcasa/places-autocomplete/helpers'
 import Form from 'components/shared/Common/Form'
 
 export default class AddressAutoComplete extends React.Component {

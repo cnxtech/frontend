@@ -12,6 +12,7 @@ const Container = styled(Row)`
   @media ${breakpoint.only('tablet')} {
     padding-top: 180px;
     width: calc(100vw - 220px);
+    margin: auto;
   }
 `
 

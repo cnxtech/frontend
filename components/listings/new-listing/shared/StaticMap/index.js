@@ -1,7 +1,6 @@
 import {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {key} from 'services/google-maps-api'
 import StyledImage from './styles'
 
 const ZOOM = 16
@@ -42,7 +41,7 @@ class StaticMap extends PureComponent {
     const mapWidth = window.innerWidth
     const {geometry: {location: {lat, lng}}} = addressData || {geometry: {location: {lat: 0, lng: 0}}}
     const params = `zoom=${ZOOM}&size=${mapWidth}x${MAP_HEIGHT}&scale=${MAP_SCALE}&maptype=roadmap&markers=scale:${MAP_SCALE}|icon:${MARKER_URL}|${lat},${lng}&style=feature:water|color:0xa0d5ff&style=feature:`
-    const endpoint = `https://maps.googleapis.com/maps/api/staticmap?${params}&key=${key}`
+    const endpoint = `https://maps.googleapis.com/maps/api/staticmap?${params}&key=${process.env.GOOGLE_MAPS_KEY}`
     return addressData ? (
       <AnimatedContainer isLoaded={!animated || this.state.loaded}>
         <StyledImage

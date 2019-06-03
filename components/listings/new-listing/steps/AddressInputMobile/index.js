@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import Col from '@emcasa/ui-dom/components/Col'
-import AddressAutoComplete from 'components/shared/AddressAutoComplete'
+import AddressAutoComplete from '@emcasa/places-autocomplete/AddressAutoComplete'
 import { MobileTypeaheadContainer } from 'components/shared/AddressAutoComplete/styles'
 
 class AddressInputMobile extends Component {
@@ -34,10 +34,24 @@ class AddressInputMobile extends Component {
         <MobileTypeaheadContainer justifyContent="center" p={4}>
           <Col width={1}>
             <AddressAutoComplete
-              onBackPressed={this.close}
+              focused
+              p={0}
+              height="tall"
+              placeholder="Endereço e número*"
+              icon="chevron-left"
+              iconProps={{
+                pl: 2,
+                pr: 2,
+                mr: -10,
+                size: 24,
+                onClick: (e) => {
+                  e.preventDefault()
+                  this.close()
+                }
+              }}
+              inputProps={{p: 0}}
               defaultValue={this.state.address}
-              onClearInput={() => {}}
-              onSelectAddress={(addressFormatted, addressData) => {
+              onSelectAddress={(_, addressData, addressFormatted) => {
                 this.setState({
                   address: addressFormatted
                 })

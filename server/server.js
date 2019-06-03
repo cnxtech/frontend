@@ -10,7 +10,7 @@ const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 3000
 const app = next({dir: '.', dev})
 const handle = app.getRequestHandler()
-const MapsService = require('../services/google-maps-api')
+const mapsRouter = require('@emcasa/places-autocomplete/middleware').default
 const listingsRouter = require('./routes/listings')
 const userRouter = require('./routes/user')
 const timber = require('timber')
@@ -69,6 +69,10 @@ const startServer = () => {
         return app.render(req, res, '/listings/sell')
       })
 
+      server.use('/maps', mapsRouter({
+        apiKey: process.env.GOOGLE_MAPS_KEY
+      }))
+
       server.use('/imoveis', listingsRouter)
 
       server.use('/meu-perfil', userRouter)
@@ -89,37 +93,6 @@ const startServer = () => {
         }
         const location = geoip.lookup(userIp)
         res.status(200).send({location, userIp: userIp})
-      })
-
-      server.get('/maps/autocomplete', async (req, res) => {
-        const {q} = req.query
-        try {
-          const result = await MapsService.search(
-            MapsService.placesAutoComplete,
-            {
-              input: q,
-              language: 'pt-BR',
-              components: {country: 'br'},
-              types: ['address']
-            }
-          )
-          res.status(200).send(result)
-        } catch (e) {
-          res.status(500).send({error: e})
-        }
-      })
-
-      server.get('/maps/placeDetail', async (req, res) => {
-        const {q} = req.query
-        try {
-          const result = await MapsService.search(MapsService.place, {
-            placeid: q,
-            language: 'pt-BR'
-          })
-          res.status(200).send(result)
-        } catch (e) {
-          res.status(500).send({error: e})
-        }
       })
 
       server.get('/vender-imovel', (req, res) => {

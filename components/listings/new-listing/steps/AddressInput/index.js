@@ -10,7 +10,7 @@ import {withBreakpoint} from '@emcasa/ui-dom/components/Breakpoint'
 import StaticMap from 'components/listings/new-listing/shared/StaticMap'
 import { getAddressInput } from 'lib/address'
 import NavButtons from 'components/listings/new-listing/shared/NavButtons'
-import AddressAutoComplete from 'components/shared/AddressAutoComplete'
+import AddressAutoComplete from '@emcasa/places-autocomplete/AddressAutoComplete'
 import MobileAddressButton from 'components/shared/MobileAddressButton'
 import Steps from 'components/listings/new-listing/shared/Steps'
 
@@ -23,7 +23,6 @@ class AddressInput extends Component {
     this.checkAddressCoverage = this.checkAddressCoverage.bind(this)
     this.validateAddress = this.validateAddress.bind(this)
     this.updateStateFromProps = this.updateStateFromProps.bind(this)
-    this.onClearInput = this.onClearInput.bind(this)
     this.openMobileAddressInput = this.openMobileAddressInput.bind(this)
   }
 
@@ -63,11 +62,10 @@ class AddressInput extends Component {
     })
   }
 
-  onClearInput() {
-    this.setState({
-      address: null,
-      addressData: null
-    })
+  onChangeAddressText = (address) => {
+    const nextState = {address}
+    if (!address) nextState.addressData = undefined
+    this.setState(nextState)
   }
 
   previousStep() {
@@ -166,14 +164,16 @@ class AddressInput extends Component {
                         validate={this.validateAddress}
                         render={() => (
                           <AddressAutoComplete
+                            p={0}
+                            height="tall"
+                            placeholder="Endereço e número*"
+                            icon={null}
+                            inputProps={{p:0}}
                             defaultValue={address}
-                            onClearInput={this.onClearInput}
-                            onSelectAddress={(addressFormatted, addressData) => {
-                              setFieldValue('address', addressFormatted)
-                              this.setState({
-                                address: addressFormatted,
-                                addressData: addressData
-                              })
+                            onChangeText={this.onChangeAddressText}
+                            onSelect={(_, addressData, address) => {
+                              setFieldValue('address', address)
+                              this.setState({address, addressData})
                             }}
                           />
                         )}
