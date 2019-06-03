@@ -130,10 +130,7 @@ function filterNeighborhoods(neighborhoods) {
     if (isCityOrState) {
       return false
     }
-    if (exclusion.includes(item)) {
-      return false
-    }
-    return true
+    return !exclusion.includes(item)
   })
 }
 

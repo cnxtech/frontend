@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react'
 import {clone} from 'utils/clone'
+import {isEqual} from 'lodash'
 import Col from '@emcasa/ui-dom/components/Col'
 import {
   RoomsFilter,
@@ -12,7 +13,12 @@ import {
 class ExpandedFilters extends PureComponent {
   onChange = (key, value) => {
     const newFilters = clone(this.props.filters)
-    newFilters[key] = value
+    //If we are trying to insert the same value again that means that the user want to deselect the current value
+    if (isEqual(newFilters[key], value)) {
+      newFilters[key] = {}
+    } else {
+      newFilters[key] = value
+    }
     this.props.onChange(newFilters)
   }
 
