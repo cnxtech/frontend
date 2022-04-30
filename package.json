@@ -64,7 +64,7 @@
     "jest": "24.6.0",
     "js-cookie": "2.2.0",
     "lodash": "4.17.11",
-    "moment": "2.22.2",
+    "moment": "2.29.2",
     "next": "8.0.5-canary.25",
     "next-redux-wrapper": "3.0.0-alpha.2",
     "next-router-events": "2.1.0",
